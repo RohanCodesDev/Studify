@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { useState } from "react";
+import { Settings, X, Sun, Moon, Check, Sparkles } from "lucide-react";
 
 interface ColorProfile {
   id: string;
@@ -208,6 +209,7 @@ const COLOR_PROFILES: ColorProfile[] = [
 export default function Home() {
   const [selectedId, setSelectedId] = useState<string>("blush-rose");
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
 
   const activeProfile =
     COLOR_PROFILES.find((p) => p.id === selectedId) || COLOR_PROFILES[0];
@@ -216,263 +218,330 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Studify · Base Colour Profiles</title>
+        <title>Studify · MAKAUT Study Platform</title>
         <meta
           name="description"
-          content="Explore and test the 7 pastel colour profiles for Studify."
+          content="Calm, focused, marks-aligned study platform for MAKAUT students."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <div
-        className="min-h-screen transition-colors duration-300 font-sans p-6 md:p-12 flex flex-col items-center"
+        className="min-h-screen transition-colors duration-300 font-sans flex flex-col items-center"
         style={{
           backgroundColor: colors.pageBg,
           color: colors.ink,
         }}
       >
-        <div className="w-full max-w-4xl space-y-8">
-          {/* Top Controls: Profile Switcher & Mode Toggle */}
-          <header className="space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b"
-              style={{ borderColor: colors.border }}
-            >
+        {/* Top Navigation Bar */}
+        <header
+          className="w-full border-b backdrop-blur-md sticky top-0 z-30 transition-colors"
+          style={{
+            backgroundColor: isDarkMode ? `${colors.pageBg}E6` : `${colors.cardBg}B3`,
+            borderColor: colors.border,
+          }}
+        >
+          <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span
+                className="w-8 h-8 rounded-xl flex items-center justify-center font-bold text-sm shadow-sm"
+                style={{
+                  backgroundColor: colors.accent,
+                  color: isDarkMode ? "#181315" : colors.ink,
+                }}
+              >
+                S
+              </span>
               <div>
-                <span className="text-xs uppercase tracking-widest font-semibold" style={{ color: colors.accentDark }}>
-                  Colour Profiler
-                </span>
-                <h1 className="text-2xl md:text-3xl font-light tracking-tight mt-0.5">
-                  Select Base Palette
-                </h1>
-              </div>
-
-              {/* Light / Dark Mode Toggle */}
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-medium" style={{ color: colors.inkMuted }}>
-                  Mode:
-                </span>
-                <div
-                  className="inline-flex p-1 rounded-full border transition-colors"
-                  style={{ backgroundColor: colors.cardBg, borderColor: colors.border }}
-                >
-                  <button
-                    onClick={() => setIsDarkMode(false)}
-                    className={`px-3 py-1 text-xs rounded-full font-medium transition-all ${
-                      !isDarkMode ? "shadow-sm" : "opacity-60 hover:opacity-100"
-                    }`}
-                    style={
-                      !isDarkMode
-                        ? { backgroundColor: colors.accent, color: colors.ink }
-                        : {}
-                    }
-                  >
-                    Light
-                  </button>
-                  <button
-                    onClick={() => setIsDarkMode(true)}
-                    className={`px-3 py-1 text-xs rounded-full font-medium transition-all ${
-                      isDarkMode ? "shadow-sm" : "opacity-60 hover:opacity-100"
-                    }`}
-                    style={
-                      isDarkMode
-                        ? { backgroundColor: colors.accent, color: "#181315" }
-                        : {}
-                    }
-                  >
-                    Dark (Tinted)
-                  </button>
-                </div>
+                <span className="font-semibold text-lg tracking-tight">Studify</span>
+                <span className="text-xs ml-2 opacity-60 font-mono">MAKAUT</span>
               </div>
             </div>
 
-            {/* Profile Buttons Pill Bar */}
-            <div className="flex flex-wrap gap-2 pt-2">
-              {COLOR_PROFILES.map((profile) => {
-                const isSelected = profile.id === selectedId;
-                const dotColor = profile.light.accent;
-                return (
-                  <button
-                    key={profile.id}
-                    onClick={() => setSelectedId(profile.id)}
-                    className="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs md:text-sm font-medium transition-all border"
-                    style={{
-                      backgroundColor: isSelected
-                        ? colors.cardBg
-                        : isDarkMode
-                        ? "#1C1F24"
-                        : "#FFFFFF80",
-                      borderColor: isSelected ? colors.accent : colors.border,
-                      boxShadow: isSelected
-                        ? `0 2px 10px -2px ${colors.accent}40`
-                        : "none",
-                      transform: isSelected ? "translateY(-1px)" : "none",
-                    }}
-                  >
-                    <span
-                      className="w-3.5 h-3.5 rounded-full border border-black/10 shrink-0"
-                      style={{ backgroundColor: dotColor }}
-                    />
-                    <span>{profile.name}</span>
-                  </button>
-                );
-              })}
-            </div>
-          </header>
+            {/* Top Right: Settings Button */}
+            <button
+              onClick={() => setIsSettingsOpen(true)}
+              aria-label="Open Theme Settings"
+              className="inline-flex items-center gap-2 px-3 py-2 rounded-xl text-xs md:text-sm font-medium border transition-all hover:scale-105 active:scale-95 shadow-sm"
+              style={{
+                backgroundColor: colors.cardBg,
+                borderColor: colors.border,
+                color: colors.ink,
+              }}
+            >
+              <Settings className="w-4 h-4" style={{ color: colors.accentDark }} />
+              <span className="hidden sm:inline">Theme Settings</span>
+              <span
+                className="w-2.5 h-2.5 rounded-full border border-black/10 shrink-0"
+                style={{ backgroundColor: activeProfile.light.accent }}
+              />
+            </button>
+          </div>
+        </header>
 
-          {/* Active Profile Banner */}
+        {/* Main Content Area */}
+        <main className="w-full max-w-4xl px-6 py-12 md:py-16 space-y-8 flex-1">
+          {/* Subtle current mood indicator */}
+          <div className="flex items-center justify-between">
+            <div
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium border"
+              style={{
+                backgroundColor: colors.accentSoft,
+                borderColor: colors.border,
+                color: colors.accentDark,
+              }}
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Current Profile: <strong>{activeProfile.name}</strong> ({isDarkMode ? "Tinted Dark" : "Soft Pastel"})</span>
+            </div>
+
+            <button
+              onClick={() => setIsSettingsOpen(true)}
+              className="text-xs underline underline-offset-4 font-medium transition-opacity hover:opacity-80"
+              style={{ color: colors.accentDark }}
+            >
+              Change palette
+            </button>
+          </div>
+
+          {/* Calm Study View Card */}
           <div
-            className="p-6 rounded-2xl border transition-colors space-y-2"
+            className="p-8 md:p-10 rounded-3xl border shadow-sm transition-all space-y-6"
             style={{
               backgroundColor: colors.cardBg,
               borderColor: colors.border,
             }}
           >
-            <div className="flex items-center justify-between">
-              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-medium"
-                style={{ backgroundColor: colors.accentSoft, color: colors.accentDark }}
+            <div className="space-y-2">
+              <span
+                className="text-xs uppercase tracking-widest font-semibold"
+                style={{ color: colors.accentDark }}
               >
-                <span>Active Profile</span>
-                <span className="font-semibold">· {activeProfile.name}</span>
-              </div>
-              <span className="text-xs font-mono" style={{ color: colors.inkMuted }}>
-                {isDarkMode ? "Tinted Dark" : "Soft Pastel"}
+                Module 1 · Relational Data Model
               </span>
+              <h1 className="text-3xl md:text-4xl font-light tracking-tight">
+                Entity-Relationship (ER) Modeling & Normalization
+              </h1>
             </div>
-            <p className="font-body text-base md:text-lg" style={{ color: colors.ink }}>
-              {activeProfile.tagline}
-            </p>
-          </div>
-
-          {/* Color Tokens Matrix */}
-          <div className="space-y-3">
-            <h2 className="text-sm font-semibold tracking-wide uppercase" style={{ color: colors.inkMuted }}>
-              Palette Tokens
-            </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-              {[
-                { label: "Page Background", val: colors.pageBg },
-                { label: "Primary Accent", val: colors.accent },
-                { label: "Soft Accent Fill", val: colors.accentSoft },
-                { label: "Deep Accent", val: colors.accentDark },
-                { label: "Card Surface", val: colors.cardBg },
-                { label: "Hairline Border", val: colors.border },
-                { label: "Primary Ink", val: colors.ink },
-                { label: "Muted Ink", val: colors.inkMuted },
-              ].map((token) => (
-                <div
-                  key={token.label}
-                  className="p-3.5 rounded-xl border flex flex-col justify-between h-24 transition-colors"
-                  style={{
-                    backgroundColor: colors.cardBg,
-                    borderColor: colors.border,
-                  }}
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-medium" style={{ color: colors.inkMuted }}>
-                      {token.label}
-                    </span>
-                    <span
-                      className="w-4 h-4 rounded-md border border-black/10 shrink-0"
-                      style={{ backgroundColor: token.val }}
-                    />
-                  </div>
-                  <span className="text-xs font-mono font-semibold" style={{ color: colors.ink }}>
-                    {token.val}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Live Preview: Typography & Components */}
-          <div className="space-y-3 pt-2">
-            <h2 className="text-sm font-semibold tracking-wide uppercase" style={{ color: colors.inkMuted }}>
-              Component & Reading View Test
-            </h2>
 
             <div
-              className="p-6 md:p-8 rounded-2xl border transition-colors space-y-6"
+              className="font-body text-lg leading-relaxed space-y-4"
+              style={{ color: colors.ink }}
+            >
+              <p>
+                An Entity-Relationship model describes interrelated things of interest in a
+                specific domain of knowledge. A basic ER model is composed of entity types and
+                specifies relationships that can exist between entities.
+              </p>
+              <p style={{ color: colors.inkMuted }}>
+                In MAKAUT semester examinations, questions frequently test the transition from
+                un-normalized schemas to Third Normal Form (3NF) and Boyce-Codd Normal Form (BCNF),
+                demanding clear functional dependency proofs and lossless-join decompositions.
+              </p>
+            </div>
+
+            {/* Sample Action Buttons & Badges */}
+            <div className="pt-4 flex flex-wrap items-center gap-3 border-t" style={{ borderColor: colors.border }}>
+              <button
+                className="px-5 py-2.5 rounded-xl text-xs md:text-sm font-medium transition-transform active:scale-95 shadow-sm"
+                style={{
+                  backgroundColor: colors.accent,
+                  color: isDarkMode ? "#181315" : colors.ink,
+                }}
+              >
+                15-Mark Model Answer
+              </button>
+
+              <button
+                className="px-5 py-2.5 rounded-xl text-xs md:text-sm font-medium transition-transform active:scale-95 border"
+                style={{
+                  backgroundColor: colors.accentSoft,
+                  borderColor: colors.border,
+                  color: colors.accentDark,
+                }}
+              >
+                Syllabus Gap Report
+              </button>
+
+              <span
+                className="px-3 py-1.5 rounded-full text-xs font-medium border"
+                style={{
+                  backgroundColor: isDarkMode ? "#1C241D" : "#EAF3E8",
+                  borderColor: isDarkMode ? "#2E4730" : "#C7DEC5",
+                  color: isDarkMode ? "#B8E2B4" : "#2E5929",
+                }}
+              >
+                ✓ Appeared in 6 of last 8 papers
+              </span>
+            </div>
+          </div>
+        </main>
+
+        {/* Settings Slide-Over Drawer / Modal */}
+        {isSettingsOpen && (
+          <div className="fixed inset-0 z-50 flex justify-end">
+            {/* Backdrop */}
+            <div
+              className="fixed inset-0 bg-black/30 backdrop-blur-sm transition-opacity"
+              onClick={() => setIsSettingsOpen(false)}
+            />
+
+            {/* Drawer Panel */}
+            <div
+              className="relative w-full max-w-md h-full shadow-2xl p-6 md:p-8 flex flex-col justify-between overflow-y-auto border-l transition-transform animate-in slide-in-from-right duration-300"
               style={{
-                backgroundColor: colors.cardBg,
+                backgroundColor: colors.pageBg,
                 borderColor: colors.border,
+                color: colors.ink,
               }}
             >
-              <div className="space-y-2">
-                <span
-                  className="text-xs uppercase tracking-wider font-semibold"
-                  style={{ color: colors.accentDark }}
-                >
-                  Heading (Urbanist) · Notes Body (Product Sans)
-                </span>
-                <h3 className="text-2xl md:text-3xl font-light tracking-tight">
-                  Relational Algebra: Selection & Projection
-                </h3>
+              <div className="space-y-6">
+                {/* Drawer Header */}
+                <div className="flex items-center justify-between pb-4 border-b" style={{ borderColor: colors.border }}>
+                  <div className="flex items-center gap-2">
+                    <Settings className="w-5 h-5" style={{ color: colors.accentDark }} />
+                    <h2 className="text-lg font-medium tracking-tight">Theme & Palette</h2>
+                  </div>
+                  <button
+                    onClick={() => setIsSettingsOpen(false)}
+                    aria-label="Close Settings"
+                    className="p-1.5 rounded-lg border transition-all hover:opacity-75"
+                    style={{ backgroundColor: colors.cardBg, borderColor: colors.border }}
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* Light / Dark Mode Switch */}
+                <div className="space-y-2">
+                  <label className="text-xs uppercase tracking-wider font-semibold" style={{ color: colors.inkMuted }}>
+                    Appearance Mode
+                  </label>
+                  <div
+                    className="grid grid-cols-2 p-1 rounded-xl border transition-colors"
+                    style={{ backgroundColor: colors.cardBg, borderColor: colors.border }}
+                  >
+                    <button
+                      onClick={() => setIsDarkMode(false)}
+                      className="flex items-center justify-center gap-2 py-2 text-xs font-medium rounded-lg transition-all"
+                      style={
+                        !isDarkMode
+                          ? { backgroundColor: colors.accent, color: colors.ink }
+                          : { color: colors.inkMuted }
+                      }
+                    >
+                      <Sun className="w-3.5 h-3.5" />
+                      <span>Soft Pastel (Light)</span>
+                    </button>
+                    <button
+                      onClick={() => setIsDarkMode(true)}
+                      className="flex items-center justify-center gap-2 py-2 text-xs font-medium rounded-lg transition-all"
+                      style={
+                        isDarkMode
+                          ? { backgroundColor: colors.accent, color: "#181315" }
+                          : { color: colors.inkMuted }
+                      }
+                    >
+                      <Moon className="w-3.5 h-3.5" />
+                      <span>Tinted Dark</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* 7 Color Profiles Grid */}
+                <div className="space-y-2">
+                  <label className="text-xs uppercase tracking-wider font-semibold" style={{ color: colors.inkMuted }}>
+                    Select Colour Mood (7 Profiles)
+                  </label>
+                  <div className="grid grid-cols-1 gap-2">
+                    {COLOR_PROFILES.map((profile) => {
+                      const isSelected = profile.id === selectedId;
+                      return (
+                        <button
+                          key={profile.id}
+                          onClick={() => setSelectedId(profile.id)}
+                          className="w-full flex items-center justify-between p-3 rounded-xl border text-left transition-all"
+                          style={{
+                            backgroundColor: isSelected
+                              ? colors.cardBg
+                              : isDarkMode
+                              ? "#1C1F24"
+                              : "#FFFFFF80",
+                            borderColor: isSelected ? colors.accent : colors.border,
+                            boxShadow: isSelected
+                              ? `0 2px 10px -2px ${colors.accent}40`
+                              : "none",
+                          }}
+                        >
+                          <div className="flex items-center gap-3">
+                            <span
+                              className="w-4 h-4 rounded-full border border-black/15 shrink-0"
+                              style={{ backgroundColor: profile.light.accent }}
+                            />
+                            <div>
+                              <div className="text-xs font-medium">{profile.name}</div>
+                              <div className="text-[11px] opacity-65 font-body">{profile.tagline}</div>
+                            </div>
+                          </div>
+                          {isSelected && (
+                            <Check className="w-4 h-4 shrink-0" style={{ color: colors.accentDark }} />
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Token Values Inspector */}
+                <div className="space-y-2 pt-2">
+                  <label className="text-xs uppercase tracking-wider font-semibold" style={{ color: colors.inkMuted }}>
+                    Active Hex Values
+                  </label>
+                  <div
+                    className="p-3.5 rounded-xl border text-xs font-mono space-y-1.5"
+                    style={{ backgroundColor: colors.cardBg, borderColor: colors.border }}
+                  >
+                    <div className="flex justify-between">
+                      <span style={{ color: colors.inkMuted }}>pageBg:</span>
+                      <span>{colors.pageBg}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span style={{ color: colors.inkMuted }}>accent:</span>
+                      <span>{colors.accent}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span style={{ color: colors.inkMuted }}>cardBg:</span>
+                      <span>{colors.cardBg}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span style={{ color: colors.inkMuted }}>border:</span>
+                      <span>{colors.border}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span style={{ color: colors.inkMuted }}>ink:</span>
+                      <span>{colors.ink}</span>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              <div
-                className="font-body text-base md:text-lg leading-relaxed max-w-2xl space-y-3"
-                style={{ color: colors.ink }}
-              >
-                <p>
-                  In relational algebra, the <strong>Selection</strong> operation (denoted by $\sigma$)
-                  retrieves rows from a table that satisfy a given predicate condition. It acts as
-                  a horizontal filter across tuples.
-                </p>
-                <p style={{ color: colors.inkMuted }}>
-                  Meanwhile, <strong>Projection</strong> (denoted by $\pi$) filters vertically,
-                  returning only designated column attributes while eliminating duplicate records.
-                </p>
-              </div>
-
-              {/* Interactive Sample Buttons */}
-              <div className="flex flex-wrap items-center gap-3 pt-2">
+              {/* Close Drawer Action */}
+              <div className="pt-6 border-t mt-6" style={{ borderColor: colors.border }}>
                 <button
-                  className="px-5 py-2.5 rounded-xl text-xs md:text-sm font-medium transition-transform active:scale-95 shadow-sm"
+                  onClick={() => setIsSettingsOpen(false)}
+                  className="w-full py-2.5 rounded-xl text-xs font-medium transition-transform active:scale-95 shadow-sm"
                   style={{
                     backgroundColor: colors.accent,
                     color: isDarkMode ? "#181315" : colors.ink,
                   }}
                 >
-                  Primary Action Button
+                  Apply & Close
                 </button>
-
-                <button
-                  className="px-5 py-2.5 rounded-xl text-xs md:text-sm font-medium transition-transform active:scale-95 border"
-                  style={{
-                    backgroundColor: colors.accentSoft,
-                    borderColor: colors.border,
-                    color: colors.accentDark,
-                  }}
-                >
-                  Soft Accent Button
-                </button>
-
-                <span
-                  className="px-3 py-1.5 rounded-full text-xs font-medium border"
-                  style={{
-                    backgroundColor: isDarkMode ? "#1C241D" : "#EAF3E8",
-                    borderColor: isDarkMode ? "#2E4730" : "#C7DEC5",
-                    color: isDarkMode ? "#B8E2B4" : "#2E5929",
-                  }}
-                >
-                  ✓ Gentle Correct State
-                </span>
-
-                <span
-                  className="px-3 py-1.5 rounded-full text-xs font-medium border"
-                  style={{
-                    backgroundColor: isDarkMode ? "#281A1D" : "#FBECEE",
-                    borderColor: isDarkMode ? "#4A2B33" : "#F3D2D8",
-                    color: isDarkMode ? "#F0B5BF" : "#8C3A48",
-                  }}
-                >
-                  • Gentle Review State
-                </span>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </>
   );
