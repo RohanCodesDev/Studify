@@ -392,8 +392,8 @@ export default function Home() {
                             backgroundColor: isSelected
                               ? colors.cardBg
                               : isDarkMode
-                              ? "#1C1F24"
-                              : "#FFFFFF80",
+                                ? "#1C1F24"
+                                : "#FFFFFF80",
                             borderColor: isSelected ? colors.accent : colors.border,
                             boxShadow: isSelected
                               ? `0 2px 10px -2px ${colors.accent}40`
