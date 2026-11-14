@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { ArrowRight, HelpCircle } from "lucide-react";
 
 /**
  * -----------------------------------------------------------------------
@@ -12,6 +13,7 @@ export const HERO_CONFIG = {
   heroMaxWidth: "max-w-2xl",                     // Max width of hero container (Tailwind safe class)
   gapStudifyAndHeadlinePx: 15,                   // ↕ Gap between "Studify" and "Headline" in px  ← tweak this
   gapHeadlineAndSublinePx: 2,                   // ↕ Gap between "Headline" and "Subline" in px  ← tweak this
+  gapSublineAndButtonsPx: 32,                    // ↕ Gap between Subline and CTA buttons in px  ← tweak this
 
   // FONT SIZES — safe static Tailwind classes (always present in JSX, detected by scanner)
   welcomeTextSize: "text-xl",                    // Size of "Welcome to"
@@ -182,6 +184,54 @@ export default function WelcomeHero({
           >
             Upload your syllabus and study material. Learn chapter by chapter with notes, quizzes and MAKAUT-style practice papers.
           </p>
+
+          {/* CTA Buttons */}
+          <div
+            className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-xs sm:max-w-sm mx-auto select-none"
+            style={{ marginTop: `${HERO_CONFIG.gapSublineAndButtonsPx}px` }}
+          >
+            {/* Primary: Start Prepping */}
+            <button
+              className="group w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 rounded-2xl font-semibold text-sm tracking-wide transition-all duration-200 active:scale-95 shadow-md hover:shadow-lg"
+              style={{
+                backgroundColor: accentDark,
+                color: "#ffffff",
+                minHeight: "48px",
+                boxShadow: `0 4px 20px ${accentColor}55`,
+              }}
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLButtonElement).style.filter = "brightness(1.08)";
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLButtonElement).style.filter = "brightness(1)";
+              }}
+            >
+              Start Prepping
+              <ArrowRight
+                className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5"
+              />
+            </button>
+
+            {/* Secondary: How it works? */}
+            <button
+              className="group w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 rounded-2xl font-medium text-sm tracking-wide transition-all duration-200 active:scale-95 border"
+              style={{
+                backgroundColor: accentSoft,
+                borderColor: accentColor,
+                color: accentDark,
+                minHeight: "48px",
+              }}
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLButtonElement).style.backgroundColor = accentColor + "33";
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLButtonElement).style.backgroundColor = accentSoft;
+              }}
+            >
+              <HelpCircle className="w-4 h-4 opacity-70" />
+              How it works?
+            </button>
+          </div>
         </div>
       </div>
     </div>
