@@ -10,7 +10,7 @@ import CtaButtons from "./ctaButtons";
 export const HERO_CONFIG = {
   // SPACING & GAPS — values in pixels, applied via inline styles (immune to Tailwind purge)
   heroOffsetTopPx: 32,                           // ↕ Pull entire hero & buttons lower in px ← tweak this
-  heroPaddingVertical: "py-4 sm:py-8",           // Overall hero vertical padding (Tailwind safe class)
+  heroPaddingVertical: "py-2 sm:py-4",           // Overall hero vertical padding (Tailwind safe class)
   heroMaxWidth: "max-w-2xl",                     // Max width of hero container (Tailwind safe class)
   gapStudifyAndHeadlinePx: 15,                   // ↕ Gap between "Studify" and "Headline" in px  ← tweak this
   gapHeadlineAndSublinePx: 2,                   // ↕ Gap between "Headline" and "Subline" in px  ← tweak this

@@ -8,7 +8,7 @@ import React from "react";
  */
 export const MURAL_CONFIG = {
   // Height of the mountain graphic across mobile, tablet, and desktop
-  muralHeight: "max-h-[38vh] sm:max-h-[44vh] md:max-h-[48vh]",
+  muralHeight: "max-h-[25vh] sm:max-h-[30vh] md:max-h-[34vh]",
 
   // Maximum width container constraint on large screens
   muralMaxWidth: "max-w-2xl sm:max-w-3xl",

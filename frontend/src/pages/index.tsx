@@ -234,7 +234,7 @@ export default function Home() {
       </Head>
 
       <div
-        className="min-h-screen relative flex flex-col justify-between overflow-x-hidden transition-colors duration-300 font-sans"
+        className="h-screen h-[100dvh] max-h-screen relative flex flex-col justify-between overflow-hidden transition-colors duration-300 font-sans"
         style={{
           backgroundColor: colors.pageBg,
           color: colors.ink,
@@ -264,7 +264,7 @@ export default function Home() {
         </button>
 
         {/* Main Hero Container */}
-        <main className="flex-1 w-full flex flex-col justify-center items-center relative z-10 my-auto py-6 sm:py-10">
+        <main className="flex-1 w-full flex flex-col justify-center items-center relative z-10 my-auto py-2 sm:py-4">
           <WelcomeHero
             accentColor={colors.accent}
             accentDark={colors.accentDark}
@@ -275,7 +275,7 @@ export default function Home() {
         </main>
 
         {/* Mountain Mural Illustration at Full Width of Mobile Screen from Bottom */}
-        <footer className="w-full relative z-0 mt-auto">
+        <footer className="w-full relative z-0 mt-auto shrink-0">
           <MuralIllustration />
         </footer>
 
