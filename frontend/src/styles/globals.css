@@ -13,7 +13,10 @@
 html,
 body {
   height: 100%;
-  overflow-x: hidden;
+  max-height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  width: 100%;
 }
 
 body {

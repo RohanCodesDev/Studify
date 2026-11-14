@@ -234,7 +234,7 @@ export default function Home() {
       </Head>
 
       <div
-        className="h-screen h-[100dvh] max-h-screen relative flex flex-col justify-between overflow-hidden transition-colors duration-300 font-sans"
+        className="w-full h-screen h-[100dvh] max-h-[100dvh] relative flex flex-col justify-between overflow-hidden transition-colors duration-300 font-sans"
         style={{
           backgroundColor: colors.pageBg,
           color: colors.ink,
@@ -275,7 +275,7 @@ export default function Home() {
         </main>
 
         {/* Mountain Mural Illustration at Full Width of Mobile Screen from Bottom */}
-        <footer className="w-full relative z-0 mt-auto shrink-0">
+        <footer className="w-full relative z-10 mt-auto shrink-0 pointer-events-none">
           <MuralIllustration />
         </footer>
 
