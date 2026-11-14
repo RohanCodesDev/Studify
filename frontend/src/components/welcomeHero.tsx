@@ -100,15 +100,15 @@ export default function WelcomeHero({
         </div>
 
         {/* Line 2: "Studify" with Urbanist font, large size and glowing accent effect */}
-        <div className="min-h-[4rem] sm:min-h-[5.5rem] flex items-center justify-center">
+        <div className="min-h-[5rem] sm:min-h-[6.5rem] md:min-h-[7.5rem] flex items-center justify-center">
           {isWelcomeDone && (
-            <h1 className="font-sans text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight relative transition-all duration-300">
+            <h1 className="font-sans text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tight relative transition-all duration-300">
               <span
                 className="inline-block transition-colors"
                 style={{
                   color: inkColor,
                   textShadow: isStudifyDone
-                    ? `0 4px 24px ${accentColor}4D`
+                    ? `0 6px 32px ${accentColor}4D`
                     : "none",
                 }}
               >
@@ -118,24 +118,12 @@ export default function WelcomeHero({
               {/* Blinking cursor while typing line 2 */}
               {!isStudifyDone && (
                 <span
-                  className="inline-block w-[3px] sm:w-[4px] h-10 sm:h-14 ml-1.5 align-middle animate-pulse"
+                  className="inline-block w-[4px] sm:w-[5px] h-12 sm:h-16 md:h-20 ml-1.5 align-middle animate-pulse"
                   style={{ backgroundColor: accentDark }}
                 />
               )}
             </h1>
           )}
-        </div>
-
-        {/* Delicate Expanding Underline Accent once complete */}
-        <div className="flex justify-center pt-1">
-          <div
-            className="h-1 sm:h-1.5 rounded-full transition-all duration-700 ease-out"
-            style={{
-              backgroundColor: accentColor,
-              width: isStudifyDone ? "4rem" : "0rem",
-              opacity: isStudifyDone ? 1 : 0,
-            }}
-          />
         </div>
 
         {/* Headline & Subline */}
