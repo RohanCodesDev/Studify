@@ -11,7 +11,7 @@ export const HERO_CONFIG = {
   heroPaddingVertical: "py-4 sm:py-8",                         // Overall hero vertical padding
   heroMaxWidth: "max-w-2xl",                                     // Max width of hero container
   gapBetweenWelcomeAndStudify: "-space-y-1 sm:space-y-0",       // Kept tight so bigger font doesn't increase gap
-  gapBetweenStudifyAndHeadline: "mt-6 sm:mt-8 md:mt-10",        // Gap between "Studify" and "Headline"
+  gapBetweenStudifyAndHeadline: "mt-10 sm:mt-14 md:mt-16",      // Generous gap between "Studify" and "Headline"
   gapBetweenHeadlineAndSubline: "space-y-2 sm:space-y-2.5",     // Gap between "Headline" and "Subline"
   sublineMaxWidth: "max-w-md sm:max-w-lg",                       // Max width of the subline paragraph
 
@@ -126,7 +126,7 @@ export default function WelcomeHero({
         </div>
 
         {/* Line 2: "Studify" with Urbanist font */}
-        <div className="min-h-[4.5rem] sm:min-h-[5.5rem] md:min-h-[7rem] lg:min-h-[8.5rem] flex items-center justify-center leading-none">
+        <div className="min-h-[5rem] sm:min-h-[6.5rem] md:min-h-[8.5rem] lg:min-h-[10rem] flex items-center justify-center leading-none">
           {isWelcomeDone && (
             <h1 className={`font-sans ${HERO_CONFIG.studifyTextSize} font-black tracking-tight relative transition-all duration-300`}>
               <span
