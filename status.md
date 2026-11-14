@@ -33,16 +33,17 @@
 - [ ] Pick 2–3 chapters from that subject for early testing
 - [ ] Collect real MAKAUT syllabus for that subject
 - [ ] Collect recent question papers; confirm marks distribution & regulation
-- [ ] Define output styles: 1-mark, 5-mark, 15-mark, last-night revision
+- [x] Define output styles: 1-mark, 5-mark, 15-mark, last-night revision
 - [x] Set up project, version control, environments, secrets management
+- [x] Create project agent guidelines (AGENTS.md) and 4 specialized Antigravity workspace skills (.agents/skills/)
 - [ ] Interview 8–10 classmates about study habits & pain points
 - [ ] Deploy working empty project to staging environment
 
 **Style work (Phase 0):**
 - [ ] Set up font loading (Urbanist, EB Garamond, Noto fallbacks) — self-hosted
-- [ ] Define colour roles (page bg, card surface, text, accent, border, etc.)
-- [ ] Implement first two themes; choose default theme
-- [ ] Define spacing scale & motion rules (easing, timing tokens)
+- [x] Define colour roles (page bg, card surface, text, accent, border, etc.)
+- [x] Implement first two themes; choose default theme
+- [x] Define spacing scale & motion rules (easing, timing tokens)
 
 ---
 
