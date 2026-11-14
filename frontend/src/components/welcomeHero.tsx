@@ -8,22 +8,22 @@ import React, { useEffect, useState } from "react";
  */
 export const HERO_CONFIG = {
   // SPACING & GAPS
-  heroPaddingVertical: "py-6 sm:py-10",                         // Overall hero vertical padding
-  heroMaxWidth: "max-w-xl",                                      // Max width of hero container
-  gapBetweenWelcomeAndStudify: "space-y-1 sm:space-y-2",        // Gap between "Welcome to" and "Studify"
-  gapBetweenStudifyAndHeadline: "mt-4 sm:mt-6",                 // Gap between "Studify" and "Headline"
-  gapBetweenHeadlineAndSubline: "space-y-2 sm:space-y-3",       // Gap between "Headline" and "Subline"
+  heroPaddingVertical: "py-4 sm:py-8",                         // Overall hero vertical padding
+  heroMaxWidth: "max-w-2xl",                                     // Max width of hero container
+  gapBetweenWelcomeAndStudify: "-space-y-1 sm:space-y-0",       // Kept tight so bigger font doesn't increase gap
+  gapBetweenStudifyAndHeadline: "mt-6 sm:mt-8 md:mt-10",        // Gap between "Studify" and "Headline"
+  gapBetweenHeadlineAndSubline: "space-y-2 sm:space-y-2.5",     // Gap between "Headline" and "Subline"
   sublineMaxWidth: "max-w-md sm:max-w-lg",                       // Max width of the subline paragraph
 
   // FONT SIZES
   welcomeTextSize: "text-xl sm:text-2xl md:text-3xl",           // Size of "Welcome to"
-  studifyTextSize: "text-6xl sm:text-7xl md:text-8xl lg:text-9xl", // Size of "Studify"
+  studifyTextSize: "text-7xl sm:text-8xl md:text-9xl lg:text-[9.5rem] xl:text-[10.5rem] leading-none tracking-tighter", // Increased font size with leading-none
   headlineTextSize: "text-lg sm:text-xl md:text-2xl",           // Size of "Your notes, made exam-ready."
   sublineTextSize: "text-xs sm:text-sm md:text-base",           // Size of Subline description
 
   // CURSOR SIZES
   welcomeCursorSize: "w-[2px] h-5 sm:h-6",                      // Blinking cursor size for "Welcome to"
-  studifyCursorSize: "w-[4px] sm:w-[5px] h-12 sm:h-16 md:h-20", // Blinking cursor size for "Studify"
+  studifyCursorSize: "w-[4px] sm:w-[6px] h-14 sm:h-20 md:h-24", // Blinking cursor size for "Studify"
 };
 
 interface WelcomeHeroProps {
@@ -126,7 +126,7 @@ export default function WelcomeHero({
         </div>
 
         {/* Line 2: "Studify" with Urbanist font */}
-        <div className="min-h-[5rem] sm:min-h-[6.5rem] md:min-h-[7.5rem] flex items-center justify-center">
+        <div className="min-h-[4.5rem] sm:min-h-[5.5rem] md:min-h-[7rem] lg:min-h-[8.5rem] flex items-center justify-center leading-none">
           {isWelcomeDone && (
             <h1 className={`font-sans ${HERO_CONFIG.studifyTextSize} font-black tracking-tight relative transition-all duration-300`}>
               <span
@@ -154,11 +154,10 @@ export default function WelcomeHero({
 
         {/* Headline & Subline Section */}
         <div
-          className={`${HERO_CONFIG.gapBetweenStudifyAndHeadline} ${HERO_CONFIG.gapBetweenHeadlineAndSubline} transition-all duration-700 ${
-            isStudifyDone
-              ? "opacity-100 translate-y-0"
-              : "opacity-0 translate-y-2 pointer-events-none"
-          }`}
+          className={`${HERO_CONFIG.gapBetweenStudifyAndHeadline} ${HERO_CONFIG.gapBetweenHeadlineAndSubline} transition-all duration-700 ${isStudifyDone
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 translate-y-2 pointer-events-none"
+            }`}
         >
           {/* Headline */}
           <h2
