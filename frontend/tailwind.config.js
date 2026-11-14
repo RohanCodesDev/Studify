@@ -23,7 +23,9 @@ module.exports = {
       },
       fontFamily: {
         sans: ["Urbanist", "sans-serif"],
-        serif: ["EB Garamond", "serif"],
+        heading: ["Urbanist", "sans-serif"],
+        body: ["'Product Sans'", "-apple-system", "BlinkMacSystemFont", "'Segoe UI'", "Roboto", "sans-serif"],
+        serif: ["'Product Sans'", "-apple-system", "BlinkMacSystemFont", "'Segoe UI'", "Roboto", "sans-serif"],
       },
     },
   },

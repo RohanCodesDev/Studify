@@ -40,7 +40,7 @@
 - [ ] Deploy working empty project to staging environment
 
 **Style work (Phase 0):**
-- [ ] Set up font loading (Urbanist, EB Garamond, Noto fallbacks) — self-hosted
+- [ ] Set up font loading (Urbanist, Product Sans, Noto fallbacks) — self-hosted
 - [x] Define colour roles (page bg, card surface, text, accent, border, etc.)
 - [x] Implement first two themes; choose default theme
 - [x] Define spacing scale & motion rules (easing, timing tokens)
@@ -257,7 +257,7 @@
 | Design area | Status |
 |---|---|
 | Design principles defined | ✅ Done (documented in visualStyle.md) |
-| Typography chosen | ✅ Done (Urbanist + EB Garamond + Noto fallbacks) |
+| Typography chosen | ✅ Done (Urbanist + Product Sans + Noto fallbacks) |
 | Colour themes defined (7 themes) | ✅ Done (Blush Rose, Sage Mist, Lavender Haze, Sky Whisper, Butter Cream, Peach Glow, November Rain) |
 | Motion & animation rules | ✅ Done (documented) |
 | Key screen feels defined | ✅ Done (documented) |

@@ -1,6 +1,6 @@
 MAKAUT Study Platform: Style Guide
 Nov 14, 2026 · @Rohan
-The platform looks calm, delicate and premium: soft pastel themes, Urbanist headings over EB Garamond body text, generous space and motion that is felt more than seen.
+The platform looks calm, delicate and premium: soft pastel themes, Urbanist headings over Product Sans body text, generous space and motion that is felt more than seen.
 1. Design principles
 • Quiet over loud. Low-contrast surfaces, hairline borders, soft shadows and plenty of white space. Colour is an accent, not a flood.
 • Reading comes first. Notes, quizzes and exam papers get the best typography and the least clutter.
@@ -15,7 +15,7 @@ Headings
 Urbanist
 Clean, modern sans-serif that contrasts with the serif body
 Body text
-EB Garamond
+Product Sans
 Notes, explanations, questions and all long reading
 Small interface text
 Urbanist (proposed)

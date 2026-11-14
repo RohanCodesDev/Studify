@@ -43,7 +43,7 @@ export default function Home() {
             Calm, focused study for <span className="font-semibold">MAKAUT</span>
           </h1>
 
-          <p className="font-serif text-lg md:text-xl text-[#3B3540]/80 leading-relaxed max-w-2xl">
+          <p className="font-body text-lg md:text-xl text-[#3B3540]/80 leading-relaxed max-w-2xl">
             Turn your class notes, PDFs, and scanned pages into marks-aligned study sheets,
             topic-wise gap reports, and authentic examination practice.
           </p>
@@ -74,7 +74,7 @@ export default function Home() {
             <div className="p-6 rounded-2xl bg-white/60 border border-[#E7A9B5]/20 shadow-sm hover:shadow-md transition-shadow">
               <div className="text-xs tracking-wider uppercase font-semibold text-[#E7A9B5]">Pillar 1</div>
               <h3 className="text-lg font-medium mt-1 mb-2">Universal Ingestion</h3>
-              <p className="font-serif text-sm text-[#3B3540]/75">
+              <p className="font-body text-sm text-[#3B3540]/75">
                 Digital PDFs, clean scans, and handwritten camera captures cleaned and organized by topic.
               </p>
             </div>
@@ -82,7 +82,7 @@ export default function Home() {
             <div className="p-6 rounded-2xl bg-white/60 border border-[#E7A9B5]/20 shadow-sm hover:shadow-md transition-shadow">
               <div className="text-xs tracking-wider uppercase font-semibold text-[#E7A9B5]">Pillar 2</div>
               <h3 className="text-lg font-medium mt-1 mb-2">Session Study</h3>
-              <p className="font-serif text-sm text-[#3B3540]/75">
+              <p className="font-body text-sm text-[#3B3540]/75">
                 Map your notes to official MAKAUT syllabus topics with gap reports and 1, 5, and 15-mark answer skeletons.
               </p>
             </div>
@@ -90,7 +90,7 @@ export default function Home() {
             <div className="p-6 rounded-2xl bg-white/60 border border-[#E7A9B5]/20 shadow-sm hover:shadow-md transition-shadow">
               <div className="text-xs tracking-wider uppercase font-semibold text-[#E7A9B5]">Pillar 3</div>
               <h3 className="text-lg font-medium mt-1 mb-2">Understanding Checks</h3>
-              <p className="font-serif text-sm text-[#3B3540]/75">
+              <p className="font-body text-sm text-[#3B3540]/75">
                 Targeted MCQs, short answers, self-evaluation checklists, and adaptive spaced-repetition loops.
               </p>
             </div>
@@ -98,7 +98,7 @@ export default function Home() {
             <div className="p-6 rounded-2xl bg-white/60 border border-[#E7A9B5]/20 shadow-sm hover:shadow-md transition-shadow">
               <div className="text-xs tracking-wider uppercase font-semibold text-[#E7A9B5]">Pillar 4</div>
               <h3 className="text-lg font-medium mt-1 mb-2">Chapter Exam Papers</h3>
-              <p className="font-serif text-sm text-[#3B3540]/75">
+              <p className="font-body text-sm text-[#3B3540]/75">
                 Authentic question blueprint matching real MAKAUT regulation patterns with countdown timer and printable layouts.
               </p>
             </div>

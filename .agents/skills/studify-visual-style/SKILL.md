@@ -26,7 +26,7 @@ This skill governs all UI/UX implementations in the Studify platform. The goal i
 | Role | Font Family | Usage |
 | :--- | :--- | :--- |
 | **Headings** | `Urbanist` | Clean, modern sans-serif for headers (`font-light` to `font-semibold`) |
-| **Body & Notes** | `EB Garamond` | Elegant serif for study notes, explanations, questions, long reading |
+| **Body & Notes** | `Product Sans` | Modern, clean geometric sans-serif for study notes, explanations, questions, long reading |
 | **Small UI & Data** | `Urbanist` | Buttons, labels, badges, numbers, table cells, timers, inputs |
 | **Bengali Fallback**| `Noto Serif Bengali` / `Noto Sans Bengali` | Notes & Headings in Bengali |
 | **Hindi Fallback**  | `Noto Serif Devanagari` / `Noto Sans Devanagari` | Notes & Headings in Hindi |

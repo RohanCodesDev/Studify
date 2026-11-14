@@ -47,7 +47,7 @@ Always evaluate every capability against the **Cost & Quality Ladder**:
 
 Every component, page, and UI element built by the agent must reflect [visualStyle.md](file:///c:/Users/LENOVO/Desktop/Studify/visualStyle.md):
 - **Calm, delicate, premium:** Soft pastel themes, generous whitespace, hairline borders, diffuse shadows.
-- **Typography:** `Urbanist` for headings & UI labels; `EB Garamond` for notes, questions, and long reading.
+- **Typography:** `Urbanist` for headings & UI labels; `Product Sans` for notes, questions, and long reading.
 - **Named Themes:** Blush Rose (`#FCF5F4` / `#E7A9B5`), Sage Mist, Lavender Haze, Butter Cream, Peach Glow, November Rain.
 - **Ink Color:** Soft dark ink (`#3B3540`), never pure black (`#000000`).
 - **Feedback:** Gentle green and muted rose; never harsh screaming reds or aggressive screen-shaking animations.
