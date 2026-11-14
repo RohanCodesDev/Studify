@@ -10,8 +10,8 @@ export const HERO_CONFIG = {
   // SPACING & GAPS — values in pixels, applied via inline styles (immune to Tailwind purge)
   heroPaddingVertical: "py-4 sm:py-8",           // Overall hero vertical padding (Tailwind safe class)
   heroMaxWidth: "max-w-2xl",                     // Max width of hero container (Tailwind safe class)
-  gapStudifyAndHeadlinePx: 48,                   // ↕ Gap between "Studify" and "Headline" in px  ← tweak this
-  gapHeadlineAndSublinePx: 20,                   // ↕ Gap between "Headline" and "Subline" in px  ← tweak this
+  gapStudifyAndHeadlinePx: 15,                   // ↕ Gap between "Studify" and "Headline" in px  ← tweak this
+  gapHeadlineAndSublinePx: 2,                   // ↕ Gap between "Headline" and "Subline" in px  ← tweak this
 
   // FONT SIZES — safe static Tailwind classes (always present in JSX, detected by scanner)
   welcomeTextSize: "text-xl",                    // Size of "Welcome to"
@@ -20,7 +20,7 @@ export const HERO_CONFIG = {
   sublineTextSize: "text-sm",                    // Size of Subline description
 
   // FONT SIZES in rem — applied via inline styles for precise responsive control
-  studifyFontSizeRem: 6,                         // "Studify" font size in rem  ← tweak this
+  studifyFontSizeRem: 4,                         // "Studify" font size in rem  ← tweak this
 
   // MAX WIDTH
   sublineMaxWidth: "max-w-md",                   // Max width of the subline paragraph
