@@ -12,7 +12,7 @@ export const HERO_CONFIG = {
   heroMaxWidth: "max-w-2xl",                                     // Max width of hero container
   gapBetweenWelcomeAndStudify: "-space-y-1 sm:space-y-0",       // Kept tight so bigger font doesn't increase gap
   gapBetweenStudifyAndHeadline: "mt-10 sm:mt-20 md:mt-24",      // Generous gap between "Studify" and "Headline"
-  gapBetweenHeadlineAndSubline: "space-y-4 sm:space-y-5 md:space-y-6", // Expanded gap between "Headline" and "Subline"
+  gapBetweenHeadlineAndSubline: "mt-4 sm:mt-5 md:mt-6",        // Gap between "Headline" and "Subline" (applied to <p> directly)
   sublineMaxWidth: "max-w-md sm:max-w-lg",                       // Max width of the subline paragraph
 
   // FONT SIZES
@@ -154,7 +154,7 @@ export default function WelcomeHero({
 
         {/* Headline & Subline Section */}
         <div
-          className={`${HERO_CONFIG.gapBetweenStudifyAndHeadline} ${HERO_CONFIG.gapBetweenHeadlineAndSubline} transition-all duration-700 ${isStudifyDone
+          className={`${HERO_CONFIG.gapBetweenStudifyAndHeadline} transition-all duration-700 ${isStudifyDone
             ? "opacity-100 translate-y-0"
             : "opacity-0 translate-y-2 pointer-events-none"
             }`}
@@ -169,7 +169,7 @@ export default function WelcomeHero({
 
           {/* Subline */}
           <p
-            className={`font-body ${HERO_CONFIG.sublineTextSize} leading-relaxed ${HERO_CONFIG.sublineMaxWidth} mx-auto`}
+            className={`font-body ${HERO_CONFIG.sublineTextSize} leading-relaxed ${HERO_CONFIG.sublineMaxWidth} mx-auto ${HERO_CONFIG.gapBetweenHeadlineAndSubline}`}
             style={{ color: inkMuted }}
           >
             Upload your syllabus and study material. Learn chapter by chapter with notes, quizzes and MAKAUT-style practice papers.
