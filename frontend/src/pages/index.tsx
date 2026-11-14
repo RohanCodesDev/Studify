@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useState } from "react";
-import { Settings, X, Sun, Moon, Check, Sparkles } from "lucide-react";
+import { Settings, X, Sun, Moon, Check, Sparkles, BookOpen, Layers, Award, SlidersHorizontal } from "lucide-react";
 
 interface ColorProfile {
   id: string;
@@ -210,6 +210,7 @@ export default function Home() {
   const [selectedId, setSelectedId] = useState<string>("blush-rose");
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState<"study" | "quiz" | "exam">("study");
 
   const activeProfile =
     COLOR_PROFILES.find((p) => p.id === selectedId) || COLOR_PROFILES[0];
@@ -218,32 +219,35 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Studify · MAKAUT Study Platform</title>
+        <title>Studify · Mobile-First MAKAUT Study Platform</title>
         <meta
           name="description"
           content="Calm, focused, marks-aligned study platform for MAKAUT students."
         />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <div
-        className="min-h-screen transition-colors duration-300 font-sans flex flex-col items-center"
+        className="min-h-screen transition-colors duration-300 font-sans flex flex-col items-center pb-24 md:pb-12"
         style={{
           backgroundColor: colors.pageBg,
           color: colors.ink,
         }}
       >
-        {/* Top Navigation Bar */}
+        {/* Mobile-First Header */}
         <header
           className="w-full border-b backdrop-blur-md sticky top-0 z-30 transition-colors"
           style={{
-            backgroundColor: isDarkMode ? `${colors.pageBg}E6` : `${colors.cardBg}B3`,
+            backgroundColor: isDarkMode ? `${colors.pageBg}E6` : `${colors.cardBg}CC`,
             borderColor: colors.border,
           }}
         >
-          <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-            <div className="flex items-center gap-3">
+          <div className="max-w-md sm:max-w-2xl md:max-w-3xl mx-auto px-4 py-3 sm:px-6 sm:py-3.5 flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
               <span
                 className="w-8 h-8 rounded-xl flex items-center justify-center font-bold text-sm shadow-sm"
                 style={{
@@ -254,16 +258,16 @@ export default function Home() {
                 S
               </span>
               <div>
-                <span className="font-semibold text-lg tracking-tight">Studify</span>
-                <span className="text-xs ml-2 opacity-60 font-mono">MAKAUT</span>
+                <span className="font-semibold text-base sm:text-lg tracking-tight">Studify</span>
+                <span className="text-[11px] ml-1.5 opacity-60 font-mono">MAKAUT</span>
               </div>
             </div>
 
-            {/* Top Right: Settings Button */}
+            {/* Top-Right Touch-Friendly Settings Icon (min 44px tap target) */}
             <button
               onClick={() => setIsSettingsOpen(true)}
               aria-label="Open Theme Settings"
-              className="inline-flex items-center gap-2 px-3 py-2 rounded-xl text-xs md:text-sm font-medium border transition-all hover:scale-105 active:scale-95 shadow-sm"
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center gap-2 px-3 py-2 rounded-2xl border transition-all active:scale-95 shadow-sm"
               style={{
                 backgroundColor: colors.cardBg,
                 borderColor: colors.border,
@@ -271,7 +275,7 @@ export default function Home() {
               }}
             >
               <Settings className="w-4 h-4" style={{ color: colors.accentDark }} />
-              <span className="hidden sm:inline">Theme Settings</span>
+              <span className="text-xs font-medium hidden sm:inline">Theme</span>
               <span
                 className="w-2.5 h-2.5 rounded-full border border-black/10 shrink-0"
                 style={{ backgroundColor: activeProfile.light.accent }}
@@ -280,12 +284,13 @@ export default function Home() {
           </div>
         </header>
 
-        {/* Main Content Area */}
-        <main className="w-full max-w-4xl px-6 py-12 md:py-16 space-y-8 flex-1">
-          {/* Subtle current mood indicator */}
+        {/* Main Content Area - Optimized for phone viewports */}
+        <main className="w-full max-w-md sm:max-w-2xl md:max-w-3xl px-4 py-6 sm:px-6 sm:py-8 space-y-5 flex-1">
+          {/* Subtle Mobile Mood Pill */}
           <div className="flex items-center justify-between">
-            <div
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium border"
+            <button
+              onClick={() => setIsSettingsOpen(true)}
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium border active:scale-95 transition-transform"
               style={{
                 backgroundColor: colors.accentSoft,
                 borderColor: colors.border,
@@ -293,58 +298,55 @@ export default function Home() {
               }}
             >
               <Sparkles className="w-3.5 h-3.5" />
-              <span>Current Profile: <strong>{activeProfile.name}</strong> ({isDarkMode ? "Tinted Dark" : "Soft Pastel"})</span>
-            </div>
-
-            <button
-              onClick={() => setIsSettingsOpen(true)}
-              className="text-xs underline underline-offset-4 font-medium transition-opacity hover:opacity-80"
-              style={{ color: colors.accentDark }}
-            >
-              Change palette
+              <span>Theme: <strong>{activeProfile.name}</strong></span>
+              <span className="opacity-60">· Tap to change</span>
             </button>
+
+            <span className="text-[11px] font-mono opacity-60">
+              {isDarkMode ? "Dark" : "Light"}
+            </span>
           </div>
 
-          {/* Calm Study View Card */}
-          <div
-            className="p-8 md:p-10 rounded-3xl border shadow-sm transition-all space-y-6"
+          {/* Mobile Reading / Study View Card */}
+          <article
+            className="p-5 sm:p-8 rounded-3xl border shadow-sm transition-all space-y-4 sm:space-y-6"
             style={{
               backgroundColor: colors.cardBg,
               borderColor: colors.border,
             }}
           >
-            <div className="space-y-2">
+            <div className="space-y-1 sm:space-y-2">
               <span
-                className="text-xs uppercase tracking-widest font-semibold"
+                className="text-[11px] uppercase tracking-wider font-semibold"
                 style={{ color: colors.accentDark }}
               >
                 Module 1 · Relational Data Model
               </span>
-              <h1 className="text-3xl md:text-4xl font-light tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-light tracking-tight leading-snug">
                 Entity-Relationship (ER) Modeling & Normalization
               </h1>
             </div>
 
             <div
-              className="font-body text-lg leading-relaxed space-y-4"
+              className="font-body text-base sm:text-lg leading-relaxed space-y-3.5"
               style={{ color: colors.ink }}
             >
               <p>
                 An Entity-Relationship model describes interrelated things of interest in a
-                specific domain of knowledge. A basic ER model is composed of entity types and
-                specifies relationships that can exist between entities.
+                specific domain. A basic ER model is composed of entity types and
+                specifies relationships that exist between entities.
               </p>
-              <p style={{ color: colors.inkMuted }}>
-                In MAKAUT semester examinations, questions frequently test the transition from
-                un-normalized schemas to Third Normal Form (3NF) and Boyce-Codd Normal Form (BCNF),
-                demanding clear functional dependency proofs and lossless-join decompositions.
+              <p style={{ color: colors.inkMuted }} className="text-sm sm:text-base">
+                In MAKAUT semester examinations, questions frequently test transitions to
+                Third Normal Form (3NF) and BCNF, demanding functional dependency proofs
+                and lossless-join decompositions.
               </p>
             </div>
 
-            {/* Sample Action Buttons & Badges */}
-            <div className="pt-4 flex flex-wrap items-center gap-3 border-t" style={{ borderColor: colors.border }}>
+            {/* Mobile Touch Action Buttons (Min height 44px) */}
+            <div className="pt-3 sm:pt-4 flex flex-col sm:flex-row gap-2.5 sm:gap-3 border-t" style={{ borderColor: colors.border }}>
               <button
-                className="px-5 py-2.5 rounded-xl text-xs md:text-sm font-medium transition-transform active:scale-95 shadow-sm"
+                className="min-h-[44px] w-full sm:w-auto px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-medium transition-transform active:scale-[0.98] shadow-sm flex items-center justify-center"
                 style={{
                   backgroundColor: colors.accent,
                   color: isDarkMode ? "#181315" : colors.ink,
@@ -354,7 +356,7 @@ export default function Home() {
               </button>
 
               <button
-                className="px-5 py-2.5 rounded-xl text-xs md:text-sm font-medium transition-transform active:scale-95 border"
+                className="min-h-[44px] w-full sm:w-auto px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-medium transition-transform active:scale-[0.98] border flex items-center justify-center"
                 style={{
                   backgroundColor: colors.accentSoft,
                   borderColor: colors.border,
@@ -363,50 +365,133 @@ export default function Home() {
               >
                 Syllabus Gap Report
               </button>
+            </div>
 
+            {/* Gentle Feedback Pill */}
+            <div className="pt-1">
               <span
-                className="px-3 py-1.5 rounded-full text-xs font-medium border"
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-medium border"
                 style={{
                   backgroundColor: isDarkMode ? "#1C241D" : "#EAF3E8",
                   borderColor: isDarkMode ? "#2E4730" : "#C7DEC5",
                   color: isDarkMode ? "#B8E2B4" : "#2E5929",
                 }}
               >
-                ✓ Appeared in 6 of last 8 papers
+                ✓ Appeared in 6 of last 8 MAKAUT papers
               </span>
             </div>
+          </article>
+
+          {/* Quick Subject Module Switcher for Mobile */}
+          <div
+            className="p-4 rounded-2xl border transition-colors flex items-center justify-between"
+            style={{
+              backgroundColor: colors.cardBg,
+              borderColor: colors.border,
+            }}
+          >
+            <div>
+              <div className="text-[11px] uppercase tracking-wider font-semibold opacity-60">Next Topic</div>
+              <div className="text-sm font-medium">Relational Algebra: Joins & Unions</div>
+            </div>
+            <button
+              className="min-h-[38px] px-3.5 py-1.5 rounded-xl text-xs font-medium border transition-transform active:scale-95"
+              style={{
+                backgroundColor: colors.accentSoft,
+                borderColor: colors.border,
+                color: colors.accentDark,
+              }}
+            >
+              Continue
+            </button>
           </div>
         </main>
 
-        {/* Settings Slide-Over Drawer / Modal */}
+        {/* Thumb-Friendly Bottom Navigation Bar (Mobile Native Feel) */}
+        <nav
+          className="fixed bottom-0 inset-x-0 border-t backdrop-blur-md z-30 transition-colors pb-[env(safe-area-inset-bottom)] md:hidden"
+          style={{
+            backgroundColor: isDarkMode ? `${colors.pageBg}F2` : `${colors.cardBg}F2`,
+            borderColor: colors.border,
+          }}
+        >
+          <div className="max-w-md mx-auto grid grid-cols-4 px-2 py-1.5">
+            <button
+              onClick={() => setActiveTab("study")}
+              className={`flex flex-col items-center justify-center py-1.5 rounded-xl transition-all ${
+                activeTab === "study" ? "font-semibold" : "opacity-60"
+              }`}
+              style={activeTab === "study" ? { color: colors.accentDark } : {}}
+            >
+              <BookOpen className="w-5 h-5 mb-0.5" />
+              <span className="text-[10px]">Study</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab("quiz")}
+              className={`flex flex-col items-center justify-center py-1.5 rounded-xl transition-all ${
+                activeTab === "quiz" ? "font-semibold" : "opacity-60"
+              }`}
+              style={activeTab === "quiz" ? { color: colors.accentDark } : {}}
+            >
+              <Layers className="w-5 h-5 mb-0.5" />
+              <span className="text-[10px]">Quizzes</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab("exam")}
+              className={`flex flex-col items-center justify-center py-1.5 rounded-xl transition-all ${
+                activeTab === "exam" ? "font-semibold" : "opacity-60"
+              }`}
+              style={activeTab === "exam" ? { color: colors.accentDark } : {}}
+            >
+              <Award className="w-5 h-5 mb-0.5" />
+              <span className="text-[10px]">Exam Paper</span>
+            </button>
+
+            <button
+              onClick={() => setIsSettingsOpen(true)}
+              className="flex flex-col items-center justify-center py-1.5 rounded-xl transition-all opacity-85 active:scale-95"
+              style={{ color: colors.accentDark }}
+            >
+              <SlidersHorizontal className="w-5 h-5 mb-0.5" />
+              <span className="text-[10px]">Theme</span>
+            </button>
+          </div>
+        </nav>
+
+        {/* Mobile Bottom Sheet / Desktop Drawer for Theme Settings */}
         {isSettingsOpen && (
-          <div className="fixed inset-0 z-50 flex justify-end">
+          <div className="fixed inset-0 z-50 flex items-end sm:items-stretch sm:justify-end">
             {/* Backdrop */}
             <div
-              className="fixed inset-0 bg-black/30 backdrop-blur-sm transition-opacity"
+              className="fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity"
               onClick={() => setIsSettingsOpen(false)}
             />
 
-            {/* Drawer Panel */}
+            {/* Bottom Sheet (Mobile) & Side Drawer (Desktop) */}
             <div
-              className="relative w-full max-w-md h-full shadow-2xl p-6 md:p-8 flex flex-col justify-between overflow-y-auto border-l transition-transform animate-in slide-in-from-right duration-300"
+              className="relative w-full sm:max-w-md max-h-[85vh] sm:max-h-full sm:h-full rounded-t-3xl sm:rounded-none shadow-2xl p-5 sm:p-7 flex flex-col justify-between overflow-y-auto border-t sm:border-t-0 sm:border-l transition-transform animate-in slide-in-from-bottom sm:slide-in-from-right duration-300"
               style={{
                 backgroundColor: colors.pageBg,
                 borderColor: colors.border,
                 color: colors.ink,
               }}
             >
-              <div className="space-y-6">
-                {/* Drawer Header */}
-                <div className="flex items-center justify-between pb-4 border-b" style={{ borderColor: colors.border }}>
+              {/* Mobile Grab Handle Bar */}
+              <div className="w-12 h-1.5 rounded-full bg-current opacity-20 mx-auto -mt-1 mb-4 sm:hidden shrink-0" />
+
+              <div className="space-y-5">
+                {/* Header */}
+                <div className="flex items-center justify-between pb-3 border-b" style={{ borderColor: colors.border }}>
                   <div className="flex items-center gap-2">
                     <Settings className="w-5 h-5" style={{ color: colors.accentDark }} />
-                    <h2 className="text-lg font-medium tracking-tight">Theme & Palette</h2>
+                    <h2 className="text-base sm:text-lg font-medium tracking-tight">Colour Profiles</h2>
                   </div>
                   <button
                     onClick={() => setIsSettingsOpen(false)}
                     aria-label="Close Settings"
-                    className="p-1.5 rounded-lg border transition-all hover:opacity-75"
+                    className="min-h-[36px] min-w-[36px] flex items-center justify-center rounded-xl border transition-all active:scale-95"
                     style={{ backgroundColor: colors.cardBg, borderColor: colors.border }}
                   >
                     <X className="w-4 h-4" />
@@ -414,17 +499,17 @@ export default function Home() {
                 </div>
 
                 {/* Light / Dark Mode Switch */}
-                <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-wider font-semibold" style={{ color: colors.inkMuted }}>
-                    Appearance Mode
+                <div className="space-y-1.5">
+                  <label className="text-[11px] uppercase tracking-wider font-semibold opacity-60">
+                    Mode
                   </label>
                   <div
-                    className="grid grid-cols-2 p-1 rounded-xl border transition-colors"
+                    className="grid grid-cols-2 p-1 rounded-2xl border transition-colors"
                     style={{ backgroundColor: colors.cardBg, borderColor: colors.border }}
                   >
                     <button
                       onClick={() => setIsDarkMode(false)}
-                      className="flex items-center justify-center gap-2 py-2 text-xs font-medium rounded-lg transition-all"
+                      className="min-h-[40px] flex items-center justify-center gap-1.5 text-xs font-medium rounded-xl transition-all"
                       style={
                         !isDarkMode
                           ? { backgroundColor: colors.accent, color: colors.ink }
@@ -436,7 +521,7 @@ export default function Home() {
                     </button>
                     <button
                       onClick={() => setIsDarkMode(true)}
-                      className="flex items-center justify-center gap-2 py-2 text-xs font-medium rounded-lg transition-all"
+                      className="min-h-[40px] flex items-center justify-center gap-1.5 text-xs font-medium rounded-xl transition-all"
                       style={
                         isDarkMode
                           ? { backgroundColor: colors.accent, color: "#181315" }
@@ -451,8 +536,8 @@ export default function Home() {
 
                 {/* 7 Color Profiles Grid */}
                 <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-wider font-semibold" style={{ color: colors.inkMuted }}>
-                    Select Colour Mood (7 Profiles)
+                  <label className="text-[11px] uppercase tracking-wider font-semibold opacity-60">
+                    Choose Palette (7 Profiles)
                   </label>
                   <div className="grid grid-cols-1 gap-2">
                     {COLOR_PROFILES.map((profile) => {
@@ -461,7 +546,7 @@ export default function Home() {
                         <button
                           key={profile.id}
                           onClick={() => setSelectedId(profile.id)}
-                          className="w-full flex items-center justify-between p-3 rounded-xl border text-left transition-all"
+                          className="min-h-[50px] w-full flex items-center justify-between p-3 rounded-2xl border text-left transition-all active:scale-[0.99]"
                           style={{
                             backgroundColor: isSelected
                               ? colors.cardBg
@@ -493,50 +578,46 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Token Values Inspector */}
-                <div className="space-y-2 pt-2">
-                  <label className="text-xs uppercase tracking-wider font-semibold" style={{ color: colors.inkMuted }}>
-                    Active Hex Values
+                {/* Active Hex Tokens */}
+                <div className="space-y-1.5 pt-1">
+                  <label className="text-[11px] uppercase tracking-wider font-semibold opacity-60">
+                    Palette Hex Tokens
                   </label>
                   <div
-                    className="p-3.5 rounded-xl border text-xs font-mono space-y-1.5"
+                    className="p-3 rounded-2xl border text-[11px] font-mono grid grid-cols-2 gap-2"
                     style={{ backgroundColor: colors.cardBg, borderColor: colors.border }}
                   >
-                    <div className="flex justify-between">
-                      <span style={{ color: colors.inkMuted }}>pageBg:</span>
+                    <div>
+                      <span className="opacity-50">bg: </span>
                       <span>{colors.pageBg}</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span style={{ color: colors.inkMuted }}>accent:</span>
+                    <div>
+                      <span className="opacity-50">accent: </span>
                       <span>{colors.accent}</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span style={{ color: colors.inkMuted }}>cardBg:</span>
+                    <div>
+                      <span className="opacity-50">card: </span>
                       <span>{colors.cardBg}</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span style={{ color: colors.inkMuted }}>border:</span>
+                    <div>
+                      <span className="opacity-50">border: </span>
                       <span>{colors.border}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span style={{ color: colors.inkMuted }}>ink:</span>
-                      <span>{colors.ink}</span>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Close Drawer Action */}
-              <div className="pt-6 border-t mt-6" style={{ borderColor: colors.border }}>
+              {/* Action Button */}
+              <div className="pt-4 mt-4 border-t" style={{ borderColor: colors.border }}>
                 <button
                   onClick={() => setIsSettingsOpen(false)}
-                  className="w-full py-2.5 rounded-xl text-xs font-medium transition-transform active:scale-95 shadow-sm"
+                  className="min-h-[44px] w-full py-2.5 rounded-2xl text-xs font-medium transition-transform active:scale-[0.98] shadow-sm flex items-center justify-center"
                   style={{
                     backgroundColor: colors.accent,
                     color: isDarkMode ? "#181315" : colors.ink,
                   }}
                 >
-                  Apply & Close
+                  Apply & Return
                 </button>
               </div>
             </div>

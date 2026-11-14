@@ -46,6 +46,7 @@ Always evaluate every capability against the **Cost & Quality Ladder**:
 ## 🎨 Visual & Aesthetic Standards
 
 Every component, page, and UI element built by the agent must reflect [visualStyle.md](file:///c:/Users/LENOVO/Desktop/Studify/visualStyle.md):
+- **Mobile-First Priority:** Studify is primarily a mobile-first site. Every UI view must be designed for phone viewports first, using comfortable thumb tap areas (min 44px), bottom sheets instead of high-reach modals, thumb-friendly bottom bars, and lightweight layouts tested on budget Android devices.
 - **Calm, delicate, premium:** Soft pastel themes, generous whitespace, hairline borders, diffuse shadows.
 - **Typography:** `Urbanist` for headings & UI labels; `Product Sans` for notes, questions, and long reading.
 - **Named Themes:** Blush Rose (`#FCF5F4` / `#E7A9B5`), Sage Mist, Lavender Haze, Butter Cream, Peach Glow, November Rain.

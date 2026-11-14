@@ -87,3 +87,14 @@ The interface should feel like it gently breathes:
 3. **Reading View:** Serif text, wide margins, unobtrusive tool panel that hides in "Focus Mode".
 4. **Quiz Card:** Single question per card, clear tap targets, generous padding, gentle immediate feedback.
 5. **Exam Paper:** Designed like a formal MAKAUT printed question paper: serif, structured sections (Group A, Group B, Group C), unobtrusive countdown timer.
+
+---
+
+## 6. Mobile-First Standards & Thumb Ergonomics
+
+Studify is strictly **mobile-first**:
+- **Touch Target Size:** All buttons, pills, options, and interactive controls must have at least `44px × 44px` physical touch area (`min-h-[44px]`).
+- **Thumb Reach & Navigation:** Primary controls and navigation belong in the lower half of the screen (bottom bars and floating bottom docks) so students can comfortably reach them with one hand.
+- **Bottom Sheets over Modals:** Use sliding bottom sheets with a grab bar rather than desktop-style centered popup dialogs or awkward right-side drawers on phone screens.
+- **Safe-Area Insets:** Always support modern mobile notch/home-bar geometry using `env(safe-area-inset-bottom)`.
+- **Performance on Budget Phones:** Many MAKAUT students use budget Android devices. Avoid heavy GPU filters, continuous heavy blurs, and large box-shadow cascades. Rely on CSS opacity, translates, and hairline borders.
