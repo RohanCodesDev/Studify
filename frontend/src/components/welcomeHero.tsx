@@ -138,17 +138,30 @@ export default function WelcomeHero({
           />
         </div>
 
-        {/* Subtle MAKAUT Tagline that smoothly fades in */}
-        <p
-          className={`font-body text-xs sm:text-sm md:text-base tracking-wide transition-all duration-700 ${
+        {/* Headline & Subline */}
+        <div
+          className={`space-y-2.5 pt-2 transition-all duration-700 ${
             isStudifyDone
-              ? "opacity-80 translate-y-0"
+              ? "opacity-100 translate-y-0"
               : "opacity-0 translate-y-2 pointer-events-none"
           }`}
-          style={{ color: inkMuted }}
         >
-          Syllabus-aligned study platform for MAKAUT students
-        </p>
+          {/* Headline: “Your notes, made exam-ready.” */}
+          <h2
+            className="font-sans text-lg sm:text-xl md:text-2xl font-semibold tracking-tight"
+            style={{ color: inkColor }}
+          >
+            Your notes, made exam-ready.
+          </h2>
+
+          {/* Subline */}
+          <p
+            className="font-body text-xs sm:text-sm md:text-base leading-relaxed max-w-md mx-auto"
+            style={{ color: inkMuted }}
+          >
+            Upload your syllabus and study material. Learn chapter by chapter with notes, quizzes and MAKAUT-style practice papers.
+          </p>
+        </div>
       </div>
     </div>
   );

@@ -223,7 +223,7 @@ export default function Home() {
         <title>Studify · MAKAUT Study Platform</title>
         <meta
           name="description"
-          content="Calm, focused, marks-aligned study platform for MAKAUT students."
+          content="Your notes, made exam-ready. Upload your syllabus and study material. Learn chapter by chapter with notes, quizzes and MAKAUT-style practice papers."
         />
         <meta
           name="viewport"
