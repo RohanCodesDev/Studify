@@ -13,7 +13,7 @@ export const SNOW_CONFIG = {
   minDurationSec: 7,            // Fastest fall duration in seconds
   maxDurationSec: 15,           // Slowest fall duration in seconds
   maxDelaySec: 8,               // Maximum initial delay spread in seconds
-  skyBlueColor: "#bee9fbff",      // Sky blue color (vibrant sky blue) ← tweak this
+  skyBlueColor: "#d1e4ecff",      // Sky blue color (vibrant sky blue) ← tweak this
   skyBlueDarkColor: "#7DD3FC",  // Sky blue color for dark mode (soft glowing sky blue) ← tweak this
 };
 
