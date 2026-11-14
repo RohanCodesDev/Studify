@@ -12,7 +12,7 @@ export const HERO_CONFIG = {
   heroMaxWidth: "max-w-2xl",                                     // Max width of hero container
   gapBetweenWelcomeAndStudify: "-space-y-1 sm:space-y-0",       // Kept tight so bigger font doesn't increase gap
   gapBetweenStudifyAndHeadline: "mt-10 sm:mt-20 md:mt-24",      // Generous gap between "Studify" and "Headline"
-  gapBetweenHeadlineAndSubline: "space-y-2 sm:space-y-2.5",     // Gap between "Headline" and "Subline"
+  gapBetweenHeadlineAndSubline: "space-y-4 sm:space-y-5 md:space-y-6", // Expanded gap between "Headline" and "Subline"
   sublineMaxWidth: "max-w-md sm:max-w-lg",                       // Max width of the subline paragraph
 
   // FONT SIZES
