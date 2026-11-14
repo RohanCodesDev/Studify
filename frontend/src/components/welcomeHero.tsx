@@ -7,23 +7,27 @@ import React, { useEffect, useState } from "react";
  * -----------------------------------------------------------------------
  */
 export const HERO_CONFIG = {
-  // SPACING & GAPS
-  heroPaddingVertical: "py-4 sm:py-8",                         // Overall hero vertical padding
-  heroMaxWidth: "max-w-2xl",                                     // Max width of hero container
-  gapBetweenWelcomeAndStudify: "-space-y-1 sm:space-y-0",       // Kept tight so bigger font doesn't increase gap
-  gapBetweenStudifyAndHeadline: "mt-10 sm:mt-20 md:mt-24",      // Generous gap between "Studify" and "Headline"
-  gapBetweenHeadlineAndSubline: "mt-4 sm:mt-5 md:mt-6",        // Gap between "Headline" and "Subline" (applied to <p> directly)
-  sublineMaxWidth: "max-w-md sm:max-w-lg",                       // Max width of the subline paragraph
+  // SPACING & GAPS — values in pixels, applied via inline styles (immune to Tailwind purge)
+  heroPaddingVertical: "py-4 sm:py-8",           // Overall hero vertical padding (Tailwind safe class)
+  heroMaxWidth: "max-w-2xl",                     // Max width of hero container (Tailwind safe class)
+  gapStudifyAndHeadlinePx: 48,                   // ↕ Gap between "Studify" and "Headline" in px  ← tweak this
+  gapHeadlineAndSublinePx: 20,                   // ↕ Gap between "Headline" and "Subline" in px  ← tweak this
 
-  // FONT SIZES
-  welcomeTextSize: "text-xl sm:text-2xl md:text-3xl",           // Size of "Welcome to"
-  studifyTextSize: "text-7xl sm:text-8xl md:text-9xl lg:text-[9.5rem] xl:text-[10.5rem] leading-none tracking-tighter", // Increased font size with leading-none
-  headlineTextSize: "text-lg sm:text-xl md:text-2xl",           // Size of "Your notes, made exam-ready."
-  sublineTextSize: "text-xs sm:text-sm md:text-base",           // Size of Subline description
+  // FONT SIZES — safe static Tailwind classes (always present in JSX, detected by scanner)
+  welcomeTextSize: "text-xl",                    // Size of "Welcome to"
+  studifyTextSize: "text-7xl",                   // Size of "Studify" (base; overridden below via style)
+  headlineTextSize: "text-lg",                   // Size of "Your notes, made exam-ready."
+  sublineTextSize: "text-sm",                    // Size of Subline description
+
+  // FONT SIZES in rem — applied via inline styles for precise responsive control
+  studifyFontSizeRem: 6,                         // "Studify" font size in rem  ← tweak this
+
+  // MAX WIDTH
+  sublineMaxWidth: "max-w-md",                   // Max width of the subline paragraph
 
   // CURSOR SIZES
-  welcomeCursorSize: "w-[2px] h-5 sm:h-6",                      // Blinking cursor size for "Welcome to"
-  studifyCursorSize: "w-[4px] sm:w-[6px] h-14 sm:h-20 md:h-24", // Blinking cursor size for "Studify"
+  welcomeCursorSize: "w-[2px] h-5",             // Blinking cursor size for "Welcome to"
+  studifyCursorSize: "w-[4px] h-14",            // Blinking cursor size for "Studify"
 };
 
 interface WelcomeHeroProps {
@@ -107,9 +111,9 @@ export default function WelcomeHero({
 
   return (
     <div className={`w-full flex flex-col items-center justify-center text-center px-4 ${HERO_CONFIG.heroPaddingVertical} select-none`}>
-      <div className={`w-full ${HERO_CONFIG.heroMaxWidth} mx-auto ${HERO_CONFIG.gapBetweenWelcomeAndStudify}`}>
+      <div className={`w-full ${HERO_CONFIG.heroMaxWidth} mx-auto`}>
         {/* Line 1: "Welcome to" in Product Sans font */}
-        <div className="min-h-[2rem] sm:min-h-[2.5rem] flex items-center justify-center">
+        <div className="min-h-[2rem] flex items-center justify-center">
           <span
             className={`font-body ${HERO_CONFIG.welcomeTextSize} font-medium tracking-wide transition-colors`}
             style={{ color: inkMuted }}
@@ -126,9 +130,12 @@ export default function WelcomeHero({
         </div>
 
         {/* Line 2: "Studify" with Urbanist font */}
-        <div className="min-h-[5rem] sm:min-h-[6.5rem] md:min-h-[8.5rem] lg:min-h-[10rem] flex items-center justify-center leading-none">
+        <div className="flex items-center justify-center leading-none" style={{ minHeight: `${HERO_CONFIG.studifyFontSizeRem * 1.1}rem` }}>
           {isWelcomeDone && (
-            <h1 className={`font-sans ${HERO_CONFIG.studifyTextSize} font-black tracking-tight relative transition-all duration-300`}>
+            <h1
+              className={`font-sans ${HERO_CONFIG.studifyTextSize} font-black tracking-tight relative transition-all duration-300`}
+              style={{ fontSize: `${HERO_CONFIG.studifyFontSizeRem}rem`, lineHeight: 1, letterSpacing: "-0.04em" }}
+            >
               <span
                 className="inline-block transition-colors"
                 style={{
@@ -154,10 +161,11 @@ export default function WelcomeHero({
 
         {/* Headline & Subline Section */}
         <div
-          className={`${HERO_CONFIG.gapBetweenStudifyAndHeadline} transition-all duration-700 ${isStudifyDone
+          className={`transition-all duration-700 ${isStudifyDone
             ? "opacity-100 translate-y-0"
             : "opacity-0 translate-y-2 pointer-events-none"
             }`}
+          style={{ marginTop: `${HERO_CONFIG.gapStudifyAndHeadlinePx}px` }}
         >
           {/* Headline */}
           <h2
@@ -169,8 +177,8 @@ export default function WelcomeHero({
 
           {/* Subline */}
           <p
-            className={`font-body ${HERO_CONFIG.sublineTextSize} leading-relaxed ${HERO_CONFIG.sublineMaxWidth} mx-auto ${HERO_CONFIG.gapBetweenHeadlineAndSubline}`}
-            style={{ color: inkMuted }}
+            className={`font-body ${HERO_CONFIG.sublineTextSize} leading-relaxed ${HERO_CONFIG.sublineMaxWidth} mx-auto`}
+            style={{ color: inkMuted, marginTop: `${HERO_CONFIG.gapHeadlineAndSublinePx}px` }}
           >
             Upload your syllabus and study material. Learn chapter by chapter with notes, quizzes and MAKAUT-style practice papers.
           </p>
