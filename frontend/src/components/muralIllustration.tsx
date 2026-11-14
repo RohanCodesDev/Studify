@@ -1,5 +1,19 @@
 import React from "react";
 
+/**
+ * -----------------------------------------------------------------------
+ * MURAL ILLUSTRATION LAYOUT CONFIGURATION
+ * Tweak these variables to adjust sizing and height easily!
+ * -----------------------------------------------------------------------
+ */
+export const MURAL_CONFIG = {
+  // Height of the mountain graphic across mobile, tablet, and desktop
+  muralHeight: "max-h-[38vh] sm:max-h-[44vh] md:max-h-[48vh]",
+
+  // Maximum width container constraint on large screens
+  muralMaxWidth: "max-w-2xl sm:max-w-3xl",
+};
+
 interface MuralIllustrationProps {
   className?: string;
 }
@@ -13,7 +27,7 @@ export default function MuralIllustration({ className = "" }: MuralIllustrationP
       <img
         src="/mural.svg"
         alt="Mountain Mural Illustration"
-        className="w-full h-auto max-h-[42vh] sm:max-h-[48vh] object-cover object-bottom block mx-auto"
+        className={`w-full h-auto ${MURAL_CONFIG.muralHeight} ${MURAL_CONFIG.muralMaxWidth} object-cover object-bottom block mx-auto`}
         loading="eager"
       />
     </div>
