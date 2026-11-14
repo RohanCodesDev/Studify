@@ -239,51 +239,23 @@ export default function Home() {
           color: colors.ink,
         }}
       >
-        {/* Top Header with Setting Icon */}
-        <header
-          className="w-full border-b backdrop-blur-md sticky top-0 z-30 transition-colors"
+        {/* Floating Top-Right Settings Icon */}
+        <button
+          onClick={() => setIsSettingsOpen(true)}
+          aria-label="Open Theme Settings"
+          className="fixed top-3 right-3 sm:top-5 sm:right-6 z-30 min-h-[44px] min-w-[44px] flex items-center justify-center gap-2 px-3 py-2 rounded-2xl border backdrop-blur-md transition-all active:scale-95 shadow-sm"
           style={{
-            backgroundColor: isDarkMode ? `${colors.pageBg}E6` : `${colors.cardBg}CC`,
+            backgroundColor: isDarkMode ? `${colors.cardBg}CC` : `${colors.cardBg}E6`,
             borderColor: colors.border,
+            color: colors.ink,
           }}
         >
-          <div className="max-w-md sm:max-w-2xl md:max-w-3xl mx-auto px-4 py-3 sm:px-6 sm:py-3.5 flex items-center justify-between">
-            <div className="flex items-center gap-2.5">
-              <span
-                className="w-8 h-8 rounded-xl flex items-center justify-center font-bold text-sm shadow-sm"
-                style={{
-                  backgroundColor: colors.accent,
-                  color: isDarkMode ? "#181315" : colors.ink,
-                }}
-              >
-                S
-              </span>
-              <div>
-                <span className="font-semibold text-base sm:text-lg tracking-tight">Studify</span>
-                <span className="text-[11px] ml-1.5 opacity-60 font-mono">MAKAUT</span>
-              </div>
-            </div>
-
-            {/* Top-Right Touch-Friendly Settings Icon */}
-            <button
-              onClick={() => setIsSettingsOpen(true)}
-              aria-label="Open Theme Settings"
-              className="min-h-[44px] min-w-[44px] flex items-center justify-center gap-2 px-3 py-2 rounded-2xl border transition-all active:scale-95 shadow-sm"
-              style={{
-                backgroundColor: colors.cardBg,
-                borderColor: colors.border,
-                color: colors.ink,
-              }}
-            >
-              <Settings className="w-4 h-4" style={{ color: colors.accentDark }} />
-              <span className="text-xs font-medium hidden sm:inline">Theme</span>
-              <span
-                className="w-2.5 h-2.5 rounded-full border border-black/10 shrink-0"
-                style={{ backgroundColor: activeProfile.light.accent }}
-              />
-            </button>
-          </div>
-        </header>
+          <Settings className="w-4 h-4" style={{ color: colors.accentDark }} />
+          <span
+            className="w-2.5 h-2.5 rounded-full border border-black/10 shrink-0"
+            style={{ backgroundColor: activeProfile.light.accent }}
+          />
+        </button>
 
         {/* Main Hero Container */}
         <main className="flex-1 w-full flex flex-col justify-center items-center relative z-10 my-auto py-6 sm:py-10">
