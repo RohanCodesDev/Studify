@@ -1,6 +1,8 @@
 import Head from "next/head";
 import { useState } from "react";
 import { Settings, X, Sun, Moon, Check, Sparkles } from "lucide-react";
+import WelcomeHero from "@/components/welcomeHero";
+import MuralIllustration from "@/components/muralIllustration";
 
 interface ColorProfile {
   id: string;
@@ -231,7 +233,7 @@ export default function Home() {
       </Head>
 
       <div
-        className="min-h-screen transition-colors duration-300 font-sans flex flex-col"
+        className="min-h-screen relative flex flex-col justify-between overflow-x-hidden transition-colors duration-300 font-sans"
         style={{
           backgroundColor: colors.pageBg,
           color: colors.ink,
@@ -283,26 +285,21 @@ export default function Home() {
           </div>
         </header>
 
-        {/* Minimal Main Area to inspect pure base color */}
-        <main className="flex-1 w-full flex flex-col items-center justify-center px-6 py-12 text-center">
-          <div className="max-w-sm space-y-3">
-            <button
-              onClick={() => setIsSettingsOpen(true)}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-medium border active:scale-95 transition-transform shadow-sm"
-              style={{
-                backgroundColor: colors.accentSoft,
-                borderColor: colors.border,
-                color: colors.accentDark,
-              }}
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>{activeProfile.name} · {isDarkMode ? "Dark" : "Light"}</span>
-            </button>
-            <p className="text-xs opacity-60 font-body">
-              Click the top-right settings icon to test and switch base colours.
-            </p>
-          </div>
+        {/* Main Hero Container */}
+        <main className="flex-1 w-full flex flex-col justify-center items-center relative z-10 my-auto py-6 sm:py-10">
+          <WelcomeHero
+            accentColor={colors.accent}
+            accentDark={colors.accentDark}
+            accentSoft={colors.accentSoft}
+            inkColor={colors.ink}
+            inkMuted={colors.inkMuted}
+          />
         </main>
+
+        {/* Mountain Mural Illustration at Full Width of Mobile Screen from Bottom */}
+        <footer className="w-full relative z-0 mt-auto">
+          <MuralIllustration />
+        </footer>
 
         {/* Theme Settings Drawer / Bottom Sheet */}
         {isSettingsOpen && (
