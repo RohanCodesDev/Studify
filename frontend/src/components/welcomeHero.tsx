@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ArrowRight, HelpCircle } from "lucide-react";
+import CtaButtons from "./ctaButtons";
 
 /**
  * -----------------------------------------------------------------------
@@ -9,11 +9,12 @@ import { ArrowRight, HelpCircle } from "lucide-react";
  */
 export const HERO_CONFIG = {
   // SPACING & GAPS — values in pixels, applied via inline styles (immune to Tailwind purge)
+  heroOffsetTopPx: 32,                           // ↕ Pull entire hero & buttons lower in px ← tweak this
   heroPaddingVertical: "py-4 sm:py-8",           // Overall hero vertical padding (Tailwind safe class)
   heroMaxWidth: "max-w-2xl",                     // Max width of hero container (Tailwind safe class)
   gapStudifyAndHeadlinePx: 15,                   // ↕ Gap between "Studify" and "Headline" in px  ← tweak this
   gapHeadlineAndSublinePx: 2,                   // ↕ Gap between "Headline" and "Subline" in px  ← tweak this
-  gapSublineAndButtonsPx: 48,                    // ↕ Gap between Subline and CTA buttons in px  ← tweak this
+  gapSublineAndButtonsPx: 36,                    // ↕ Gap between Subline and CTA buttons in px  ← tweak this
 
   // FONT SIZES — safe static Tailwind classes (always present in JSX, detected by scanner)
   welcomeTextSize: "text-xl",                    // Size of "Welcome to"
@@ -112,7 +113,10 @@ export default function WelcomeHero({
   }, []);
 
   return (
-    <div className={`w-full flex flex-col items-center justify-center text-center px-4 ${HERO_CONFIG.heroPaddingVertical} select-none`}>
+    <div
+      className={`w-full flex flex-col items-center justify-center text-center px-4 ${HERO_CONFIG.heroPaddingVertical} select-none transition-transform duration-300`}
+      style={{ transform: `translateY(${HERO_CONFIG.heroOffsetTopPx}px)` }}
+    >
       <div className={`w-full ${HERO_CONFIG.heroMaxWidth} mx-auto`}>
         {/* Line 1: "Welcome to" in Product Sans font */}
         <div className="min-h-[2rem] flex items-center justify-center">
@@ -186,50 +190,12 @@ export default function WelcomeHero({
           </p>
 
           {/* CTA Buttons */}
-          <div
-            className="flex flex-row flex-wrap items-center justify-center gap-3 mx-auto select-none"
+          <CtaButtons
+            accentColor={accentColor}
+            accentDark={accentDark}
+            accentSoft={accentSoft}
             style={{ marginTop: `${HERO_CONFIG.gapSublineAndButtonsPx}px` }}
-          >
-            {/* Primary: Start Prepping */}
-            <button
-              className="group inline-flex items-center justify-center gap-2 px-7 py-3 rounded-2xl font-semibold text-sm tracking-wide transition-all duration-200 active:scale-95 shadow-md hover:shadow-lg"
-              style={{
-                backgroundColor: accentDark,
-                color: "#ffffff",
-                minHeight: "48px",
-                boxShadow: `0 4px 20px ${accentColor}55`,
-              }}
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLButtonElement).style.filter = "brightness(1.08)";
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLButtonElement).style.filter = "brightness(1)";
-              }}
-            >
-              Start Prepping
-              <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
-            </button>
-
-            {/* Secondary: How it works? */}
-            <button
-              className="group inline-flex items-center justify-center gap-2 px-7 py-3 rounded-2xl font-medium text-sm tracking-wide transition-all duration-200 active:scale-95 border"
-              style={{
-                backgroundColor: accentSoft,
-                borderColor: accentColor,
-                color: accentDark,
-                minHeight: "48px",
-              }}
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLButtonElement).style.backgroundColor = accentColor + "33";
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLButtonElement).style.backgroundColor = accentSoft;
-              }}
-            >
-              <HelpCircle className="w-4 h-4 opacity-70" />
-              How it works?
-            </button>
-          </div>
+          />
         </div>
       </div>
     </div>
