@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Settings, X, Sun, Moon, Check, Sparkles } from "lucide-react";
 import WelcomeHero from "@/components/welcomeHero";
 import MuralIllustration from "@/components/muralIllustration";
+import Snowflakes from "@/components/snowflakes";
 
 interface ColorProfile {
   id: string;
@@ -239,6 +240,11 @@ export default function Home() {
           color: colors.ink,
         }}
       >
+        {/* Subtle Falling Snowflakes Animation */}
+        <Snowflakes
+          color={isDarkMode ? "rgba(255, 255, 255, 0.75)" : "rgba(255, 255, 255, 0.92)"}
+        />
+
         {/* Floating Top-Right Settings Icon */}
         <button
           onClick={() => setIsSettingsOpen(true)}
