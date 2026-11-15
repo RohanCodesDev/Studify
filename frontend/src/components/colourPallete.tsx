@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Sun, Moon, Check, Sparkles } from "lucide-react";
+import { Sun, Moon, Check } from "lucide-react";
 import {
   useTheme,
   COLOR_PROFILES,
@@ -19,17 +19,14 @@ export const COLOUR_PALLETE_CONFIG = {
   buttonMinHeight: "52px",
   toggleMinHeight: "42px",
   swatchSize: "w-4 h-4",
-  tokenBoxBorderRadius: "rounded-2xl",
 };
 
 interface ColourPalleteProps {
   className?: string;
-  showHexTokens?: boolean;
 }
 
 export default function ColourPallete({
   className = "",
-  showHexTokens = true,
 }: ColourPalleteProps) {
   const {
     selectedId,
@@ -90,7 +87,7 @@ export default function ColourPallete({
         </div>
       </div>
 
-      {/* ── 7 Color Profiles Grid ── */}
+      {/* ── 7 Color Profiles Grid (Instant preview on tap) ── */}
       <div className="space-y-2.5">
         <div className="flex items-center justify-between">
           <label
@@ -103,7 +100,7 @@ export default function ColourPallete({
             className="text-[11px] font-body opacity-50"
             style={{ color: colors.inkMuted }}
           >
-            Instant preview
+            Applies instantly
           </span>
         </div>
 
@@ -184,55 +181,6 @@ export default function ColourPallete({
           })}
         </div>
       </div>
-
-      {/* ── Active Hex Tokens (Grounding preview) ── */}
-      {showHexTokens && (
-        <div className="space-y-1.5 pt-1">
-          <label
-            className="text-[11px] uppercase tracking-wider font-semibold opacity-60 font-sans"
-            style={{ color: colors.ink }}
-          >
-            Active Palette Tokens
-          </label>
-          <div
-            className={`p-3.5 ${COLOUR_PALLETE_CONFIG.tokenBoxBorderRadius} border text-[11px] font-mono grid grid-cols-2 sm:grid-cols-4 gap-2.5 transition-colors`}
-            style={{ backgroundColor: colors.cardBg, borderColor: colors.border }}
-          >
-            <div className="flex items-center gap-1.5">
-              <span
-                className="w-2.5 h-2.5 rounded-full border border-black/10 shrink-0"
-                style={{ backgroundColor: colors.pageBg }}
-              />
-              <span className="opacity-50">bg:</span>
-              <span style={{ color: colors.ink }}>{colors.pageBg}</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <span
-                className="w-2.5 h-2.5 rounded-full border border-black/10 shrink-0"
-                style={{ backgroundColor: colors.accent }}
-              />
-              <span className="opacity-50">accent:</span>
-              <span style={{ color: colors.ink }}>{colors.accent}</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <span
-                className="w-2.5 h-2.5 rounded-full border border-black/10 shrink-0"
-                style={{ backgroundColor: colors.cardBg }}
-              />
-              <span className="opacity-50">card:</span>
-              <span style={{ color: colors.ink }}>{colors.cardBg}</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <span
-                className="w-2.5 h-2.5 rounded-full border border-black/10 shrink-0"
-                style={{ backgroundColor: colors.border }}
-              />
-              <span className="opacity-50">border:</span>
-              <span style={{ color: colors.ink }}>{colors.border}</span>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

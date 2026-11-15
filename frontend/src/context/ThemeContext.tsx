@@ -25,7 +25,7 @@ export const COLOR_PROFILES: ColorProfile[] = [
   {
     id: "blush-rose",
     name: "Blush Rose",
-    tagline: "Soft, warm, delicate rose with gentle warmth",
+    tagline: "Soft, delicate rose with gentle warmth",
     light: {
       pageBg: "#FCF5F4",
       accent: "#E7A9B5",
@@ -50,7 +50,7 @@ export const COLOR_PROFILES: ColorProfile[] = [
   {
     id: "sage-mist",
     name: "Sage Mist",
-    tagline: "Calming, herbal, natural muted green",
+    tagline: "Calming, herbal muted green",
     light: {
       pageBg: "#F4F7F2",
       accent: "#A9C5A7",
@@ -75,7 +75,7 @@ export const COLOR_PROFILES: ColorProfile[] = [
   {
     id: "lavender-haze",
     name: "Lavender Haze",
-    tagline: "Quiet, intellectual, soothing floral violet",
+    tagline: "Quiet, soothing floral violet",
     light: {
       pageBg: "#F6F4FB",
       accent: "#B9ABE3",
@@ -100,7 +100,7 @@ export const COLOR_PROFILES: ColorProfile[] = [
   {
     id: "sky-whisper",
     name: "Sky Whisper",
-    tagline: "Airy, clear, gentle pastel sky blue",
+    tagline: "Clear, gentle pastel sky blue",
     light: {
       pageBg: "#F2F7FB",
       accent: "#A5C8E8",
@@ -125,7 +125,7 @@ export const COLOR_PROFILES: ColorProfile[] = [
   {
     id: "butter-cream",
     name: "Butter Cream",
-    tagline: "Warm parchment, sunny and inviting",
+    tagline: "Warm parchment, sunny and gentle",
     light: {
       pageBg: "#FBF8EE",
       accent: "#E8D08E",
@@ -150,7 +150,7 @@ export const COLOR_PROFILES: ColorProfile[] = [
   {
     id: "peach-glow",
     name: "Peach Glow",
-    tagline: "Gentle citrus blush, soft and optimistic",
+    tagline: "Soft citrus blush, warm and calm",
     light: {
       pageBg: "#FDF5EF",
       accent: "#F0B79A",
@@ -175,7 +175,7 @@ export const COLOR_PROFILES: ColorProfile[] = [
   {
     id: "november-rain",
     name: "November Rain",
-    tagline: "Cool slate, calm, focused morning rain",
+    tagline: "Cool slate, calm and focused",
     light: {
       pageBg: "#F0F3F6",
       accent: "#9DB2C7",
@@ -280,7 +280,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 export function useTheme(): ThemeContextType {
   const context = useContext(ThemeContext);
   if (!context) {
-    // Fallback if rendered outside ThemeProvider
     const fallbackProfile = COLOR_PROFILES[0];
     return {
       selectedId: "blush-rose",
