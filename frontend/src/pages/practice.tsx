@@ -203,12 +203,54 @@ export default function PracticePage() {
                   <h2 className="text-base sm:text-lg font-sans font-bold tracking-tight">
                     Semester Practice Question Paper
                   </h2>
-                  <p
-                    className="text-xs font-body leading-relaxed"
-                    style={{ color: colors.inkMuted }}
+                </div>
+
+                {/* 3 Compact Structure Badges (Zero reading fatigue) */}
+                <div className="grid grid-cols-3 gap-2 pt-0.5 text-center">
+                  <div
+                    className="p-2 rounded-xl border text-[11px] font-sans"
+                    style={{
+                      backgroundColor: colors.accentSoft,
+                      borderColor: `${colors.accent}4D`,
+                    }}
                   >
-                    Includes Group A (10 MCQs), Group B (choose 3 of 5, 5 marks each), and Group C (choose 3 of 5, 15 marks each).
-                  </p>
+                    <span className="font-semibold block" style={{ color: colors.accentDark }}>
+                      Group A
+                    </span>
+                    <span className="opacity-70 font-body text-[10px] block mt-0.5">
+                      10 MCQs · 10m
+                    </span>
+                  </div>
+
+                  <div
+                    className="p-2 rounded-xl border text-[11px] font-sans"
+                    style={{
+                      backgroundColor: colors.accentSoft,
+                      borderColor: `${colors.accent}4D`,
+                    }}
+                  >
+                    <span className="font-semibold block" style={{ color: colors.accentDark }}>
+                      Group B
+                    </span>
+                    <span className="opacity-70 font-body text-[10px] block mt-0.5">
+                      3 of 5 · 15m
+                    </span>
+                  </div>
+
+                  <div
+                    className="p-2 rounded-xl border text-[11px] font-sans"
+                    style={{
+                      backgroundColor: colors.accentSoft,
+                      borderColor: `${colors.accent}4D`,
+                    }}
+                  >
+                    <span className="font-semibold block" style={{ color: colors.accentDark }}>
+                      Group C
+                    </span>
+                    <span className="opacity-70 font-body text-[10px] block mt-0.5">
+                      3 of 5 · 45m
+                    </span>
+                  </div>
                 </div>
 
                 <button
