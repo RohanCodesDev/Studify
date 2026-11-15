@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { Settings } from "lucide-react";
+import { useTheme } from "@/context/ThemeContext";
 
 // ─── Tweakable layout config ───────────────────────────────────────────────
 export const GREETING_CONFIG = {
@@ -40,16 +42,28 @@ function getTimeGreeting(hours: number): string {
 // ─── Component ─────────────────────────────────────────────────────────────
 export default function Greeting({
   name,
-  accentColor = "#E7A9B5",
-  accentDark = "#A54C5F",
-  accentSoft = "#FBECEE",
-  inkColor = "#3B3540",
-  inkMuted = "#6B6570",
-  cardBg = "#FFFFFF",
-  border = "#F3D2D8",
-  isDarkMode = false,
+  accentColor,
+  accentDark,
+  accentSoft,
+  inkColor,
+  inkMuted,
+  cardBg,
+  border,
+  isDarkMode: propDarkMode,
   onOpenSettings,
 }: GreetingProps) {
+  const router = useRouter();
+  const theme = useTheme();
+
+  // Fallback to theme context if props are omitted
+  const activeAccent = accentColor ?? theme.colors.accent;
+  const activeAccentDark = accentDark ?? theme.colors.accentDark;
+  const activeInk = inkColor ?? theme.colors.ink;
+  const activeInkMuted = inkMuted ?? theme.colors.inkMuted;
+  const activeCardBg = cardBg ?? theme.colors.cardBg;
+  const activeBorder = border ?? theme.colors.border;
+  const activeDarkMode = propDarkMode ?? theme.isDarkMode;
+
   const [timeGreeting, setTimeGreeting] = useState<string>("");
   const [mounted, setMounted] = useState(false);
 
@@ -62,6 +76,14 @@ export default function Greeting({
 
   const displayName = name?.trim() ? name.trim() : "there";
 
+  const handleSettingsClick = () => {
+    if (onOpenSettings) {
+      onOpenSettings();
+    } else {
+      router.push("/settings");
+    }
+  };
+
   return (
     <div
       className={`w-full flex items-center justify-between ${GREETING_CONFIG.paddingX} ${GREETING_CONFIG.paddingY}`}
@@ -72,7 +94,7 @@ export default function Greeting({
         <span
           className={`${GREETING_CONFIG.greetingLabelSize} font-body tracking-wide`}
           style={{
-            color: inkMuted,
+            color: activeInkMuted,
             opacity: mounted ? 1 : 0,
             transition: `opacity ${GREETING_CONFIG.transitionDuration}ms ease-out`,
           }}
@@ -83,16 +105,16 @@ export default function Greeting({
         {/* Main headline */}
         <h1
           className={`${GREETING_CONFIG.headlineSize} font-sans font-semibold tracking-tight leading-tight`}
-          style={{ color: inkColor }}
+          style={{ color: activeInk }}
         >
           Ready to prep,{" "}
-          <span style={{ color: accentDark }}>{displayName}</span>?
+          <span style={{ color: activeAccentDark }}>{displayName}</span>?
         </h1>
       </div>
 
       {/* ── Right: settings pill ── */}
       <button
-        onClick={onOpenSettings}
+        onClick={handleSettingsClick}
         aria-label="Open Theme Settings"
         className={`
           flex items-center justify-center gap-2
@@ -102,20 +124,20 @@ export default function Greeting({
           transition-all active:scale-95 shadow-sm shrink-0
         `}
         style={{
-          backgroundColor: isDarkMode ? `${cardBg}CC` : `${cardBg}E6`,
-          borderColor: border,
-          color: inkColor,
+          backgroundColor: activeDarkMode ? `${activeCardBg}CC` : `${activeCardBg}E6`,
+          borderColor: activeBorder,
+          color: activeInk,
         }}
       >
         <Settings
-          style={{ color: accentDark }}
+          style={{ color: activeAccentDark }}
           width={GREETING_CONFIG.iconSize}
           height={GREETING_CONFIG.iconSize}
         />
         {/* Theme color swatch dot */}
         <span
           className={`${GREETING_CONFIG.swatchSize} rounded-full border border-black/10 shrink-0`}
-          style={{ backgroundColor: accentColor }}
+          style={{ backgroundColor: activeAccent }}
         />
       </button>
     </div>
