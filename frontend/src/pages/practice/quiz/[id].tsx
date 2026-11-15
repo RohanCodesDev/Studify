@@ -31,7 +31,7 @@ export default function QuizRunnerPage() {
 
   const [questions, setQuestions] = useState<QuizQuestion[]>(defaultQuiz.questions);
 
-  // Quiz progression state
+  // Quiz progression & interactive states
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [hasAnswered, setHasAnswered] = useState<boolean>(false);
@@ -66,7 +66,8 @@ export default function QuizRunnerPage() {
               : defaultQuiz.questions[i]?.options || [],
             correctAnswer: q.correctAnswer,
             explanation: q.explanation || defaultQuiz.questions[i]?.explanation || "",
-            memoryAnchor: defaultQuiz.questions[i]?.memoryAnchor || "Core rule for MAKAUT semester exams.",
+            memoryAnchor:
+              defaultQuiz.questions[i]?.memoryAnchor || "Core rule for MAKAUT semester exams.",
             pyqDetails:
               q.pyqYears && q.pyqYears.length > 0
                 ? `MAKAUT ${q.pyqYears.join(", ")} Group A`
@@ -96,12 +97,18 @@ export default function QuizRunnerPage() {
 
   const currentQuestion: QuizQuestion = questions[currentIndex] || questions[0];
 
+  // State 1: User selects an option (does NOT auto-submit, allows deliberate choice)
   const handleSelectOption = (option: string) => {
-    if (hasAnswered) return; // Prevent changing after answer
+    if (hasAnswered) return;
     setSelectedOption(option);
+  };
+
+  // State 2: User clicks "Check Answer" to lock in their choice
+  const handleCheckAnswer = () => {
+    if (!selectedOption || hasAnswered) return;
     setHasAnswered(true);
 
-    const isCorrect = option === currentQuestion.correctAnswer;
+    const isCorrect = selectedOption === currentQuestion.correctAnswer;
     if (isCorrect) {
       setCorrectCount((prev) => prev + 1);
     } else {
@@ -109,6 +116,7 @@ export default function QuizRunnerPage() {
     }
   };
 
+  // State 3: User clicks "Next Question" to advance
   const handleNextQuestion = () => {
     if (currentIndex + 1 < questions.length) {
       setCurrentIndex((prev) => prev + 1);
@@ -186,7 +194,7 @@ export default function QuizRunnerPage() {
         }}
       >
         {/* ══════════════════════════════════════════════════════
-            1. QUIZ TOP BAR & PROGRESS
+            1. TOP NAVIGATION HEADER & 3PX MICRO-PROGRESS BAR
         ══════════════════════════════════════════════════════ */}
         <header
           className="sticky top-0 z-30 w-full backdrop-blur-xl border-b transition-colors duration-300"
@@ -195,14 +203,14 @@ export default function QuizRunnerPage() {
             borderColor: colors.border,
           }}
         >
-          {/* Thin Progress Line */}
-          <div className="w-full h-1 bg-black/5 dark:bg-white/5 relative">
+          {/* Micro-Progress Bar (3px high pinned at top) */}
+          <div className="w-full h-[3px] bg-black/5 dark:bg-white/5 relative overflow-hidden">
             <motion.div
-              className="h-full"
+              className="h-full rounded-full"
               style={{ backgroundColor: colors.accentDark }}
-              initial={{ width: 0 }}
+              initial={false}
               animate={{ width: `${progressPercent}%` }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             />
           </div>
 
@@ -236,7 +244,7 @@ export default function QuizRunnerPage() {
               </div>
             </div>
 
-            {/* Score Pill */}
+            {/* Live Score Pill */}
             <div
               className="px-2.5 py-1 rounded-xl border text-xs font-sans font-semibold shadow-xs"
               style={{
@@ -251,26 +259,38 @@ export default function QuizRunnerPage() {
         </header>
 
         {/* ══════════════════════════════════════════════════════
-            2. MAIN CONTENT AREA
+            2. MAIN CONTENT AREA (Padded for sticky bottom bar)
         ══════════════════════════════════════════════════════ */}
-        <main className="w-full max-w-xl mx-auto px-4 sm:px-6 py-5 pb-28 flex flex-col gap-5">
+        <main
+          className={`w-full max-w-xl mx-auto px-4 sm:px-6 py-4 flex flex-col gap-4 ${
+            !isCompleted ? "pb-28 sm:pb-32" : "pb-12"
+          }`}
+        >
           {!isCompleted ? (
             /* ── ACTIVE QUESTION VIEW ── */
-            <div className="flex flex-col gap-5">
-              {/* Question Metadata Header */}
-              <div className="flex flex-wrap items-center gap-2">
-                <span
-                  className="px-2.5 py-0.5 rounded-full text-[11px] font-sans font-semibold"
-                  style={{
-                    backgroundColor: colors.accentSoft,
-                    color: colors.accentDark,
-                  }}
-                >
-                  {currentQuestion.subtopic}
-                </span>
+            <div className="flex flex-col gap-3.5">
+              {/* ── CONSOLIDATED SINGLE-LINE METADATA ROW ── */}
+              <div className="flex items-center justify-between text-[11px] font-sans font-semibold">
+                <div className="flex items-center gap-1.5 truncate">
+                  <span
+                    className="px-2.5 py-0.5 rounded-full shrink-0"
+                    style={{
+                      backgroundColor: colors.accentSoft,
+                      color: colors.accentDark,
+                    }}
+                  >
+                    1 Mark
+                  </span>
+                  <span
+                    className="truncate opacity-75 font-body"
+                    style={{ color: colors.inkMuted }}
+                  >
+                    {currentQuestion.subtopic}
+                  </span>
+                </div>
 
                 <span
-                  className="px-2.5 py-0.5 rounded-full text-[11px] font-sans font-semibold"
+                  className="px-2.5 py-0.5 rounded-full shrink-0 ml-2"
                   style={{
                     backgroundColor: "#FEF7E6",
                     color: "#8A5A00",
@@ -278,50 +298,66 @@ export default function QuizRunnerPage() {
                 >
                   {currentQuestion.pyqDetails}
                 </span>
-
-                <span
-                  className="px-2.5 py-0.5 rounded-full text-[11px] font-sans font-semibold ml-auto"
-                  style={{
-                    backgroundColor: colors.accentSoft,
-                    color: colors.accentDark,
-                  }}
-                >
-                  1 Mark
-                </span>
               </div>
 
-              {/* Question Text */}
+              {/* ── QUESTION CARD ── */}
               <div
-                className="p-5 sm:p-6 rounded-3xl border shadow-sm transition-all"
+                className="p-4 sm:p-5 rounded-3xl border shadow-sm transition-all"
                 style={{
                   backgroundColor: colors.cardBg,
                   borderColor: colors.border,
                 }}
               >
                 <h2
-                  className="text-base sm:text-lg font-sans font-semibold leading-relaxed"
+                  className="text-sm sm:text-base font-sans font-semibold leading-relaxed"
                   style={{ color: colors.ink }}
                 >
                   {currentQuestion.questionText}
                 </h2>
               </div>
 
-              {/* 4 Option Buttons (Large Thumb Hit Area >= 52px) */}
-              <div className="flex flex-col gap-3">
+              {/* ── 4 OPTION BUTTONS WITH SELECTED & FEEDBACK STATES ── */}
+              <div className="flex flex-col gap-2.5">
                 {currentQuestion.options.map((option, idx) => {
                   const letter = String.fromCharCode(65 + idx); // A, B, C, D
                   const isSelected = selectedOption === option;
                   const isCorrectAnswer = option === currentQuestion.correctAnswer;
 
-                  // Determine styling based on answer state
+                  // Styling logic across the 3 interactive states
                   let buttonBg = colors.cardBg;
                   let buttonBorder = colors.border;
                   let textColor = colors.ink;
                   let letterBg = colors.accentSoft;
                   let letterColor = colors.accentDark;
-                  let statusIcon = null;
+                  let indicatorElement = (
+                    <div
+                      className="w-4 h-4 rounded-full border shrink-0 opacity-40 transition-colors"
+                      style={{ borderColor: colors.inkMuted }}
+                    />
+                  );
 
-                  if (hasAnswered) {
+                  if (!hasAnswered) {
+                    // State 1: Active selection state (tapped before submission)
+                    if (isSelected) {
+                      buttonBg = isDarkMode ? `${colors.accentDark}20` : `${colors.accentSoft}70`;
+                      buttonBorder = colors.accentDark;
+                      textColor = colors.ink;
+                      letterBg = colors.accentDark;
+                      letterColor = "#FFFFFF";
+                      indicatorElement = (
+                        <div
+                          className="w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors"
+                          style={{ borderColor: colors.accentDark }}
+                        >
+                          <div
+                            className="w-2 h-2 rounded-full"
+                            style={{ backgroundColor: colors.accentDark }}
+                          />
+                        </div>
+                      );
+                    }
+                  } else {
+                    // State 2: Answer checked feedback state
                     if (isCorrectAnswer) {
                       // Gentle green for the correct option
                       buttonBg = "#EAF3E8";
@@ -329,15 +365,20 @@ export default function QuizRunnerPage() {
                       textColor = "#2E5929";
                       letterBg = "#C3E2BD";
                       letterColor = "#2E5929";
-                      statusIcon = <CheckCircle2 className="w-5 h-5 text-[#2E5929] shrink-0" />;
+                      indicatorElement = (
+                        <CheckCircle2 className="w-5 h-5 text-[#2E5929] shrink-0" />
+                      );
                     } else if (isSelected && !isCorrectAnswer) {
-                      // Muted rose for the chosen wrong option (strict: never harsh red)
+                      // Muted rose for the chosen wrong option (strict: never screaming red)
                       buttonBg = "#FDF0F0";
                       buttonBorder = "#F5C6CB";
                       textColor = "#7D3B4A";
                       letterBg = "#F5C6CB";
                       letterColor = "#7D3B4A";
-                      statusIcon = <XCircle className="w-5 h-5 text-[#7D3B4A] shrink-0" />;
+                      indicatorElement = <XCircle className="w-5 h-5 text-[#7D3B4A] shrink-0" />;
+                    } else {
+                      // Unselected wrong options: gently subdued
+                      textColor = colors.inkMuted;
                     }
                   }
 
@@ -349,13 +390,15 @@ export default function QuizRunnerPage() {
                       onClick={() => handleSelectOption(option)}
                       whileTap={{ scale: hasAnswered ? 1 : 0.98 }}
                       className={`
-                        w-full min-h-[52px] p-3.5 sm:p-4 rounded-2xl border text-left
-                        flex items-center gap-3 transition-all duration-200 shadow-xs
+                        w-full min-h-[52px] p-3 sm:p-3.5 rounded-2xl border text-left
+                        flex items-center gap-3 transition-all duration-150 shadow-xs
                         ${!hasAnswered ? "cursor-pointer active:scale-[0.98]" : "cursor-default"}
+                        ${hasAnswered && !isSelected && !isCorrectAnswer ? "opacity-50" : "opacity-100"}
                       `}
                       style={{
                         backgroundColor: buttonBg,
                         borderColor: buttonBorder,
+                        borderWidth: isSelected && !hasAnswered ? "2px" : "1px",
                         color: textColor,
                       }}
                     >
@@ -375,25 +418,25 @@ export default function QuizRunnerPage() {
                         {option}
                       </span>
 
-                      {/* Status Icon (Check / X) */}
-                      {statusIcon}
+                      {/* Radio / Status Icon */}
+                      {indicatorElement}
                     </motion.button>
                   );
                 })}
               </div>
 
-              {/* ── CONCEPT RATIONALE CARD (Animates in once answered) ── */}
+              {/* ── CONCEPT RATIONALE CALLOUT (Slides in once answered) ── */}
               <AnimatePresence>
                 {hasAnswered && (
                   <motion.div
-                    initial={{ opacity: 0, y: 10, height: 0 }}
+                    initial={{ opacity: 0, y: 8, height: 0 }}
                     animate={{ opacity: 1, y: 0, height: "auto" }}
-                    exit={{ opacity: 0, y: 10, height: 0 }}
-                    transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                    exit={{ opacity: 0, y: 8, height: 0 }}
+                    transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
                     className="overflow-hidden"
                   >
                     <div
-                      className="p-5 rounded-3xl border shadow-sm flex flex-col gap-3.5 mt-1"
+                      className="p-4 sm:p-5 rounded-2xl border shadow-xs flex flex-col gap-2.5 my-1"
                       style={{
                         backgroundColor: isDarkMode ? "#1B1719" : "#FCFAF8",
                         borderColor: colors.border,
@@ -415,39 +458,23 @@ export default function QuizRunnerPage() {
                         {currentQuestion.explanation}
                       </p>
 
-                      {/* Memory Anchor Pill Box */}
+                      {/* Core Memory Anchor Pill Box */}
                       <div
-                        className="p-3.5 rounded-2xl border text-xs font-body leading-relaxed flex items-start gap-2.5"
+                        className="p-3 rounded-xl border text-xs font-body leading-relaxed flex items-start gap-2"
                         style={{
                           backgroundColor: colors.accentSoft,
                           borderColor: colors.accent,
                           color: colors.ink,
                         }}
                       >
-                        <span className="font-sans font-bold shrink-0" style={{ color: colors.accentDark }}>
+                        <span
+                          className="font-sans font-bold shrink-0 text-[11px]"
+                          style={{ color: colors.accentDark }}
+                        >
                           Anchor:
                         </span>
-                        <span>{currentQuestion.memoryAnchor}</span>
+                        <span className="text-[11px]">{currentQuestion.memoryAnchor}</span>
                       </div>
-
-                      {/* Next Question Action Button */}
-                      <button
-                        type="button"
-                        onClick={handleNextQuestion}
-                        className="w-full min-h-[46px] mt-1 rounded-2xl font-sans font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.98]"
-                        style={{
-                          backgroundColor: colors.accentDark,
-                          color: "#FFFFFF",
-                          boxShadow: `0 4px 14px ${colors.accent}55`,
-                        }}
-                      >
-                        <span>
-                          {currentIndex + 1 < questions.length
-                            ? "Next Question"
-                            : "View Quiz Summary"}
-                        </span>
-                        <ArrowRight className="w-4 h-4" />
-                      </button>
                     </div>
                   </motion.div>
                 )}
@@ -459,7 +486,7 @@ export default function QuizRunnerPage() {
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-col gap-5"
+              className="flex flex-col gap-5 pt-2"
             >
               {/* Score Header Card */}
               <div
@@ -490,7 +517,10 @@ export default function QuizRunnerPage() {
                   <h1 className="text-2xl sm:text-3xl font-sans font-bold tracking-tight">
                     {correctCount} / {questions.length} Correct
                   </h1>
-                  <p className="text-xs sm:text-sm font-body opacity-75" style={{ color: colors.inkMuted }}>
+                  <p
+                    className="text-xs sm:text-sm font-body opacity-75"
+                    style={{ color: colors.inkMuted }}
+                  >
                     Accuracy: {sm2Result?.accuracyPercent}% · Completed in {formatTime(elapsedSeconds)}
                   </p>
                 </div>
@@ -536,7 +566,10 @@ export default function QuizRunnerPage() {
                     </h3>
                   </div>
 
-                  <p className="text-xs sm:text-sm font-body leading-relaxed" style={{ color: colors.ink }}>
+                  <p
+                    className="text-xs sm:text-sm font-body leading-relaxed"
+                    style={{ color: colors.ink }}
+                  >
                     Based on your recall performance, your optimal review schedule is set to:
                   </p>
 
@@ -548,19 +581,31 @@ export default function QuizRunnerPage() {
                     }}
                   >
                     <div>
-                      <div className="text-xs font-body opacity-70" style={{ color: colors.inkMuted }}>
+                      <div
+                        className="text-xs font-body opacity-70"
+                        style={{ color: colors.inkMuted }}
+                      >
                         Next Recommended Review
                       </div>
-                      <div className="text-sm font-sans font-bold mt-0.5" style={{ color: colors.accentDark }}>
+                      <div
+                        className="text-sm font-sans font-bold mt-0.5"
+                        style={{ color: colors.accentDark }}
+                      >
                         {sm2Result.nextReviewLabel}
                       </div>
                     </div>
 
                     <div className="text-right">
-                      <div className="text-xs font-body opacity-70" style={{ color: colors.inkMuted }}>
+                      <div
+                        className="text-xs font-body opacity-70"
+                        style={{ color: colors.inkMuted }}
+                      >
                         Ease Factor
                       </div>
-                      <div className="text-sm font-sans font-bold mt-0.5" style={{ color: colors.accentDark }}>
+                      <div
+                        className="text-sm font-sans font-bold mt-0.5"
+                        style={{ color: colors.accentDark }}
+                      >
                         {sm2Result.easeFactor}
                       </div>
                     </div>
@@ -603,7 +648,7 @@ export default function QuizRunnerPage() {
               )}
 
               {/* Navigation Action Buttons */}
-              <div className="flex flex-col gap-2.5 pt-2">
+              <div className="flex flex-col gap-2.5 pt-1">
                 <button
                   type="button"
                   onClick={() => router.push("/study/sess_dbms")}
@@ -644,6 +689,66 @@ export default function QuizRunnerPage() {
             </motion.div>
           )}
         </main>
+
+        {/* ══════════════════════════════════════════════════════
+            3. STICKY FULL-WIDTH ACTION BUTTON (Pinned to Bottom)
+        ══════════════════════════════════════════════════════ */}
+        {!isCompleted && (
+          <div
+            className="fixed bottom-0 inset-x-0 w-full p-4 border-t backdrop-blur-xl z-40 transition-colors duration-300 flex justify-center pb-[calc(1rem+env(safe-area-inset-bottom))]"
+            style={{
+              backgroundColor: isDarkMode ? `${colors.cardBg}F5` : `${colors.cardBg}EE`,
+              borderColor: colors.border,
+            }}
+          >
+            <div className="w-full max-w-xl">
+              {!hasAnswered ? (
+                /* State 1 (Disabled until selected) or State 2 ("Check Answer") */
+                <button
+                  type="button"
+                  disabled={!selectedOption}
+                  onClick={handleCheckAnswer}
+                  className={`
+                    w-full min-h-[48px] py-3 rounded-2xl text-xs sm:text-sm font-sans font-semibold tracking-wide
+                    flex items-center justify-center gap-2 transition-all duration-200 shadow-sm
+                    ${
+                      selectedOption
+                        ? "active:scale-[0.98] cursor-pointer shadow-md"
+                        : "cursor-not-allowed opacity-50"
+                    }
+                  `}
+                  style={{
+                    backgroundColor: selectedOption ? colors.accentDark : colors.border,
+                    color: selectedOption ? "#FFFFFF" : colors.inkMuted,
+                    boxShadow: selectedOption ? `0 4px 16px ${colors.accent}66` : "none",
+                  }}
+                >
+                  <span>{selectedOption ? "Check Answer" : "Select an Option"}</span>
+                  <CheckCircle2 className="w-4 h-4" />
+                </button>
+              ) : (
+                /* State 3: "Next Question" / "View Summary" */
+                <button
+                  type="button"
+                  onClick={handleNextQuestion}
+                  className="w-full min-h-[48px] py-3 rounded-2xl text-xs sm:text-sm font-sans font-semibold tracking-wide flex items-center justify-center gap-2 transition-all active:scale-[0.98] shadow-md cursor-pointer"
+                  style={{
+                    backgroundColor: colors.accentDark,
+                    color: "#FFFFFF",
+                    boxShadow: `0 4px 16px ${colors.accent}66`,
+                  }}
+                >
+                  <span>
+                    {currentIndex + 1 < questions.length
+                      ? "Next Question"
+                      : "View Quiz Summary"}
+                  </span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
