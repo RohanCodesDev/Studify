@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { useState } from "react";
+import { useRouter } from "next/router";
 import { motion } from "framer-motion";
 import Greeting from "@/components/greeting";
 import QuickStudyCard, { QuickStudyPayload } from "@/components/quickStudyCard";
@@ -8,12 +9,13 @@ import BottomNav from "@/components/bottomNav";
 import { useTheme } from "@/context/ThemeContext";
 
 export default function StudentWorkspace() {
+  const router = useRouter();
   const { colors } = useTheme();
   const [activeTab, setActiveTab] = useState("home");
 
   // Example previous session state (can be null for new students, or populated once started)
   const [currentSession, setCurrentSession] = useState<PrevSessionData | null>({
-    id: "sess_pcc_cs501",
+    id: "sess_dbms",
     subjectCode: "PCC-CS501",
     subjectName: "Database Management Systems",
     currentChapter: "Module 3: Normalization (3NF vs BCNF)",
@@ -24,18 +26,16 @@ export default function StudentWorkspace() {
   });
 
   const handleStartQuickStudy = (payload: QuickStudyPayload) => {
-    console.log("Starting quick study with:", payload);
-    // Ingestion pipeline routing will connect here
+    // Navigate straight to study reading view
+    router.push("/study/sess_dbms");
   };
 
   const handleStartNewSession = () => {
-    console.log("Navigating to syllabus selection & new session setup...");
-    // Syllabus selection workflow will connect here
+    router.push("/sessions");
   };
 
   const handleResumeSession = (sessionId: string) => {
-    console.log("Resuming session:", sessionId);
-    // Reading view / chapter view will connect here
+    router.push(`/study/${sessionId}`);
   };
 
   return (

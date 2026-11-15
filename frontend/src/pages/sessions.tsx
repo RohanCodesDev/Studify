@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { useState } from "react";
+import { useRouter } from "next/router";
 import { motion } from "framer-motion";
 import { Plus } from "lucide-react";
 import ActiveSessionsList, { SessionItem } from "@/components/activeSessionsList";
@@ -32,11 +33,12 @@ const INITIAL_SESSIONS: SessionItem[] = [
 ];
 
 export default function SessionsPage() {
+  const router = useRouter();
   const { colors } = useTheme();
   const [sessions, setSessions] = useState<SessionItem[]>(INITIAL_SESSIONS);
 
   const handleContinueChapter = (id: string) => {
-    console.log("Continuing chapter for session:", id);
+    router.push(`/study/${id}`);
   };
 
   const handleAddSubject = () => {
