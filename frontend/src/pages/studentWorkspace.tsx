@@ -13,6 +13,8 @@ export default function StudentWorkspace() {
   const { colors } = useTheme();
   const [activeTab, setActiveTab] = useState("home");
 
+  const [isIngesting, setIsIngesting] = useState(false);
+
   // Example previous session state (can be null for new students, or populated once started)
   const [currentSession, setCurrentSession] = useState<PrevSessionData | null>({
     id: "sess_dbms",
@@ -25,9 +27,50 @@ export default function StudentWorkspace() {
     lastActive: "Today at 11:30 AM",
   });
 
-  const handleStartQuickStudy = (payload: QuickStudyPayload) => {
-    // Navigate straight to study reading view
-    router.push("/study/sess_dbms");
+  const handleStartQuickStudy = async (payload: QuickStudyPayload) => {
+    try {
+      setIsIngesting(true);
+
+      let targetSessionId = "sess_dbms";
+
+      if (payload.file) {
+        const formData = new FormData();
+        formData.append("file", payload.file);
+        formData.append("sessionId", targetSessionId);
+        formData.append("subjectCode", "PCC-CS501");
+
+        const res = await fetch("/api/ingest", {
+          method: "POST",
+          body: formData,
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.sessionId) targetSessionId = data.sessionId;
+        }
+      } else if (payload.text && payload.text.trim()) {
+        const res = await fetch("/api/ingest", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            text: payload.text.trim(),
+            sessionId: targetSessionId,
+            subjectCode: "PCC-CS501",
+            fileName: "quick_notes.txt",
+          }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.sessionId) targetSessionId = data.sessionId;
+        }
+      }
+
+      router.push(`/study/${targetSessionId}`);
+    } catch (err) {
+      console.warn("Ingestion request completed with fallback:", err);
+      router.push("/study/sess_dbms");
+    } finally {
+      setIsIngesting(false);
+    }
   };
 
   const handleStartNewSession = () => {
@@ -89,7 +132,10 @@ export default function StudentWorkspace() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             >
-              <QuickStudyCard onStartQuickStudy={handleStartQuickStudy} />
+              <QuickStudyCard
+                onStartQuickStudy={handleStartQuickStudy}
+                isLoading={isIngesting}
+              />
             </motion.div>
 
             {/* ══ Next Sections (Practice Row, Free Tools) will be mounted here ══ */}

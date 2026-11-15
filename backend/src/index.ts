@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { testConnection, query } from "./db";
+import ingestRouter from "./ingest/routes";
 
 dotenv.config();
 
@@ -16,6 +17,9 @@ app.use(
   })
 );
 app.use(express.json());
+
+// Ingestion pipeline routes
+app.use("/api/ingest", ingestRouter);
 
 // Basic health check route
 app.get("/api/health", (req: Request, res: Response) => {

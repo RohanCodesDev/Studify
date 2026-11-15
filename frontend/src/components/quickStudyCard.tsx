@@ -21,11 +21,13 @@ export interface QuickStudyPayload {
 
 interface QuickStudyCardProps {
   onStartQuickStudy?: (payload: QuickStudyPayload) => void;
+  isLoading?: boolean;
   className?: string;
 }
 
 export default function QuickStudyCard({
   onStartQuickStudy,
+  isLoading = false,
   className = "",
 }: QuickStudyCardProps) {
   const { colors, isDarkMode } = useTheme();
@@ -257,7 +259,7 @@ export default function QuickStudyCard({
         {/* ── Action Button ── */}
         <button
           type="submit"
-          disabled={!isActionReady}
+          disabled={!isActionReady || isLoading}
           className={`
             w-full ${QUICK_STUDY_CONFIG.buttonRadius}
             font-sans font-semibold text-xs sm:text-sm
@@ -266,15 +268,24 @@ export default function QuickStudyCard({
           `}
           style={{
             minHeight: QUICK_STUDY_CONFIG.buttonMinHeight,
-            backgroundColor: isActionReady ? colors.accentDark : colors.border,
-            color: isActionReady ? "#FFFFFF" : colors.inkMuted,
-            opacity: isActionReady ? 1 : 0.65,
-            cursor: isActionReady ? "pointer" : "not-allowed",
-            boxShadow: isActionReady ? `0 4px 16px ${colors.accent}66` : "none",
+            backgroundColor: isActionReady && !isLoading ? colors.accentDark : colors.border,
+            color: isActionReady && !isLoading ? "#FFFFFF" : colors.inkMuted,
+            opacity: isActionReady && !isLoading ? 1 : 0.65,
+            cursor: isActionReady && !isLoading ? "pointer" : "not-allowed",
+            boxShadow: isActionReady && !isLoading ? `0 4px 16px ${colors.accent}66` : "none",
           }}
         >
-          <span>Generate Notes</span>
-          <ArrowRight className="w-4 h-4" />
+          {isLoading ? (
+            <span className="flex items-center gap-2">
+              <span className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+              <span>Mapping Syllabus Notes...</span>
+            </span>
+          ) : (
+            <>
+              <span>Generate Notes</span>
+              <ArrowRight className="w-4 h-4" />
+            </>
+          )}
         </button>
       </form>
     </div>
