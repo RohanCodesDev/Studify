@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { Settings } from "lucide-react";
 import WelcomeHero from "@/components/welcomeHero";
@@ -9,6 +10,18 @@ import { useTheme } from "@/context/ThemeContext";
 export default function Home() {
   const router = useRouter();
   const { colors, activeProfile, isDarkMode } = useTheme();
+
+  // Landing page viewport lock (prevents scrolling on landing page only)
+  useEffect(() => {
+    const originalOverflow = document.body.style.overflow;
+    const originalHeight = document.body.style.height;
+    document.body.style.overflow = "hidden";
+    document.body.style.height = "100%";
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      document.body.style.height = originalHeight;
+    };
+  }, []);
 
   return (
     <>
