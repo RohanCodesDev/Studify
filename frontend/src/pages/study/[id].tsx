@@ -232,14 +232,9 @@ export default function StudyPage() {
               }}
             >
               <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <h3 className="text-sm font-sans font-bold tracking-tight">
-                    Topic Completion
-                  </h3>
-                  <p className="text-xs font-body opacity-65" style={{ color: colors.inkMuted }}>
-                    Save progress to your MAKAUT syllabus map
-                  </p>
-                </div>
+                <h3 className="text-sm font-sans font-bold tracking-tight">
+                  Topic Completion
+                </h3>
 
                 <button
                   type="button"

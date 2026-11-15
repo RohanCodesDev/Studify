@@ -55,7 +55,7 @@ export default function ReadingNoteRenderer({
                 borderColor: colors.border,
               }}
             >
-              <div className="flex items-center gap-2 mb-3">
+              <div className="mb-3">
                 <span
                   className="px-2.5 py-0.5 rounded-full text-[11px] font-sans font-semibold"
                   style={{
@@ -63,9 +63,8 @@ export default function ReadingNoteRenderer({
                     color: colors.accentDark,
                   }}
                 >
-                  1-Mark Formal Definition
+                  1 Mark Objective
                 </span>
-                <span className="text-xs font-body opacity-60">MAKAUT Group A Style</span>
               </div>
 
               <p
@@ -76,7 +75,7 @@ export default function ReadingNoteRenderer({
               </p>
             </div>
 
-            {/* Golden Rule Card */}
+            {/* Merged Single Highlight Box: Core Memory Anchor */}
             <div
               className="p-4 sm:p-5 rounded-2xl border flex items-start gap-3"
               style={{
@@ -88,7 +87,7 @@ export default function ReadingNoteRenderer({
                 className="w-5 h-5 shrink-0 mt-0.5"
                 style={{ color: colors.accentDark }}
               />
-              <div className="space-y-0.5">
+              <div className="space-y-1">
                 <div
                   className="text-xs uppercase tracking-wider font-semibold font-sans"
                   style={{ color: colors.accentDark }}
@@ -98,19 +97,12 @@ export default function ReadingNoteRenderer({
                 <div className="text-sm font-body leading-relaxed" style={{ color: colors.ink }}>
                   {notes.oneMark.keyRule}
                 </div>
+                {notes.oneMark.quickFact && (
+                  <p className="text-xs font-body opacity-80 pt-0.5 leading-relaxed" style={{ color: colors.inkMuted }}>
+                    {notes.oneMark.quickFact}
+                  </p>
+                )}
               </div>
-            </div>
-
-            {/* Quick Fact Pill */}
-            <div
-              className="p-3.5 rounded-2xl border text-xs font-body leading-relaxed opacity-85"
-              style={{
-                backgroundColor: isDarkMode ? "#1B1719" : "#FAF8F7",
-                borderColor: colors.border,
-                color: colors.inkMuted,
-              }}
-            >
-              💡 <strong className="font-semibold" style={{ color: colors.ink }}>Key Fact:</strong> {notes.oneMark.quickFact}
             </div>
           </motion.div>
         )}
@@ -142,7 +134,7 @@ export default function ReadingNoteRenderer({
                   color: colors.accentDark,
                 }}
               >
-                5-Mark Short Answer (MAKAUT Group B)
+                5 Marks Short Note
               </span>
 
               <h3 className="text-sm sm:text-base font-sans font-bold tracking-tight">
@@ -233,7 +225,7 @@ export default function ReadingNoteRenderer({
             className="flex flex-col gap-6 font-body"
           >
             {/* Header Badge */}
-            <div className="flex items-center justify-between">
+            <div>
               <span
                 className="px-2.5 py-0.5 rounded-full text-[11px] font-sans font-semibold"
                 style={{
@@ -241,9 +233,8 @@ export default function ReadingNoteRenderer({
                   color: colors.accentDark,
                 }}
               >
-                15-Mark Comprehensive Essay (MAKAUT Group C)
+                15 Marks Long Form
               </span>
-              <span className="text-xs font-body opacity-60">5+5+5 or 7+8 Structure</span>
             </div>
 
             {/* Section 1: Theoretical Foundation */}

@@ -9,7 +9,6 @@ export type MarksFormat = "oneMark" | "fiveMarks" | "fifteenMarks" | "crashRevis
 interface MarksTabItem {
   id: MarksFormat;
   label: string;
-  subLabel: string;
 }
 
 interface MarksTabBarProps {
@@ -19,10 +18,10 @@ interface MarksTabBarProps {
 }
 
 const TABS: MarksTabItem[] = [
-  { id: "oneMark", label: "1 Mark", subLabel: "Objective" },
-  { id: "fiveMarks", label: "5 Marks", subLabel: "Short Note" },
-  { id: "fifteenMarks", label: "15 Marks", subLabel: "Long Form" },
-  { id: "crashRevision", label: "Crash", subLabel: "Night-Before" },
+  { id: "oneMark", label: "1 Mark" },
+  { id: "fiveMarks", label: "5 Marks" },
+  { id: "fifteenMarks", label: "15 Marks" },
+  { id: "crashRevision", label: "Revision" },
 ];
 
 export default function MarksTabBar({
@@ -49,7 +48,7 @@ export default function MarksTabBar({
               key={tab.id}
               type="button"
               onClick={() => onChangeFormat(tab.id)}
-              className="relative py-2 px-1 rounded-xl flex flex-col items-center justify-center min-h-[44px] transition-colors duration-150 active:scale-[0.98]"
+              className="relative py-2.5 px-2 rounded-xl flex items-center justify-center min-h-[44px] transition-colors duration-150 active:scale-[0.98]"
               style={{
                 color: isActive ? colors.accentDark : colors.inkMuted,
               }}
@@ -69,9 +68,6 @@ export default function MarksTabBar({
 
               <span className="relative z-10 text-xs sm:text-sm font-sans font-bold tracking-tight">
                 {tab.label}
-              </span>
-              <span className="relative z-10 text-[9px] sm:text-[10px] font-body opacity-70 tracking-tight">
-                {tab.subLabel}
               </span>
             </button>
           );
