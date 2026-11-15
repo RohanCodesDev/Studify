@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import { UploadCloud, FileText, X, ArrowRight, Sparkles, CheckCircle2 } from "lucide-react";
+import { UploadCloud, FileText, X, ArrowRight } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 
 // ─── Tweakable layout config ───────────────────────────────────────────────
@@ -66,14 +66,12 @@ export default function QuickStudyCard({
         text: pastedText.trim(),
       });
     } else {
-      // Default stub action
       console.log("Quick study submitted:", { file: selectedFile?.name, text: pastedText.trim() });
     }
   };
 
   const isActionReady = Boolean(selectedFile || pastedText.trim().length > 0);
 
-  // Format file size nicely
   const formatFileSize = (bytes: number): string => {
     if (bytes < 1024) return `${bytes} B`;
     if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
@@ -89,35 +87,21 @@ export default function QuickStudyCard({
         color: colors.ink,
       }}
     >
-      {/* ── Card Header ── */}
-      <div className="flex items-start justify-between gap-3 mb-4">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-sans font-semibold tracking-wide uppercase"
-              style={{
-                backgroundColor: colors.accentSoft,
-                color: colors.accentDark,
-              }}
-            >
-              <Sparkles className="w-3 h-3" />
-              <span>Base Ingestion</span>
-            </span>
-          </div>
-          <h2 className="text-xl sm:text-2xl font-sans font-bold tracking-tight">
-            Quick Study
-          </h2>
-          <p
-            className="text-xs sm:text-sm font-body leading-relaxed mt-0.5"
-            style={{ color: colors.inkMuted }}
-          >
-            Drop in notes, a PDF or a photo and get clear notes.
-          </p>
-        </div>
+      {/* ── Card Header (Clean & Minimal: No artificial badges) ── */}
+      <div className="mb-4">
+        <h2 className="text-xl sm:text-2xl font-sans font-bold tracking-tight">
+          Quick Study
+        </h2>
+        <p
+          className="text-xs sm:text-sm font-body leading-relaxed mt-0.5"
+          style={{ color: colors.inkMuted }}
+        >
+          Drop in notes, a PDF or a photo and get clear notes.
+        </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        {/* ── Upload Files Area ── */}
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3.5">
+        {/* ── File Upload Area ── */}
         <div>
           <input
             ref={fileInputRef}
@@ -141,9 +125,9 @@ export default function QuickStudyCard({
               tabIndex={0}
               aria-label="Upload files"
               className={`
-                w-full p-5 sm:p-6 ${QUICK_STUDY_CONFIG.dropzoneRadius}
+                w-full p-4 sm:p-5 ${QUICK_STUDY_CONFIG.dropzoneRadius}
                 border-2 border-dashed cursor-pointer text-center
-                flex flex-col items-center justify-center gap-2
+                flex flex-col items-center justify-center gap-1.5
                 transition-all duration-200 select-none active:scale-[0.99]
               `}
               style={{
@@ -156,33 +140,31 @@ export default function QuickStudyCard({
               }}
             >
               <div
-                className="w-11 h-11 rounded-2xl flex items-center justify-center transition-transform duration-200"
+                className="w-10 h-10 rounded-2xl flex items-center justify-center transition-transform duration-200"
                 style={{
                   backgroundColor: colors.accentSoft,
                   color: colors.accentDark,
-                  transform: isDragOver ? "scale(1.1)" : "scale(1)",
+                  transform: isDragOver ? "scale(1.08)" : "scale(1)",
                 }}
               >
                 <UploadCloud className="w-5 h-5" />
               </div>
 
-              <div className="space-y-0.5">
-                <span className="text-xs sm:text-sm font-sans font-medium">
-                  Tap to upload or drag &amp; drop file here
-                </span>
-                <p
-                  className="text-[11px] font-body"
-                  style={{ color: colors.inkMuted }}
-                >
-                  Allows <strong className="font-semibold">PDF, DOC, DOCX, PPTX</strong> &amp; photos (up to 25MB)
-                </p>
-              </div>
+              <span className="text-xs sm:text-sm font-sans font-medium">
+                Tap to upload or drop file here
+              </span>
+              <p
+                className="text-[11px] font-body"
+                style={{ color: colors.inkMuted }}
+              >
+                PDF, DOC, DOCX, PPTX or photos
+              </p>
             </div>
           ) : (
-            /* Selected file banner */
+            /* Selected file preview */
             <div
               className={`
-                w-full p-3.5 sm:p-4 ${QUICK_STUDY_CONFIG.dropzoneRadius}
+                w-full p-3 sm:p-3.5 ${QUICK_STUDY_CONFIG.dropzoneRadius}
                 border flex items-center justify-between gap-3
                 transition-all
               `}
@@ -193,13 +175,13 @@ export default function QuickStudyCard({
             >
               <div className="flex items-center gap-3 overflow-hidden">
                 <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                  className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
                   style={{
                     backgroundColor: colors.cardBg,
                     color: colors.accentDark,
                   }}
                 >
-                  <FileText className="w-5 h-5" />
+                  <FileText className="w-4 h-4" />
                 </div>
                 <div className="overflow-hidden">
                   <div
@@ -212,7 +194,7 @@ export default function QuickStudyCard({
                     className="text-[11px] font-body opacity-70"
                     style={{ color: colors.inkMuted }}
                   >
-                    {formatFileSize(selectedFile.size)} · Ready to ingest
+                    {formatFileSize(selectedFile.size)}
                   </div>
                 </div>
               </div>
@@ -234,8 +216,8 @@ export default function QuickStudyCard({
           )}
         </div>
 
-        {/* ── OR Section Divider ── */}
-        <div className="relative flex items-center justify-center my-1 select-none">
+        {/* ── Clean Minimal Divider ── */}
+        <div className="relative flex items-center justify-center my-0.5 select-none">
           <div
             className="w-full border-t"
             style={{ borderColor: colors.border }}
@@ -247,24 +229,18 @@ export default function QuickStudyCard({
               color: colors.inkMuted,
             }}
           >
-            or paste text
+            or
           </span>
         </div>
 
-        {/* ── Text Ingestion Textbox ── */}
+        {/* ── Single Clean Textarea (no stacked repetitive labels) ── */}
         <div>
-          <label
-            htmlFor="quick-study-text-input"
-            className="sr-only"
-          >
-            Paste study notes or text
-          </label>
           <textarea
             id="quick-study-text-input"
             rows={3}
             value={pastedText}
             onChange={(e) => setPastedText(e.target.value)}
-            placeholder="Paste your raw notes, assignment questions, or textbook excerpt here..."
+            placeholder="Paste raw notes, assignments, or textbook excerpts here..."
             className={`
               w-full p-3.5 text-xs sm:text-sm font-body
               ${QUICK_STUDY_CONFIG.textareaRadius} border
@@ -297,7 +273,7 @@ export default function QuickStudyCard({
             boxShadow: isActionReady ? `0 4px 16px ${colors.accent}66` : "none",
           }}
         >
-          <span>Generate Quick Notes</span>
+          <span>Generate Notes</span>
           <ArrowRight className="w-4 h-4" />
         </button>
       </form>

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { BookOpen, Plus, ArrowRight, CheckCircle2, Clock, Sparkles } from "lucide-react";
+import { Plus, ArrowRight, Clock } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 
 // ─── Tweakable layout config ───────────────────────────────────────────────
@@ -64,36 +64,16 @@ export default function SessionStudyCard({
         color: colors.ink,
       }}
     >
-      {/* ── Card Header ── */}
-      <div className="flex items-start justify-between gap-3 mb-4">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-sans font-semibold tracking-wide uppercase"
-              style={{
-                backgroundColor: colors.accent,
-                color: isDarkMode ? "#181315" : colors.ink,
-              }}
-            >
-              <Sparkles className="w-3 h-3" />
-              <span>Signature Feature</span>
-            </span>
-          </div>
-          <h2 className="text-xl sm:text-2xl font-sans font-bold tracking-tight">
-            Session Study
-          </h2>
-          <p
-            className="text-xs sm:text-sm font-body leading-relaxed mt-0.5"
-            style={{ color: colors.inkMuted }}
-          >
-            Add your syllabus and study material and learn chapter by chapter.
-          </p>
-        </div>
+      {/* ── Card Header (Clean: Title only, no meta badges or redundant filler) ── */}
+      <div className="mb-4">
+        <h2 className="text-xl sm:text-2xl font-sans font-bold tracking-tight">
+          Session Study
+        </h2>
       </div>
 
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-3.5">
         {/* ── 1. Continue Previous Session (if any) ── */}
-        {prevSession ? (
+        {prevSession && (
           <div
             className={`w-full p-4 sm:p-5 ${SESSION_STUDY_CONFIG.innerCardRadius} border flex flex-col gap-3 transition-all`}
             style={{
@@ -107,10 +87,10 @@ export default function SessionStudyCard({
                 style={{ color: colors.ink }}
               >
                 <Clock className="w-3.5 h-3.5" style={{ color: colors.accentDark }} />
-                <span>Continue Where You Left Off</span>
+                <span>Current Session</span>
               </span>
               <span
-                className="text-xs font-semibold font-sans px-2 py-0.5 rounded-full"
+                className="text-xs font-semibold font-sans px-2.5 py-0.5 rounded-full"
                 style={{
                   backgroundColor: colors.cardBg,
                   color: colors.accentDark,
@@ -182,31 +162,6 @@ export default function SessionStudyCard({
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
-        ) : (
-          /* Empty / First-time user prompt for previous session */
-          <div
-            className={`w-full p-3.5 sm:p-4 ${SESSION_STUDY_CONFIG.innerCardRadius} border flex items-center gap-3 transition-colors`}
-            style={{
-              backgroundColor: isDarkMode ? "#1B1719" : "#FAF8F7",
-              borderColor: colors.border,
-            }}
-          >
-            <div
-              className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
-              style={{
-                backgroundColor: colors.accentSoft,
-                color: colors.accentDark,
-              }}
-            >
-              <BookOpen className="w-4 h-4" />
-            </div>
-            <p
-              className="text-xs font-body leading-relaxed"
-              style={{ color: colors.inkMuted }}
-            >
-              No active session yet. Start your first session below to map syllabus topics &amp; track progress.
-            </p>
-          </div>
         )}
 
         {/* ── 2. Start New Session Section ── */}
@@ -217,7 +172,7 @@ export default function SessionStudyCard({
             borderColor: colors.border,
           }}
         >
-          <div className="space-y-1">
+          <div className="space-y-0.5">
             <h3 className="text-sm sm:text-base font-sans font-semibold">
               Start a New Course Session
             </h3>
@@ -225,7 +180,7 @@ export default function SessionStudyCard({
               className="text-xs font-body leading-relaxed"
               style={{ color: colors.inkMuted }}
             >
-              Select your department, semester, and MAKAUT subject to generate chapter-by-chapter 1, 5, and 15-mark notes.
+              Generate chapter-by-chapter notes for your MAKAUT subjects.
             </p>
           </div>
 

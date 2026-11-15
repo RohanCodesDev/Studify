@@ -74,8 +74,6 @@ export default function Greeting({
     setMounted(true);
   }, []);
 
-  const displayName = name?.trim() ? name.trim() : "there";
-
   const handleSettingsClick = () => {
     if (onOpenSettings) {
       onOpenSettings();
@@ -83,6 +81,8 @@ export default function Greeting({
       router.push("/settings");
     }
   };
+
+  const hasName = Boolean(name && name.trim().length > 0);
 
   return (
     <div
@@ -102,13 +102,19 @@ export default function Greeting({
           {mounted ? timeGreeting : "\u00A0"}
         </span>
 
-        {/* Main headline */}
+        {/* Main headline: clean and natural */}
         <h1
           className={`${GREETING_CONFIG.headlineSize} font-sans font-semibold tracking-tight leading-tight`}
           style={{ color: activeInk }}
         >
-          Ready to prep,{" "}
-          <span style={{ color: activeAccentDark }}>{displayName}</span>?
+          {hasName ? (
+            <>
+              Ready to prep,{" "}
+              <span style={{ color: activeAccentDark }}>{name!.trim()}</span>?
+            </>
+          ) : (
+            "Ready to prep?"
+          )}
         </h1>
       </div>
 
