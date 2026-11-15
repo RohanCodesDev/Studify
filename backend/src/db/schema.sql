@@ -76,7 +76,23 @@ CREATE TABLE IF NOT EXISTS document_chunks (
 -- Full-Text search index on chunk content
 CREATE INDEX IF NOT EXISTS idx_chunks_fts ON document_chunks USING gin(to_tsvector('english', content_text));
 
--- 8. Question Bank & PYQ Repository
+-- 8. Generated Section-by-Section Study Notes (Cached AI Output)
+CREATE TABLE IF NOT EXISTS generated_notes (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    session_id VARCHAR(100) REFERENCES study_sessions(id) ON DELETE CASCADE,
+    section_index INT NOT NULL,
+    section_title VARCHAR(300) NOT NULL,
+    next_section_title VARCHAR(300),
+    total_sections INT NOT NULL DEFAULT 1,
+    source_chunk_ids UUID[],
+    provider_used VARCHAR(50),
+    note_content JSONB NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(session_id, section_index)
+);
+
+-- 9. Question Bank & PYQ Repository
 CREATE TABLE IF NOT EXISTS question_bank (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     subject_code VARCHAR(20) REFERENCES subjects(code) ON DELETE CASCADE,

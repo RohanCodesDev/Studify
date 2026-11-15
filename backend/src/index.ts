@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { testConnection, query } from "./db";
 import ingestRouter from "./ingest/routes";
+import notesRouter from "./notes/routes";
 
 dotenv.config();
 
@@ -20,6 +21,9 @@ app.use(express.json());
 
 // Ingestion pipeline routes
 app.use("/api/ingest", ingestRouter);
+
+// On-demand section notes synthesis routes
+app.use("/api/notes", notesRouter);
 
 // Basic health check route
 app.get("/api/health", (req: Request, res: Response) => {

@@ -47,6 +47,45 @@ export default function StudyPage() {
   const [ingestedChunks, setIngestedChunks] = useState<IngestedChunk[]>([]);
   const [showSourceDrawer, setShowSourceDrawer] = useState<boolean>(false);
 
+  // Section-by-section on-demand synthesis state
+  const [sectionIndex, setSectionIndex] = useState<number>(0);
+  const [sectionData, setSectionData] = useState<{
+    sectionTitle: string;
+    nextSectionTitle: string | null;
+    totalSections: number;
+    provider: string;
+    isCached: boolean;
+    notes: any;
+  } | null>(null);
+  const [isSectionLoading, setIsSectionLoading] = useState<boolean>(false);
+
+  const fetchSectionNotes = async (targetIndex: number) => {
+    if (!id || typeof id !== "string") return;
+    try {
+      setIsSectionLoading(true);
+      const res = await fetch(`/api/notes/${id}/section/${targetIndex}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && data.notes) {
+          setSectionData({
+            sectionTitle: data.sectionTitle,
+            nextSectionTitle: data.nextSectionTitle,
+            totalSections: data.totalSections,
+            provider: data.provider,
+            isCached: data.isCached,
+            notes: data.notes,
+          });
+          setSectionIndex(data.sectionIndex);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      }
+    } catch (err) {
+      console.warn("Section notes fetch fallback to default:", err);
+    } finally {
+      setIsSectionLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (!id || typeof id !== "string") return;
     let isMounted = true;
@@ -60,6 +99,9 @@ export default function StudyPage() {
       .catch((err) => {
         console.warn("Failed to fetch chunks for session:", err);
       });
+
+    // Fetch Section 0 notes on mount
+    fetchSectionNotes(0);
 
     return () => {
       isMounted = false;
@@ -236,8 +278,34 @@ export default function StudyPage() {
               </span>
             </div>
 
+            {/* Section step and provider info */}
+            {sectionData && (
+              <div className="flex items-center gap-2">
+                <span
+                  className="px-2.5 py-0.5 rounded-full text-[11px] font-sans font-bold"
+                  style={{
+                    backgroundColor: colors.accentSoft,
+                    color: colors.accentDark,
+                  }}
+                >
+                  Section {sectionIndex + 1} of {sectionData.totalSections}
+                </span>
+
+                <span
+                  className="text-[10px] font-sans font-medium px-2 py-0.5 rounded-full border opacity-75"
+                  style={{
+                    backgroundColor: colors.cardBg,
+                    borderColor: colors.border,
+                    color: colors.inkMuted,
+                  }}
+                >
+                  ⚡ Synthesized via {sectionData.provider === "groq" ? "Groq (High-Speed)" : sectionData.provider === "openrouter" ? "OpenRouter" : sectionData.provider}
+                </span>
+              </div>
+            )}
+
             <h1 className="text-xl sm:text-2xl font-sans font-bold tracking-tight leading-snug">
-              {topic.topicTitle}
+              {sectionData?.sectionTitle || topic.topicTitle}
             </h1>
 
             <div className="flex flex-wrap items-center gap-2">
@@ -341,7 +409,81 @@ export default function StudyPage() {
           </div>
 
           {/* ── Rendered Note Content ── */}
-          <ReadingNoteRenderer notes={topic.notes} activeFormat={activeFormat} />
+          <ReadingNoteRenderer notes={sectionData?.notes || topic.notes} activeFormat={activeFormat} />
+
+          {/* ── On-Demand Next Section Synthesis Card ("This is how we buy time") ── */}
+          {sectionData?.nextSectionTitle && !isFocusMode && (
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-6 p-5 sm:p-6 rounded-3xl border shadow-sm transition-all flex flex-col gap-3"
+              style={{
+                backgroundColor: colors.cardBg,
+                borderColor: colors.border,
+              }}
+            >
+              <div className="flex items-center justify-between">
+                <span
+                  className="text-[11px] font-sans font-bold uppercase tracking-wider"
+                  style={{ color: colors.accentDark }}
+                >
+                  Up Next · Section {sectionIndex + 2} of {sectionData.totalSections}
+                </span>
+                {sectionData.isCached && (
+                  <span className="text-[10px] font-sans px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 font-semibold border border-emerald-200">
+                    ✓ Cached Instant
+                  </span>
+                )}
+              </div>
+
+              <h3 className="text-base sm:text-lg font-sans font-bold tracking-tight">
+                {sectionData.nextSectionTitle}
+              </h3>
+
+              <div className="flex items-center gap-2 pt-1">
+                {sectionIndex > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => fetchSectionNotes(sectionIndex - 1)}
+                    disabled={isSectionLoading}
+                    className="min-h-[46px] px-4 rounded-2xl text-xs font-sans font-semibold border flex items-center gap-1.5 transition-all active:scale-[0.98]"
+                    style={{
+                      backgroundColor: colors.cardBg,
+                      borderColor: colors.border,
+                      color: colors.inkMuted,
+                    }}
+                  >
+                    <ArrowLeft className="w-3.5 h-3.5" />
+                    <span>Previous</span>
+                  </button>
+                )}
+
+                <button
+                  type="button"
+                  onClick={() => fetchSectionNotes(sectionIndex + 1)}
+                  disabled={isSectionLoading}
+                  className="flex-1 min-h-[46px] px-4 rounded-2xl text-xs sm:text-sm font-sans font-semibold flex items-center justify-center gap-2 transition-all active:scale-[0.98] shadow-sm"
+                  style={{
+                    backgroundColor: colors.accentDark,
+                    color: "#FFFFFF",
+                    boxShadow: `0 4px 14px ${colors.accent}55`,
+                  }}
+                >
+                  {isSectionLoading ? (
+                    <span className="flex items-center gap-2">
+                      <span className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+                      <span>Synthesizing Next Section...</span>
+                    </span>
+                  ) : (
+                    <>
+                      <span>Proceed to Next Section</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </>
+                  )}
+                </button>
+              </div>
+            </motion.div>
+          )}
 
           {/* ── Bottom Reading Controls ── */}
           {!isFocusMode && (
