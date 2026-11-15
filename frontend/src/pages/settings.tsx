@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { ArrowLeft, Sparkles, Check } from "lucide-react";
+import { ArrowLeft, Check } from "lucide-react";
 import ColourPallete from "@/components/colourPallete";
 import { useTheme } from "@/context/ThemeContext";
 
@@ -82,34 +82,13 @@ export default function SettingsPage() {
 
           {/* ── Main Content Container ── */}
           <main className="w-full max-w-xl mx-auto px-4 sm:px-6 py-6 pb-8 flex flex-col gap-6">
-            {/* Clean Section Banner */}
-            <div
-              className="p-4 rounded-2xl border flex items-center gap-3 transition-colors shadow-sm"
-              style={{
-                backgroundColor: colors.cardBg,
-                borderColor: colors.border,
-              }}
-            >
-              <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                style={{
-                  backgroundColor: colors.accentSoft,
-                  color: colors.accentDark,
-                }}
+            <div>
+              <h2
+                className="text-sm sm:text-base font-sans font-medium"
+                style={{ color: colors.inkMuted }}
               >
-                <Sparkles className="w-5 h-5" />
-              </div>
-              <div>
-                <h2 className="text-sm font-semibold font-sans">
-                  Study Environment
-                </h2>
-                <p
-                  className="text-xs font-body leading-relaxed"
-                  style={{ color: colors.inkMuted }}
-                >
-                  Pastel tones designed for reading comfort.
-                </p>
-              </div>
+                Customize your study environment
+              </h2>
             </div>
 
             {/* ── Wired Colour Pallete Component (Instant preview, no hex codes) ── */}
