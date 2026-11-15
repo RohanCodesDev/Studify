@@ -1,12 +1,14 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { User, Settings, Sparkles, BookOpen, GraduationCap, ChevronRight, CheckCircle2 } from "lucide-react";
+import { Settings } from "lucide-react";
+import StudentProfileCard from "@/components/studentProfileCard";
+import ProfileLinksCard from "@/components/profileLinksCard";
 import BottomNav from "@/components/bottomNav";
 import { useTheme } from "@/context/ThemeContext";
 
 export default function ProfilePage() {
   const router = useRouter();
-  const { colors, activeProfile, isDarkMode } = useTheme();
+  const { colors, isDarkMode } = useTheme();
 
   return (
     <>
@@ -57,184 +59,10 @@ export default function ProfilePage() {
             </button>
           </header>
 
-          {/* ── Main Content Container ── */}
+          {/* ── Modular Profile Components ── */}
           <main className="w-full px-4 sm:px-6 flex flex-col gap-5 pb-36">
-            {/* Student Info Card */}
-            <div
-              className="p-5 sm:p-6 rounded-3xl border shadow-sm transition-all flex items-start gap-4"
-              style={{
-                backgroundColor: colors.cardBg,
-                borderColor: colors.border,
-              }}
-            >
-              <div
-                className="w-14 h-14 rounded-2xl flex items-center justify-center font-sans font-bold text-lg shrink-0 border"
-                style={{
-                  backgroundColor: colors.accentSoft,
-                  borderColor: colors.accent,
-                  color: colors.accentDark,
-                }}
-              >
-                ST
-              </div>
-
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <h2 className="text-base sm:text-lg font-sans font-bold tracking-tight">
-                    Student Workspace
-                  </h2>
-                  <span
-                    className="px-2 py-0.5 rounded-full text-[10px] font-sans font-semibold uppercase tracking-wider"
-                    style={{
-                      backgroundColor: colors.accentSoft,
-                      color: colors.accentDark,
-                    }}
-                  >
-                    Active
-                  </span>
-                </div>
-
-                <p
-                  className="text-xs font-body leading-relaxed"
-                  style={{ color: colors.inkMuted }}
-                >
-                  B.Tech · Computer Science &amp; Engineering (CSE)
-                </p>
-                <p
-                  className="text-[11px] font-body opacity-70"
-                  style={{ color: colors.inkMuted }}
-                >
-                  Maulana Abul Kalam Azad University of Technology (MAKAUT) · Sem 5
-                </p>
-              </div>
-            </div>
-
-            {/* Academic Stats Overview */}
-            <div className="grid grid-cols-3 gap-3">
-              <div
-                className="p-3.5 rounded-2xl border text-center transition-colors"
-                style={{
-                  backgroundColor: colors.cardBg,
-                  borderColor: colors.border,
-                }}
-              >
-                <div
-                  className="text-base sm:text-lg font-sans font-bold"
-                  style={{ color: colors.accentDark }}
-                >
-                  2
-                </div>
-                <div className="text-[10px] font-body opacity-65">
-                  Active Sessions
-                </div>
-              </div>
-
-              <div
-                className="p-3.5 rounded-2xl border text-center transition-colors"
-                style={{
-                  backgroundColor: colors.cardBg,
-                  borderColor: colors.border,
-                }}
-              >
-                <div
-                  className="text-base sm:text-lg font-sans font-bold"
-                  style={{ color: colors.accentDark }}
-                >
-                  14
-                </div>
-                <div className="text-[10px] font-body opacity-65">
-                  Notes Ready
-                </div>
-              </div>
-
-              <div
-                className="p-3.5 rounded-2xl border text-center transition-colors"
-                style={{
-                  backgroundColor: colors.cardBg,
-                  borderColor: colors.border,
-                }}
-              >
-                <div
-                  className="text-base sm:text-lg font-sans font-bold"
-                  style={{ color: colors.accentDark }}
-                >
-                  85%
-                </div>
-                <div className="text-[10px] font-body opacity-65">
-                  Quiz Accuracy
-                </div>
-              </div>
-            </div>
-
-            {/* Navigation links & Preferences */}
-            <div
-              className="rounded-3xl border overflow-hidden transition-colors"
-              style={{
-                backgroundColor: colors.cardBg,
-                borderColor: colors.border,
-              }}
-            >
-              <button
-                type="button"
-                onClick={() => router.push("/settings")}
-                className="w-full min-h-[50px] p-4 flex items-center justify-between border-b transition-colors text-left active:scale-[0.99]"
-                style={{ borderColor: colors.border }}
-              >
-                <div className="flex items-center gap-3">
-                  <div
-                    className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0"
-                    style={{
-                      backgroundColor: colors.accentSoft,
-                      color: colors.accentDark,
-                    }}
-                  >
-                    <Sparkles className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <div className="text-xs sm:text-sm font-sans font-semibold">
-                      Appearance &amp; Colour Palette
-                    </div>
-                    <div
-                      className="text-[11px] font-body opacity-65"
-                      style={{ color: colors.inkMuted }}
-                    >
-                      Active: {activeProfile.name} ({isDarkMode ? "Dark" : "Light"})
-                    </div>
-                  </div>
-                </div>
-                <ChevronRight className="w-4 h-4 opacity-40" />
-              </button>
-
-              <button
-                type="button"
-                onClick={() => router.push("/tools")}
-                className="w-full min-h-[50px] p-4 flex items-center justify-between transition-colors text-left active:scale-[0.99]"
-              >
-                <div className="flex items-center gap-3">
-                  <div
-                    className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0"
-                    style={{
-                      backgroundColor: colors.accentSoft,
-                      color: colors.accentDark,
-                    }}
-                  >
-                    <GraduationCap className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <div className="text-xs sm:text-sm font-sans font-semibold">
-                      Academic Calculators
-                    </div>
-                    <div
-                      className="text-[11px] font-body opacity-65"
-                      style={{ color: colors.inkMuted }}
-                    >
-                      SGPA / CGPA and 75% Attendance planner
-                    </div>
-                  </div>
-                </div>
-                <ChevronRight className="w-4 h-4 opacity-40" />
-              </button>
-            </div>
+            <StudentProfileCard />
+            <ProfileLinksCard />
           </main>
         </div>
 
