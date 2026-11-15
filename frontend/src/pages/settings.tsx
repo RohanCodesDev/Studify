@@ -87,7 +87,10 @@ export default function SettingsPage() {
                 className="text-xl sm:text-2xl font-sans font-bold tracking-tight"
                 style={{ color: colors.ink }}
               >
-                Customize your study environment
+                Customize your study{" "}
+                <em className="italic" style={{ color: colors.accentDark }}>
+                  environment
+                </em>
               </h1>
             </div>
 

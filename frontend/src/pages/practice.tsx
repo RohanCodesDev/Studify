@@ -44,7 +44,10 @@ export default function PracticePage() {
               Exam Readiness &amp; Drills
             </span>
             <h1 className="text-2xl sm:text-3xl font-sans font-bold tracking-tight">
-              Practice Arena
+              Practice{" "}
+              <em className="italic" style={{ color: colors.accentDark }}>
+                Arena
+              </em>
             </h1>
           </header>
 

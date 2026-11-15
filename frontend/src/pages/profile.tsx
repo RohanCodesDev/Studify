@@ -40,7 +40,10 @@ export default function ProfilePage() {
                 Academic Record
               </span>
               <h1 className="text-2xl sm:text-3xl font-sans font-bold tracking-tight">
-                Student Profile
+                Student{" "}
+                <em className="italic" style={{ color: colors.accentDark }}>
+                  Profile
+                </em>
               </h1>
             </div>
 
