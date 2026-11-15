@@ -3,10 +3,12 @@ import { useState } from "react";
 import Greeting from "@/components/greeting";
 import QuickStudyCard, { QuickStudyPayload } from "@/components/quickStudyCard";
 import SessionStudyCard, { PrevSessionData } from "@/components/sessionStudyCard";
+import BottomNav from "@/components/bottomNav";
 import { useTheme } from "@/context/ThemeContext";
 
 export default function StudentWorkspace() {
   const { colors } = useTheme();
+  const [activeTab, setActiveTab] = useState("home");
 
   // Example previous session state (can be null for new students, or populated once started)
   const [currentSession, setCurrentSession] = useState<PrevSessionData | null>({
@@ -50,7 +52,7 @@ export default function StudentWorkspace() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {/* ── Page shell: scrollable, full height ── */}
+      {/* ── Page shell: scrollable, full height with bottom padding for dock ── */}
       <div
         className="w-full min-h-screen min-h-[100dvh] relative flex flex-col overflow-x-hidden transition-colors duration-300 font-sans"
         style={{ backgroundColor: colors.pageBg, color: colors.ink }}
@@ -60,7 +62,7 @@ export default function StudentWorkspace() {
           <Greeting />
 
           {/* ══ Study Modes (Two Separate Cards) ══ */}
-          <main className="w-full px-4 sm:px-6 py-2 flex flex-col gap-5 sm:gap-6 pb-28">
+          <main className="w-full px-4 sm:px-6 py-2 flex flex-col gap-5 sm:gap-6 pb-36">
             {/* Signature Feature: Session Study */}
             <SessionStudyCard
               prevSession={currentSession}
@@ -71,9 +73,12 @@ export default function StudentWorkspace() {
             {/* Base Ingestion: Quick Study */}
             <QuickStudyCard onStartQuickStudy={handleStartQuickStudy} />
 
-            {/* ══ Next Sections (Practice Row, Free Tools, Bottom Bar) will be mounted below ══ */}
+            {/* ══ Next Sections (Practice Row, Free Tools) will be mounted here ══ */}
           </main>
         </div>
+
+        {/* ══ Mobile Thumb Bottom Navigation Bar ══ */}
+        <BottomNav activeTab={activeTab} onChangeTab={setActiveTab} />
       </div>
     </>
   );
