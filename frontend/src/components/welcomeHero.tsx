@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import CtaButtons from "./ctaButtons";
 
 /**
@@ -48,6 +49,7 @@ export default function WelcomeHero({
   inkColor = "#3B3540",
   inkMuted = "#6B6570",
 }: WelcomeHeroProps) {
+  const router = useRouter();
   const [welcomeText, setWelcomeText] = useState("");
   const [studifyText, setStudifyText] = useState("");
   const [isWelcomeDone, setIsWelcomeDone] = useState(false);
@@ -194,6 +196,7 @@ export default function WelcomeHero({
             accentColor={accentColor}
             accentDark={accentDark}
             accentSoft={accentSoft}
+            onStartPrepping={() => router.push("/studentWorkspace")}
             style={{ marginTop: `${HERO_CONFIG.gapSublineAndButtonsPx}px` }}
           />
         </div>
