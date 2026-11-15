@@ -97,21 +97,6 @@ export default function SessionsPage() {
           <main className="w-full px-4 sm:px-6 flex flex-col gap-4 pb-36">
             {/* Active Sessions List */}
             <div className="space-y-3.5">
-              <div className="flex items-center justify-between">
-                <span
-                  className="text-xs uppercase tracking-wider font-semibold opacity-70"
-                  style={{ color: colors.ink }}
-                >
-                  Active Courses ({sessions.length})
-                </span>
-                <span
-                  className="text-xs font-body opacity-60"
-                  style={{ color: colors.inkMuted }}
-                >
-                  Chapter Progress
-                </span>
-              </div>
-
               {sessions.map((sess) => (
                 <div
                   key={sess.id}
