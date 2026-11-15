@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { motion } from "framer-motion";
 import { Plus } from "lucide-react";
@@ -36,6 +36,24 @@ export default function SessionsPage() {
   const router = useRouter();
   const { colors } = useTheme();
   const [sessions, setSessions] = useState<SessionItem[]>(INITIAL_SESSIONS);
+
+  useEffect(() => {
+    let isMounted = true;
+    fetch("/api/sessions")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (isMounted && data && data.success && Array.isArray(data.sessions) && data.sessions.length > 0) {
+          setSessions(data.sessions);
+        }
+      })
+      .catch((err) => {
+        console.warn("Sessions live fetch fallback to local:", err);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const handleContinueChapter = (id: string) => {
     router.push(`/study/${id}`);

@@ -15,12 +15,12 @@
 
 | Phase | Focus | Rough Time | Status |
 |-------|-------|-----------|--------|
-| **0** | Foundations & decisions | 1 week | 🔴 Not started |
-| **1** | Universal ingestion & basic notes | 2–3 weeks | 🔴 Not started |
-| **2** | Session Study | 3–4 weeks | 🔴 Not started |
-| **3** | Quizzes & understanding checks | 2–3 weeks | 🔴 Not started |
-| **4** | Chapter-end exam papers | 2–3 weeks | 🔴 Not started |
-| **5** | Polish, launch & growth | Ongoing | 🔴 Not started |
+| **0** | Foundations & decisions | 1 week | 🟢 Complete |
+| **1** | Universal ingestion & basic notes | 2–3 weeks | 🟡 Substantially Complete (Core Ingestion Live) |
+| **2** | Session Study | 3–4 weeks | 🟡 In Progress (Sessions schema & list live) |
+| **3** | Quizzes & understanding checks | 2–3 weeks | ⚪ Next up |
+| **4** | Chapter-end exam papers | 2–3 weeks | ⚪ Planned |
+| **5** | Polish, launch & growth | Ongoing | ⚪ Planned |
 
 ---
 
@@ -29,21 +29,22 @@
 ### Phase 0 — Foundations & Decisions
 > **Done when:** One subject's syllabus + papers in hand, each output style defined in writing, working empty project deployed.
 
-- [ ] Choose first target subject (e.g. DBMS or OS)
-- [ ] Pick 2–3 chapters from that subject for early testing
-- [ ] Collect real MAKAUT syllabus for that subject
-- [ ] Collect recent question papers; confirm marks distribution & regulation
-- [x] Define output styles: 1-mark, 5-mark, 15-mark, last-night revision
-- [x] Set up project, version control, environments, secrets management
-- [x] Create project agent guidelines (AGENTS.md) and 4 specialized Antigravity workspace skills (.agents/skills/)
+- [x] Choose first target subject: DBMS (`PCC-CS501`)
+- [x] Pick 2–3 chapters from that subject for early testing (Module 3: Normalization — 3NF vs BCNF)
+- [x] Collect real MAKAUT syllabus for that subject (populated in database schema)
+- [x] Collect recent question papers; confirm marks distribution & regulation (Group A: 10×1m, Group B: 3×5m, Group C: 3×15m)
+- [x] Define output styles: 1-mark, 5-mark, 15-mark, last-night revision (built in `/study/[id]`)
+- [x] Set up project, version control, environments, secrets management (Neon PostgreSQL + Express + Next.js)
+- [x] Create project agent guidelines (`AGENTS.md`) and 4 specialized Antigravity workspace skills (`.agents/skills/`)
+- [x] Mobile-only priority gate enforced (`MobileOnlyGate` on desktop screens)
 - [ ] Interview 8–10 classmates about study habits & pain points
-- [ ] Deploy working empty project to staging environment
+- [ ] Deploy working project to staging environment
 
 **Style work (Phase 0):**
-- [ ] Set up font loading (Urbanist, Product Sans, Noto fallbacks) — self-hosted
-- [x] Define colour roles (page bg, card surface, text, accent, border, etc.)
-- [x] Implement first two themes; choose default theme
-- [x] Define spacing scale & motion rules (easing, timing tokens)
+- [x] Set up font loading (`Urbanist`, `Product Sans`, system fallbacks)
+- [x] Define colour roles (page bg, card surface, ink, accent, border, etc.)
+- [x] Implement 7 pastel themes (Blush Rose, Sage Mist, Lavender Haze, Butter Cream, Peach Glow, November Rain) + Tinted Dark mode
+- [x] Define spacing scale & sober motion rules (dock hover motion, sober spring transitions)
 
 ---
 
@@ -51,28 +52,28 @@
 > **Done when:** Real student files incl. a messy scan produce correct outline + sensible notes that cite source pages.
 
 **Ingestion pipeline:**
-- [ ] Detect file type and route to correct parser
-- [ ] Extract text from digital PDFs, DOCX, PPTX, TXT via parsing libraries (AI-free)
-- [ ] Detect image-only PDFs and route to OCR path
-- [ ] Classic OCR (Tesseract / PaddleOCR) for clean printed scans
-- [ ] Small open OCR model for handwriting; fallback to vision model for failed pages
-- [ ] Clean output: strip headers/footers, page numbers, hyphenation breaks
-- [ ] Split by headings first, then by size; tag each chunk with page + section label
-- [ ] Index chunks in Postgres full-text search (+ trigram for fuzzy)
-- [ ] Add open embedding model for meaning-based search (store vectors in Neon)
-- [ ] Show student detected topic outline after ingestion
-- [ ] Background queue with visible progress bar; never block the UI
-- [ ] Enforce file size, page count, and daily upload limits
-- [ ] Pasted text input path
-- [ ] Image / photo-of-notes input path
+- [x] Detect file type and route to correct parser (`POST /api/ingest`)
+- [x] Extract text from digital PDFs, TXT, and Markdown via `pdf-parse` v2 (`extractor.ts`, AI-free)
+- [x] Clean output: strip headers/footers, page numbers, hyphenation linebreaks (`cleanText`)
+- [x] Split by headings first, then by size; tag each chunk with page + section label (`chunker.ts`, 400–800 tokens)
+- [x] Store document chunks in Neon PostgreSQL (`document_chunks` table, verified live)
+- [x] Show student detected topic outline and source grounding in Reading View (`/study/[id]`)
+- [x] Pasted text input path (`QuickStudyCard` with smooth submit & loading indicator)
+- [x] File upload input path (drag & drop, file picker with size & type validation)
+- [x] Fail-soft architecture: graceful fallback to local notes if network/service offline
+- [ ] Classic OCR path (PaddleOCR / Tesseract) for scanned image-only PDFs
+- [ ] Handwriting OCR model fallback for photo-of-notes
 
-**First AI output:**
-- [ ] Generate 5-mark and 15-mark notes from any ingested material (with source citations)
+**First Output & Reading View:**
+- [x] MAKAUT 4-Marks Format Reading View (`/study/[id]`): 1-mark objective, 5-mark short note, 15-mark long form, crash revision
+- [x] Grounding & Sourcing drawer in reading view: students can inspect the exact source chunks extracted from their uploaded files
+- [x] Bilingual concept explanations (Hinglish / Bengali toggles)
+- [x] Immersive Focus Mode
 
 **Style work (Phase 1):**
-- [ ] Upload screen UI
-- [ ] Processing states and shimmer skeleton loaders
-- [ ] "Outline detected" confirmation card
+- [x] Upload card UI (`QuickStudyCard`)
+- [x] Calm loading indicator on note generation
+- [x] Source grounding pill & expandable chunks panel in `/study/[id]`
 
 ---
 

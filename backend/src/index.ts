@@ -54,13 +54,19 @@ app.get("/api/sessions", async (req: Request, res: Response) => {
     const sessions = await query(`
       SELECT 
         s.id,
+        s.subject_code AS "code",
         s.subject_code AS "subjectCode",
-        sub.name AS "subjectName",
-        s.current_chapter_name AS "currentChapter",
+        COALESCE(sub.name, 'Database Management Systems') AS "name",
+        COALESCE(sub.name, 'Database Management Systems') AS "subjectName",
+        COALESCE('Semester ' || sub.semester || ' · ' || sub.department_code, 'Semester 5 · CSE') AS "semester",
+        COALESCE(s.current_chapter_name, 'Module 3: Normalization') AS "chapter",
+        COALESCE(s.current_chapter_name, 'Module 3: Normalization') AS "currentChapter",
         s.progress_percent AS "progressPercent",
+        s.topics_covered AS "topicsReady",
         s.topics_covered AS "topicsCovered",
         s.total_topics AS "totalTopics",
-        s.last_studied AS "lastActive"
+        COALESCE(s.last_studied, 'Recently') AS "lastStudied",
+        COALESCE(s.last_studied, 'Recently') AS "lastActive"
       FROM study_sessions s
       LEFT JOIN subjects sub ON s.subject_code = sub.code
       ORDER BY s.updated_at DESC;

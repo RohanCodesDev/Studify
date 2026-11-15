@@ -48,12 +48,6 @@ export default function MobileOnlyGate({ children }: MobileOnlyGateProps) {
           </div>
 
           <div className="space-y-2">
-            <span
-              className="text-xs uppercase tracking-wider font-semibold font-sans opacity-70"
-              style={{ color: colors.accentDark }}
-            >
-              Mobile Only
-            </span>
             <h1 className="text-xl sm:text-2xl font-sans font-bold tracking-tight">
               Studify
             </h1>
@@ -63,17 +57,6 @@ export default function MobileOnlyGate({ children }: MobileOnlyGateProps) {
             >
               This application has been designed only for mobile screens. Please come back using your mobile
             </p>
-          </div>
-
-          <div
-            className="px-4 py-2 rounded-xl text-xs font-sans font-medium border"
-            style={{
-              backgroundColor: colors.accentSoft,
-              borderColor: `${colors.accent}66`,
-              color: colors.accentDark,
-            }}
-          >
-            Tip: Switch to mobile view in DevTools to preview
           </div>
         </div>
       </aside>

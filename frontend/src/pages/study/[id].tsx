@@ -1,7 +1,7 @@
 "use client";
 
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import {
   ArrowLeft,
@@ -12,12 +12,25 @@ import {
   Sparkles,
   BookOpen,
   ArrowRight,
+  FileText,
+  ChevronDown,
+  Layers,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "@/context/ThemeContext";
 import { MOCK_STUDY_TOPICS, StudyTopicData } from "@/data/mockStudyNotes";
 import MarksTabBar, { MarksFormat } from "@/components/readingView/marksTabBar";
 import ReadingNoteRenderer from "@/components/readingView/readingNoteRenderer";
+
+export interface IngestedChunk {
+  id: string;
+  sessionId: string;
+  fileName: string;
+  pageNumber: number;
+  sectionTitle: string;
+  contentText: string;
+  createdAt: string;
+}
 
 export default function StudyPage() {
   const router = useRouter();
@@ -31,6 +44,27 @@ export default function StudyPage() {
   const [activeFormat, setActiveFormat] = useState<MarksFormat>("fiveMarks");
   const [isFocusMode, setIsFocusMode] = useState<boolean>(false);
   const [isCompleted, setIsCompleted] = useState<boolean>(false);
+  const [ingestedChunks, setIngestedChunks] = useState<IngestedChunk[]>([]);
+  const [showSourceDrawer, setShowSourceDrawer] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!id || typeof id !== "string") return;
+    let isMounted = true;
+    fetch(`/api/ingest/chunks/${id}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (isMounted && data && data.success && Array.isArray(data.chunks)) {
+          setIngestedChunks(data.chunks);
+        }
+      })
+      .catch((err) => {
+        console.warn("Failed to fetch chunks for session:", err);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [id]);
 
   const handleBack = () => {
     if (window.history.length > 1) {
@@ -206,9 +240,96 @@ export default function StudyPage() {
               {topic.topicTitle}
             </h1>
 
-            <p className="text-xs font-body opacity-75" style={{ color: colors.inkMuted }}>
-              🔥 {topic.pyqFrequency}
-            </p>
+            <div className="flex flex-wrap items-center gap-2">
+              <p className="text-xs font-body opacity-75" style={{ color: colors.inkMuted }}>
+                🔥 {topic.pyqFrequency}
+              </p>
+
+              {/* Source grounding pill (shown when student uploaded course material) */}
+              {ingestedChunks.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setShowSourceDrawer(!showSourceDrawer)}
+                  aria-expanded={showSourceDrawer}
+                  className="px-2.5 py-1 rounded-full text-[11px] font-sans font-medium border flex items-center gap-1.5 transition-all active:scale-95 shadow-xs"
+                  style={{
+                    backgroundColor: colors.cardBg,
+                    borderColor: colors.border,
+                    color: colors.ink,
+                  }}
+                >
+                  <FileText className="w-3.5 h-3.5" style={{ color: colors.accentDark }} />
+                  <span>
+                    Source: {ingestedChunks.length} chunks extracted from {ingestedChunks[0]?.fileName || "notes"}
+                  </span>
+                  <ChevronDown
+                    className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                      showSourceDrawer ? "rotate-180" : ""
+                    }`}
+                    style={{ color: colors.inkMuted }}
+                  />
+                </button>
+              )}
+            </div>
+
+            {/* Expandable Source Chunks Drawer */}
+            <AnimatePresence>
+              {showSourceDrawer && ingestedChunks.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0, y: -6 }}
+                  animate={{ opacity: 1, height: "auto", y: 0 }}
+                  exit={{ opacity: 0, height: 0, y: -6 }}
+                  transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                  className="overflow-hidden"
+                >
+                  <div
+                    className="p-4 sm:p-5 rounded-2xl border flex flex-col gap-3 shadow-sm my-1"
+                    style={{
+                      backgroundColor: isDarkMode ? "#1B1719" : "#FCFAF8",
+                      borderColor: colors.border,
+                    }}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Layers className="w-4 h-4" style={{ color: colors.accentDark }} />
+                        <h4 className="text-xs font-sans font-bold tracking-tight uppercase">
+                          Source Grounding
+                        </h4>
+                      </div>
+                      <span className="text-[11px] font-body opacity-60" style={{ color: colors.inkMuted }}>
+                        Verified from student file
+                      </span>
+                    </div>
+
+                    <div className="flex flex-col gap-2.5 max-h-64 overflow-y-auto pr-1">
+                      {ingestedChunks.map((chunk, idx) => (
+                        <div
+                          key={chunk.id || idx}
+                          className="p-3 rounded-xl border text-xs font-body transition-colors"
+                          style={{
+                            backgroundColor: colors.cardBg,
+                            borderColor: colors.border,
+                            color: colors.ink,
+                          }}
+                        >
+                          <div className="flex items-center justify-between mb-1">
+                            <span
+                              className="font-sans font-semibold text-[11px]"
+                              style={{ color: colors.accentDark }}
+                            >
+                              Chunk #{idx + 1} · Page {chunk.pageNumber} · {chunk.sectionTitle}
+                            </span>
+                          </div>
+                          <p className="leading-relaxed opacity-85 whitespace-pre-wrap font-mono text-[11px]">
+                            {chunk.contentText}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </section>
 
           {/* ── Sticky Marks Selector Tab Bar ── */}
