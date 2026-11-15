@@ -82,13 +82,13 @@ export default function SettingsPage() {
 
           {/* ── Main Content Container ── */}
           <main className="w-full max-w-xl mx-auto px-4 sm:px-6 py-6 pb-8 flex flex-col gap-6">
-            <div>
-              <h2
-                className="text-sm sm:text-base font-sans font-medium"
-                style={{ color: colors.inkMuted }}
+            <div className="text-center pt-1 pb-1">
+              <h1
+                className="text-xl sm:text-2xl font-sans font-bold tracking-tight"
+                style={{ color: colors.ink }}
               >
                 Customize your study environment
-              </h2>
+              </h1>
             </div>
 
             {/* ── Wired Colour Pallete Component (Instant preview, no hex codes) ── */}
