@@ -18,7 +18,7 @@
 | **0** | Foundations & decisions | 1 week | 🟢 Complete |
 | **1** | Universal ingestion & basic notes | 2–3 weeks | 🟡 Substantially Complete (Core Ingestion Live) |
 | **2** | Session Study | 3–4 weeks | 🟡 In Progress (Sessions schema & list live) |
-| **3** | Quizzes & understanding checks | 2–3 weeks | ⚪ Next up |
+| **3** | Quizzes & understanding checks | 2–3 weeks | 🟡 In Progress (Adaptive Quiz Runner & SM-2 Live) |
 | **4** | Chapter-end exam papers | 2–3 weeks | ⚪ Planned |
 | **5** | Polish, launch & growth | Ongoing | ⚪ Planned |
 
@@ -124,14 +124,16 @@
 > **Done when:** All 3 question types generated for a chapter; marking feels fair; weak-topic tracker visibly adapts next questions.
 
 **Question bank (AI-free backbone):**
-- [ ] Store questions: type, topic, marks, difficulty, source, answer, explanation, key-points checklist
+- [x] Store questions in Neon PostgreSQL (`question_bank` table with subject code, module, 1/5/15 marks, JSON options, correct answer, explanation, PYQ years)
+- [x] Seeded authentic MAKAUT PYQ questions for DBMS Module 3 (Normalization)
+- [x] Backend endpoint `GET /api/quiz/:quizId` to serve questions from Neon DB
 - [ ] Admin entry forms + CSV/spreadsheet import
 - [ ] Contributor accounts with submission queue and review step
 - [ ] Contributor leaderboard for motivation
 - [ ] "Report this question" button
 
 **Question types:**
-- [ ] MCQ (with believable distractors, shuffled order)
+- [x] MCQ (10 authentic MAKAUT Group A 1-mark questions with believable distractors)
 - [ ] True/False
 - [ ] Fill in the blank
 - [ ] Match the following
@@ -139,9 +141,9 @@
 - [ ] Long answer (15-mark style)
 
 **Quiz engine (AI-free):**
-- [ ] Quiz scope selection: topic / chapter / unit
-- [ ] Instant marking for objective questions with explanation
-- [ ] Spaced repetition (SM-2 family) for missed questions and flashcards
+- [x] Quiz scope selection: chapter / module drill (`quiz_dbms_m3`)
+- [x] Instant sober marking for objective questions with explanation & memory anchor
+- [x] Deterministic spaced repetition (SM-2 algorithm) for revision intervals and ease factor calculation
 
 **AI marking (strong model):**
 - [ ] Build marking guide from source material (key points, structure, examples)
@@ -150,7 +152,8 @@
 - [ ] Label AI marking clearly as guidance, not examiner verdict
 
 **Learning loop:**
-- [ ] Weak-topic tracker (right/wrong counts per topic, weighted to recent)
+- [x] Weak-topic tracker (identifies specific subtopics missed during drill)
+- [x] Summary screen with mastery level (Mastered, Proficient, Needs Attention)
 - [ ] Flashcards generated from missed points
 - [ ] Session-start revisit of yesterday's weak spots
 
@@ -159,9 +162,10 @@
 - [ ] Human review before questions enter live bank
 
 **Style work (Phase 3):**
-- [ ] One-question-per-card quiz UI with smooth option selection
-- [ ] Soft feedback animations (correct glow, wrong colour change — no harsh red/shake)
-- [ ] Progress rings and score count-up
+- [x] Mobile-first one-question-per-card quiz UI with smooth option selection
+- [x] Large thumb-friendly option buttons (min 52px hit area)
+- [x] Sober feedback animations (gentle green `#EAF3E8`, muted rose `#FDF0F0` — strictly no harsh red or screen shaking)
+- [x] Progress line, elapsed timer, live score pill, and results screen with SM-2 review badge
 
 ---
 

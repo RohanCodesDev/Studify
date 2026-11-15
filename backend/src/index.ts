@@ -77,6 +77,45 @@ app.get("/api/sessions", async (req: Request, res: Response) => {
   }
 });
 
+// Get adaptive quiz questions for a module
+app.get("/api/quiz/:quizId", async (req: Request, res: Response) => {
+  try {
+    const { quizId } = req.params;
+    let subjectCode = "PCC-CS501";
+    let moduleNumber = 3;
+
+    if (quizId.toLowerCase().includes("os")) {
+      subjectCode = "PCC-CS502";
+      moduleNumber = 2;
+    }
+
+    const questions = await query(`
+      SELECT 
+        id,
+        subject_code AS "subjectCode",
+        module_number AS "moduleNumber",
+        marks_category AS "marks",
+        question_text AS "questionText",
+        options,
+        correct_answer AS "correctAnswer",
+        explanation,
+        pyq_years AS "pyqYears"
+      FROM question_bank
+      WHERE subject_code = $1 AND module_number = $2 AND marks_category = 1
+      ORDER BY id ASC;
+    `, [subjectCode, moduleNumber]);
+
+    res.json({
+      success: true,
+      quizId,
+      count: questions.length,
+      questions,
+    });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Studify Express Backend running on port ${PORT}`);
 });

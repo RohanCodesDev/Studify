@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { motion } from "framer-motion";
 import AdaptiveQuizzesSection from "@/components/adaptiveQuizzesSection";
 import ExamSimulationCard from "@/components/examSimulationCard";
@@ -6,10 +7,11 @@ import BottomNav from "@/components/bottomNav";
 import { useTheme } from "@/context/ThemeContext";
 
 export default function PracticePage() {
+  const router = useRouter();
   const { colors } = useTheme();
 
   const handleStartQuiz = (quizId: string) => {
-    console.log("Start quiz:", quizId);
+    router.push(`/practice/quiz/${quizId}`);
   };
 
   const handleGeneratePaper = () => {

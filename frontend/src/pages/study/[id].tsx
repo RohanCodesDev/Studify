@@ -75,7 +75,7 @@ export default function StudyPage() {
   };
 
   const handleGoToQuiz = () => {
-    router.push("/practice");
+    router.push("/practice/quiz/quiz_dbms_m3");
   };
 
   return (
