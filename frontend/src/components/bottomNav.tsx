@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { useRouter } from "next/router";
 import { motion } from "framer-motion";
-import { Home, BookOpen, GraduationCap, Bookmark, User, LucideIcon } from "lucide-react";
+import { Home, BookOpen, GraduationCap, Calculator, User, LucideIcon } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 import { cn } from "@/lib/utils";
 
@@ -11,8 +11,7 @@ export interface NavItem {
   id: string;
   icon: LucideIcon;
   label: string;
-  href?: string;
-  onClick?: () => void;
+  href: string;
 }
 
 export const BOTTOM_NAV_CONFIG = {
@@ -29,63 +28,52 @@ interface BottomNavProps {
 }
 
 export default function BottomNav({
-  activeTab = "home",
+  activeTab,
   onChangeTab,
   className = "",
 }: BottomNavProps) {
   const router = useRouter();
   const { colors, isDarkMode } = useTheme();
-  const [currentTab, setCurrentTab] = useState(activeTab);
 
   const navItems: NavItem[] = [
     {
       id: "home",
       icon: Home,
       label: "Home",
-      onClick: () => {
-        setCurrentTab("home");
-        if (onChangeTab) onChangeTab("home");
-        if (router.pathname !== "/studentWorkspace") router.push("/studentWorkspace");
-      },
+      href: "/studentWorkspace",
     },
     {
       id: "sessions",
       icon: BookOpen,
       label: "Sessions",
-      onClick: () => {
-        setCurrentTab("sessions");
-        if (onChangeTab) onChangeTab("sessions");
-      },
+      href: "/sessions",
     },
     {
       id: "practice",
       icon: GraduationCap,
       label: "Practice",
-      onClick: () => {
-        setCurrentTab("practice");
-        if (onChangeTab) onChangeTab("practice");
-      },
+      href: "/practice",
     },
     {
-      id: "library",
-      icon: Bookmark,
-      label: "Library",
-      onClick: () => {
-        setCurrentTab("library");
-        if (onChangeTab) onChangeTab("library");
-      },
+      id: "tools",
+      icon: Calculator,
+      label: "Tools",
+      href: "/tools",
     },
     {
       id: "profile",
       icon: User,
       label: "Profile",
-      onClick: () => {
-        setCurrentTab("profile");
-        if (onChangeTab) onChangeTab("profile");
-        router.push("/settings");
-      },
+      href: "/profile",
     },
   ];
+
+  // Auto-detect active tab from current route if not explicitly passed
+  const currentTab =
+    activeTab ||
+    (router.pathname === "/studentWorkspace" || router.pathname === "/"
+      ? "home"
+      : router.pathname.replace("/", ""));
 
   return (
     <nav
@@ -128,7 +116,14 @@ export default function BottomNav({
                 type="button"
                 whileHover={{ scale: 1.08, y: -2 }}
                 whileTap={{ scale: 0.94 }}
-                onClick={item.onClick}
+                onClick={() => {
+                  if (onChangeTab) {
+                    onChangeTab(item.id);
+                  }
+                  if (router.pathname !== item.href) {
+                    router.push(item.href);
+                  }
+                }}
                 aria-label={item.label}
                 aria-current={isActive ? "page" : undefined}
                 className={cn(
