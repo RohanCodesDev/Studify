@@ -84,7 +84,7 @@ export default function BottomNav({
     >
       <div className="pointer-events-auto">
         <div
-          className="flex items-center gap-1 sm:gap-1.5 p-1.5 sm:p-2 rounded-2xl backdrop-blur-xl border shadow-lg transition-colors duration-300"
+          className="flex items-center gap-1 sm:gap-1.5 p-1.5 sm:p-2 rounded-2xl backdrop-blur-xl border shadow-lg hover:shadow-xl transition-all duration-300"
           style={{
             backgroundColor: isDarkMode ? `${colors.cardBg}F0` : `${colors.cardBg}E6`,
             borderColor: colors.border,
@@ -99,7 +99,9 @@ export default function BottomNav({
               <motion.button
                 key={item.id}
                 type="button"
-                whileTap={{ scale: 0.96 }}
+                whileHover={{ scale: 1.08, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 22 }}
                 onClick={() => {
                   if (onChangeTab) {
                     onChangeTab(item.id);
