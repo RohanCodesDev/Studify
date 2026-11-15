@@ -15,9 +15,7 @@ export interface NavItem {
 }
 
 export const BOTTOM_NAV_CONFIG = {
-  floatingDuration: 4,
-  floatY: [-1.5, 1.5, -1.5],
-  buttonMinSize: "min-h-[44px] min-w-[44px]",
+  buttonMinSize: "min-h-[44px] min-w-[48px]",
   iconSize: 20,
 };
 
@@ -84,22 +82,9 @@ export default function BottomNav({
         className
       )}
     >
-      <motion.div
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.3, ease: "easeOut" }}
-        className="pointer-events-auto"
-      >
-        <motion.div
-          animate={{
-            y: BOTTOM_NAV_CONFIG.floatY,
-          }}
-          transition={{
-            duration: BOTTOM_NAV_CONFIG.floatingDuration,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="flex items-center gap-1 sm:gap-1.5 p-1.5 sm:p-2 rounded-2xl backdrop-blur-xl border shadow-lg transition-all duration-300"
+      <div className="pointer-events-auto">
+        <div
+          className="flex items-center gap-1 sm:gap-1.5 p-1.5 sm:p-2 rounded-2xl backdrop-blur-xl border shadow-lg transition-colors duration-300"
           style={{
             backgroundColor: isDarkMode ? `${colors.cardBg}F0` : `${colors.cardBg}E6`,
             borderColor: colors.border,
@@ -114,8 +99,7 @@ export default function BottomNav({
               <motion.button
                 key={item.id}
                 type="button"
-                whileHover={{ scale: 1.08, y: -2 }}
-                whileTap={{ scale: 0.94 }}
+                whileTap={{ scale: 0.96 }}
                 onClick={() => {
                   if (onChangeTab) {
                     onChangeTab(item.id);
@@ -128,22 +112,31 @@ export default function BottomNav({
                 aria-current={isActive ? "page" : undefined}
                 className={cn(
                   "relative group flex flex-col items-center justify-center",
-                  "px-3 py-2 rounded-xl transition-all duration-200 select-none",
+                  "px-3 py-1.5 rounded-xl select-none transition-colors duration-200",
                   BOTTOM_NAV_CONFIG.buttonMinSize
                 )}
                 style={{
-                  backgroundColor: isActive ? colors.accentSoft : "transparent",
                   color: isActive ? colors.accentDark : colors.inkMuted,
                 }}
               >
+                {/* Smooth sliding active background pill */}
+                {isActive && (
+                  <motion.div
+                    layoutId="activeDockPill"
+                    className="absolute inset-0 rounded-xl"
+                    style={{ backgroundColor: colors.accentSoft }}
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
+
                 <Icon
                   width={BOTTOM_NAV_CONFIG.iconSize}
                   height={BOTTOM_NAV_CONFIG.iconSize}
-                  className="transition-transform duration-200"
+                  className="relative z-10 transition-transform duration-200"
                 />
 
                 {/* Sub-label for thumb clarity */}
-                <span className="text-[10px] font-sans font-medium tracking-tight mt-0.5">
+                <span className="relative z-10 text-[10px] font-sans font-medium tracking-tight mt-0.5">
                   {item.label}
                 </span>
 
@@ -151,7 +144,7 @@ export default function BottomNav({
                 {isActive && (
                   <motion.span
                     layoutId="activeDockDot"
-                    className="absolute -bottom-1 w-1.5 h-1.5 rounded-full"
+                    className="absolute -bottom-0.5 w-1 h-1 rounded-full z-10"
                     style={{ backgroundColor: colors.accentDark }}
                     transition={{ type: "spring", stiffness: 380, damping: 28 }}
                   />
@@ -162,7 +155,7 @@ export default function BottomNav({
                   className={cn(
                     "absolute -top-9 left-1/2 -translate-x-1/2",
                     "px-2 py-1 rounded-lg text-xs font-sans font-medium shadow-md",
-                    "opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none sm:block hidden"
+                    "opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none sm:block hidden z-20"
                   )}
                   style={{
                     backgroundColor: colors.cardBg,
@@ -176,8 +169,8 @@ export default function BottomNav({
               </motion.button>
             );
           })}
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
     </nav>
   );
 }

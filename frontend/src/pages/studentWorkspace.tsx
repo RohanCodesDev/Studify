@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { useState } from "react";
+import { motion } from "framer-motion";
 import Greeting from "@/components/greeting";
 import QuickStudyCard, { QuickStudyPayload } from "@/components/quickStudyCard";
 import SessionStudyCard, { PrevSessionData } from "@/components/sessionStudyCard";
@@ -59,19 +60,37 @@ export default function StudentWorkspace() {
       >
         <div className="w-full max-w-4xl mx-auto flex flex-col">
           {/* ══ Greeting (first section) ══ */}
-          <Greeting />
+          <motion.div
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <Greeting />
+          </motion.div>
 
           {/* ══ Study Modes (Two Separate Cards) ══ */}
           <main className="w-full px-4 sm:px-6 py-2 flex flex-col gap-5 sm:gap-6 pb-36">
             {/* Signature Feature: Session Study */}
-            <SessionStudyCard
-              prevSession={currentSession}
-              onStartNewSession={handleStartNewSession}
-              onResumeSession={handleResumeSession}
-            />
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <SessionStudyCard
+                prevSession={currentSession}
+                onStartNewSession={handleStartNewSession}
+                onResumeSession={handleResumeSession}
+              />
+            </motion.div>
 
             {/* Base Ingestion: Quick Study */}
-            <QuickStudyCard onStartQuickStudy={handleStartQuickStudy} />
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <QuickStudyCard onStartQuickStudy={handleStartQuickStudy} />
+            </motion.div>
 
             {/* ══ Next Sections (Practice Row, Free Tools) will be mounted here ══ */}
           </main>

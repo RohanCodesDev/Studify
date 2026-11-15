@@ -47,18 +47,12 @@ export default function CtaButtons({
       <button
         type="button"
         onClick={onStartPrepping}
-        className={`group inline-flex items-center justify-center gap-2 ${CTA_CONFIG.buttonPaddingX} ${CTA_CONFIG.buttonPaddingY} ${CTA_CONFIG.buttonRadius} ${CTA_CONFIG.buttonFontWeightPrimary} ${CTA_CONFIG.buttonTextSize} tracking-wide transition-all duration-200 active:scale-95 shadow-md hover:shadow-lg`}
+        className={`group inline-flex items-center justify-center gap-2 ${CTA_CONFIG.buttonPaddingX} ${CTA_CONFIG.buttonPaddingY} ${CTA_CONFIG.buttonRadius} ${CTA_CONFIG.buttonFontWeightPrimary} ${CTA_CONFIG.buttonTextSize} tracking-wide transition-all duration-200 active:scale-[0.98] hover:brightness-105 shadow-md hover:shadow-lg`}
         style={{
           backgroundColor: accentDark,
           color: "#ffffff",
           minHeight: CTA_CONFIG.buttonMinHeight,
           boxShadow: `0 4px 20px ${accentColor}55`,
-        }}
-        onMouseEnter={(e) => {
-          (e.currentTarget as HTMLButtonElement).style.filter = "brightness(1.08)";
-        }}
-        onMouseLeave={(e) => {
-          (e.currentTarget as HTMLButtonElement).style.filter = "brightness(1)";
         }}
       >
         <span>Start Prepping</span>
@@ -69,18 +63,12 @@ export default function CtaButtons({
       <button
         type="button"
         onClick={onHowItWorks}
-        className={`group inline-flex items-center justify-center gap-2 ${CTA_CONFIG.buttonPaddingX} ${CTA_CONFIG.buttonPaddingY} ${CTA_CONFIG.buttonRadius} ${CTA_CONFIG.buttonFontWeightSecondary} ${CTA_CONFIG.buttonTextSize} tracking-wide transition-all duration-200 active:scale-95 border`}
+        className={`group inline-flex items-center justify-center gap-2 ${CTA_CONFIG.buttonPaddingX} ${CTA_CONFIG.buttonPaddingY} ${CTA_CONFIG.buttonRadius} ${CTA_CONFIG.buttonFontWeightSecondary} ${CTA_CONFIG.buttonTextSize} tracking-wide transition-all duration-200 active:scale-[0.98] hover:opacity-90 border`}
         style={{
           backgroundColor: accentSoft,
           borderColor: accentColor,
           color: accentDark,
           minHeight: CTA_CONFIG.buttonMinHeight,
-        }}
-        onMouseEnter={(e) => {
-          (e.currentTarget as HTMLButtonElement).style.backgroundColor = `${accentColor}33`;
-        }}
-        onMouseLeave={(e) => {
-          (e.currentTarget as HTMLButtonElement).style.backgroundColor = accentSoft;
         }}
       >
         <HelpCircle className="w-4 h-4 opacity-70" />

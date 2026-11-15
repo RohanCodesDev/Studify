@@ -114,17 +114,11 @@ export default function ExamSimulationCard({
         <button
           type="button"
           onClick={onGeneratePaper}
-          className="w-full min-h-[44px] py-2.5 rounded-2xl text-xs sm:text-sm font-sans font-semibold flex items-center justify-center gap-2 transition-all active:scale-[0.98] border"
+          className="w-full min-h-[44px] py-2.5 rounded-2xl text-xs sm:text-sm font-sans font-semibold flex items-center justify-center gap-2 transition-all duration-200 active:scale-[0.98] border hover:opacity-90 shadow-sm"
           style={{
             backgroundColor: colors.cardBg,
             borderColor: colors.accent,
             color: colors.accentDark,
-          }}
-          onMouseEnter={(e) => {
-            (e.currentTarget as HTMLButtonElement).style.backgroundColor = colors.accentSoft;
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLButtonElement).style.backgroundColor = colors.cardBg;
           }}
         >
           <FileText className="w-4 h-4" />

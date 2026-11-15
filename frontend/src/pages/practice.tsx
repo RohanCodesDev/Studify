@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { motion } from "framer-motion";
 import AdaptiveQuizzesSection from "@/components/adaptiveQuizzesSection";
 import ExamSimulationCard from "@/components/examSimulationCard";
 import BottomNav from "@/components/bottomNav";
@@ -36,7 +37,12 @@ export default function PracticePage() {
       >
         <div className="w-full max-w-4xl mx-auto flex flex-col">
           {/* ── Page Header ── */}
-          <header className="px-4 sm:px-6 py-5 sm:py-6">
+          <motion.header
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="px-4 sm:px-6 py-5 sm:py-6"
+          >
             <span
               className="text-xs font-body tracking-wide"
               style={{ color: colors.inkMuted }}
@@ -44,17 +50,29 @@ export default function PracticePage() {
               Exam Readiness &amp; Drills
             </span>
             <h1 className="text-2xl sm:text-3xl font-sans font-bold tracking-tight">
-              Practice <em className="italic">Arena</em>
+              Practice Arena
             </h1>
-          </header>
+          </motion.header>
 
           {/* ── Modular Section Components ── */}
           <main className="w-full px-4 sm:px-6 flex flex-col gap-6 pb-36">
             {/* Section 1: Adaptive Chapter Quizzes */}
-            <AdaptiveQuizzesSection onStartQuiz={handleStartQuiz} />
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <AdaptiveQuizzesSection onStartQuiz={handleStartQuiz} />
+            </motion.div>
 
             {/* Section 2: Authentic MAKAUT Exam Paper Simulation */}
-            <ExamSimulationCard onGeneratePaper={handleGeneratePaper} />
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <ExamSimulationCard onGeneratePaper={handleGeneratePaper} />
+            </motion.div>
           </main>
         </div>
 

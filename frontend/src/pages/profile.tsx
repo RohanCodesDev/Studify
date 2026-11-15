@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { motion } from "framer-motion";
 import { Settings } from "lucide-react";
 import StudentProfileCard from "@/components/studentProfileCard";
 import ProfileLinksCard from "@/components/profileLinksCard";
@@ -31,7 +32,12 @@ export default function ProfilePage() {
       >
         <div className="w-full max-w-4xl mx-auto flex flex-col">
           {/* ── Page Header ── */}
-          <header className="px-4 sm:px-6 py-5 sm:py-6 flex items-start justify-between">
+          <motion.header
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="px-4 sm:px-6 py-5 sm:py-6 flex items-start justify-between"
+          >
             <div>
               <span
                 className="text-xs font-body tracking-wide"
@@ -40,7 +46,7 @@ export default function ProfilePage() {
                 Academic Record
               </span>
               <h1 className="text-2xl sm:text-3xl font-sans font-bold tracking-tight">
-                Student <em className="italic">Profile</em>
+                Student Profile
               </h1>
             </div>
 
@@ -48,7 +54,7 @@ export default function ProfilePage() {
               type="button"
               onClick={() => router.push("/settings")}
               aria-label="Open Settings"
-              className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-2xl border backdrop-blur-md transition-all active:scale-95 shadow-sm"
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-2xl border backdrop-blur-md transition-all active:scale-[0.98] shadow-sm"
               style={{
                 backgroundColor: isDarkMode ? `${colors.cardBg}CC` : `${colors.cardBg}E6`,
                 borderColor: colors.border,
@@ -57,12 +63,24 @@ export default function ProfilePage() {
             >
               <Settings className="w-4 h-4" style={{ color: colors.accentDark }} />
             </button>
-          </header>
+          </motion.header>
 
           {/* ── Modular Profile Components ── */}
           <main className="w-full px-4 sm:px-6 flex flex-col gap-5 pb-36">
-            <StudentProfileCard />
-            <ProfileLinksCard />
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <StudentProfileCard />
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <ProfileLinksCard />
+            </motion.div>
           </main>
         </div>
 

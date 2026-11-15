@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Sun, Moon, Check } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   useTheme,
   COLOR_PROFILES,
@@ -162,20 +163,26 @@ export default function ColourPallete({
                 </div>
 
                 {/* Selected check indicator */}
-                {isSelected && (
-                  <div
-                    className="w-7 h-7 rounded-full flex items-center justify-center shrink-0 border transition-transform animate-in zoom-in-75 duration-150"
-                    style={{
-                      backgroundColor: colors.accentSoft,
-                      borderColor: colors.accent,
-                    }}
-                  >
-                    <Check
-                      className="w-4 h-4"
-                      style={{ color: colors.accentDark }}
-                    />
-                  </div>
-                )}
+                <AnimatePresence>
+                  {isSelected && (
+                    <motion.div
+                      initial={{ scale: 0.6, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      exit={{ scale: 0.6, opacity: 0 }}
+                      transition={{ duration: 0.18, ease: "easeOut" }}
+                      className="w-7 h-7 rounded-full flex items-center justify-center shrink-0 border"
+                      style={{
+                        backgroundColor: colors.accentSoft,
+                        borderColor: colors.accent,
+                      }}
+                    >
+                      <Check
+                        className="w-4 h-4"
+                        style={{ color: colors.accentDark }}
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </button>
             );
           })}

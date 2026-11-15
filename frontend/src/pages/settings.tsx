@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { motion } from "framer-motion";
 import { ArrowLeft, Check } from "lucide-react";
 import ColourPallete from "@/components/colourPallete";
 import { useTheme } from "@/context/ThemeContext";
@@ -81,13 +82,18 @@ export default function SettingsPage() {
           </header>
 
           {/* ── Main Content Container ── */}
-          <main className="w-full max-w-xl mx-auto px-4 sm:px-6 py-6 pb-8 flex flex-col gap-6">
+          <motion.main
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="w-full max-w-xl mx-auto px-4 sm:px-6 py-6 pb-8 flex flex-col gap-6"
+          >
             <div className="text-center pt-1 pb-1">
               <h1
                 className="text-xl sm:text-2xl font-sans font-bold tracking-tight"
                 style={{ color: colors.ink }}
               >
-                Customize your study <em className="italic">environment</em>
+                Customize your study environment
               </h1>
             </div>
 
@@ -95,7 +101,7 @@ export default function SettingsPage() {
             <section>
               <ColourPallete />
             </section>
-          </main>
+          </motion.main>
         </div>
 
         {/* ── Sticky Pinned Bottom Action (Always reachable by thumb) ── */}

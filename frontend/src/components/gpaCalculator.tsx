@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "@/context/ThemeContext";
 
 // MAKAUT 10-Point Grade Scale
@@ -118,75 +119,81 @@ export default function GpaCalculator({
       </div>
 
       {/* Course rows */}
-      <div className="space-y-2">
-        {courses.map((course) => (
-          <div
-            key={course.id}
-            className="grid grid-cols-12 gap-2 items-center p-2.5 rounded-2xl border text-xs"
-            style={{
-              backgroundColor: isDarkMode ? "#1B1719" : "#FAF8F7",
-              borderColor: colors.border,
-            }}
-          >
-            <input
-              type="text"
-              value={course.name}
-              onChange={(e) => {
-                const val = e.target.value;
-                setCourses((prev) =>
-                  prev.map((c) => (c.id === course.id ? { ...c, name: val } : c))
-                );
+      <div className="space-y-2 overflow-hidden">
+        <AnimatePresence initial={false}>
+          {courses.map((course) => (
+            <motion.div
+              key={course.id}
+              initial={{ opacity: 0, height: 0, scale: 0.98 }}
+              animate={{ opacity: 1, height: "auto", scale: 1 }}
+              exit={{ opacity: 0, height: 0, scale: 0.98 }}
+              transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+              className="grid grid-cols-12 gap-2 items-center p-2.5 rounded-2xl border text-xs"
+              style={{
+                backgroundColor: isDarkMode ? "#1B1719" : "#FAF8F7",
+                borderColor: colors.border,
               }}
-              placeholder="Subject"
-              className="col-span-6 bg-transparent font-medium font-sans px-2 py-1 outline-none"
-            />
-
-            <select
-              value={course.credit}
-              onChange={(e) => {
-                const val = parseFloat(e.target.value);
-                setCourses((prev) =>
-                  prev.map((c) => (c.id === course.id ? { ...c, credit: val } : c))
-                );
-              }}
-              aria-label="Course Credit"
-              className="col-span-3 bg-transparent font-sans px-2 py-1 outline-none rounded-lg"
             >
-              <option value={4}>4 cr</option>
-              <option value={3}>3 cr</option>
-              <option value={2}>2 cr</option>
-              <option value={1.5}>1.5 cr</option>
-              <option value={1}>1 cr</option>
-            </select>
+              <input
+                type="text"
+                value={course.name}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setCourses((prev) =>
+                    prev.map((c) => (c.id === course.id ? { ...c, name: val } : c))
+                  );
+                }}
+                placeholder="Subject"
+                className="col-span-6 bg-transparent font-medium font-sans px-2 py-1 outline-none"
+              />
 
-            <select
-              value={course.grade}
-              onChange={(e) => {
-                const val = e.target.value;
-                setCourses((prev) =>
-                  prev.map((c) => (c.id === course.id ? { ...c, grade: val } : c))
-                );
-              }}
-              aria-label="Letter Grade"
-              className="col-span-2 bg-transparent font-sans font-bold px-1 py-1 outline-none rounded-lg"
-            >
-              {Object.keys(GRADE_POINTS).map((g) => (
-                <option key={g} value={g}>
-                  {g} ({GRADE_POINTS[g]})
-                </option>
-              ))}
-            </select>
+              <select
+                value={course.credit}
+                onChange={(e) => {
+                  const val = parseFloat(e.target.value);
+                  setCourses((prev) =>
+                    prev.map((c) => (c.id === course.id ? { ...c, credit: val } : c))
+                  );
+                }}
+                aria-label="Course Credit"
+                className="col-span-3 bg-transparent font-sans px-2 py-1 outline-none rounded-lg"
+              >
+                <option value={4}>4 cr</option>
+                <option value={3}>3 cr</option>
+                <option value={2}>2 cr</option>
+                <option value={1.5}>1.5 cr</option>
+                <option value={1}>1 cr</option>
+              </select>
 
-            <button
-              type="button"
-              onClick={() => removeCourse(course.id)}
-              aria-label="Remove subject"
-              className="col-span-1 flex items-center justify-center opacity-40 hover:opacity-100 transition-opacity"
-            >
-              <Trash2 className="w-3.5 h-3.5" />
-            </button>
-          </div>
-        ))}
+              <select
+                value={course.grade}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setCourses((prev) =>
+                    prev.map((c) => (c.id === course.id ? { ...c, grade: val } : c))
+                  );
+                }}
+                aria-label="Letter Grade"
+                className="col-span-2 bg-transparent font-sans font-bold px-1 py-1 outline-none rounded-lg"
+              >
+                {Object.keys(GRADE_POINTS).map((g) => (
+                  <option key={g} value={g}>
+                    {g} ({GRADE_POINTS[g]})
+                  </option>
+                ))}
+              </select>
+
+              <button
+                type="button"
+                onClick={() => removeCourse(course.id)}
+                aria-label="Remove subject"
+                className="col-span-1 flex items-center justify-center opacity-40 hover:opacity-100 transition-opacity"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+              </button>
+            </motion.div>
+          ))}
+        </AnimatePresence>
       </div>
 
       <button

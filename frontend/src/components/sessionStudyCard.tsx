@@ -191,19 +191,13 @@ export default function SessionStudyCard({
               w-full ${SESSION_STUDY_CONFIG.buttonRadius}
               font-sans font-semibold text-xs sm:text-sm
               flex items-center justify-center gap-2 border
-              transition-all duration-200 active:scale-[0.98]
+              transition-all duration-200 active:scale-[0.98] hover:opacity-90 shadow-sm
             `}
             style={{
               minHeight: SESSION_STUDY_CONFIG.buttonMinHeight,
               backgroundColor: colors.cardBg,
               borderColor: colors.accent,
               color: colors.accentDark,
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.backgroundColor = colors.accentSoft;
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.backgroundColor = colors.cardBg;
             }}
           >
             <Plus className="w-4 h-4" />

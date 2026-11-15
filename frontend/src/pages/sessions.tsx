@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { Plus } from "lucide-react";
 import ActiveSessionsList, { SessionItem } from "@/components/activeSessionsList";
 import BottomNav from "@/components/bottomNav";
@@ -63,7 +64,12 @@ export default function SessionsPage() {
       >
         <div className="w-full max-w-4xl mx-auto flex flex-col">
           {/* ── Page Header ── */}
-          <header className="px-4 sm:px-6 py-5 sm:py-6 flex items-start justify-between">
+          <motion.header
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="px-4 sm:px-6 py-5 sm:py-6 flex items-start justify-between"
+          >
             <div>
               <span
                 className="text-xs font-body tracking-wide"
@@ -72,14 +78,14 @@ export default function SessionsPage() {
                 MAKAUT Syllabus Map
               </span>
               <h1 className="text-2xl sm:text-3xl font-sans font-bold tracking-tight">
-                Study <em className="italic">Sessions</em>
+                Study Sessions
               </h1>
             </div>
 
             <button
               type="button"
               onClick={handleAddSubject}
-              className="min-h-[44px] px-3.5 py-2 rounded-2xl text-xs font-sans font-semibold flex items-center gap-1.5 shadow-sm transition-all active:scale-95"
+              className="min-h-[44px] px-3.5 py-2 rounded-2xl text-xs font-sans font-semibold flex items-center gap-1.5 shadow-sm transition-all active:scale-[0.98]"
               style={{
                 backgroundColor: colors.accentDark,
                 color: "#FFFFFF",
@@ -89,16 +95,21 @@ export default function SessionsPage() {
               <Plus className="w-4 h-4" />
               <span>New Session</span>
             </button>
-          </header>
+          </motion.header>
 
           {/* ── Modular Active Sessions Component ── */}
-          <main className="w-full px-4 sm:px-6 pb-36">
+          <motion.main
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+            className="w-full px-4 sm:px-6 pb-36"
+          >
             <ActiveSessionsList
               sessions={sessions}
               onContinueChapter={handleContinueChapter}
               onAddSubject={handleAddSubject}
             />
-          </main>
+          </motion.main>
         </div>
 
         {/* ── Fixed Bottom Navigation Dock ── */}
