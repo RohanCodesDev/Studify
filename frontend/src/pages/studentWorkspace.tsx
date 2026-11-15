@@ -1,9 +1,39 @@
 import Head from "next/head";
+import { useState } from "react";
 import Greeting from "@/components/greeting";
+import QuickStudyCard, { QuickStudyPayload } from "@/components/quickStudyCard";
+import SessionStudyCard, { PrevSessionData } from "@/components/sessionStudyCard";
 import { useTheme } from "@/context/ThemeContext";
 
 export default function StudentWorkspace() {
   const { colors } = useTheme();
+
+  // Example previous session state (can be null for new students, or populated once started)
+  const [currentSession, setCurrentSession] = useState<PrevSessionData | null>({
+    id: "sess_pcc_cs501",
+    subjectCode: "PCC-CS501",
+    subjectName: "Database Management Systems",
+    currentChapter: "Module 3: Normalization (3NF vs BCNF)",
+    progressPercent: 68,
+    topicsCovered: 4,
+    totalTopics: 6,
+    lastActive: "Today at 11:30 AM",
+  });
+
+  const handleStartQuickStudy = (payload: QuickStudyPayload) => {
+    console.log("Starting quick study with:", payload);
+    // Ingestion pipeline routing will connect here
+  };
+
+  const handleStartNewSession = () => {
+    console.log("Navigating to syllabus selection & new session setup...");
+    // Syllabus selection workflow will connect here
+  };
+
+  const handleResumeSession = (sessionId: string) => {
+    console.log("Resuming session:", sessionId);
+    // Reading view / chapter view will connect here
+  };
 
   return (
     <>
@@ -25,18 +55,25 @@ export default function StudentWorkspace() {
         className="w-full min-h-screen min-h-[100dvh] relative flex flex-col overflow-x-hidden transition-colors duration-300 font-sans"
         style={{ backgroundColor: colors.pageBg, color: colors.ink }}
       >
-        {/* ══ Greeting (first section) — automatically uses active theme & navigates to /settings ══ */}
-        <Greeting />
+        <div className="w-full max-w-4xl mx-auto flex flex-col">
+          {/* ══ Greeting (first section) ══ */}
+          <Greeting />
 
-        {/* ══ Remaining prep-hub sections will be mounted here: ══ */}
-        {/* - Two large mode cards: Quick Study & Session Study */}
-        {/* - Continue where you left off (progress ring) */}
-        {/* - Practice row (Quizzes & Practice Papers) */}
-        {/* - Free tools (CGPA & Attendance) */}
-        {/* - Bottom nav bar */}
-        <main className="flex-1 px-4 sm:px-6 pb-32">
-          {/* Section placeholder */}
-        </main>
+          {/* ══ Study Modes (Two Separate Cards) ══ */}
+          <main className="w-full px-4 sm:px-6 py-2 flex flex-col gap-5 sm:gap-6 pb-28">
+            {/* Signature Feature: Session Study */}
+            <SessionStudyCard
+              prevSession={currentSession}
+              onStartNewSession={handleStartNewSession}
+              onResumeSession={handleResumeSession}
+            />
+
+            {/* Base Ingestion: Quick Study */}
+            <QuickStudyCard onStartQuickStudy={handleStartQuickStudy} />
+
+            {/* ══ Next Sections (Practice Row, Free Tools, Bottom Bar) will be mounted below ══ */}
+          </main>
+        </div>
       </div>
     </>
   );
