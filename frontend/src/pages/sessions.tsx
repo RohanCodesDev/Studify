@@ -72,10 +72,7 @@ export default function SessionsPage() {
                 MAKAUT Syllabus Map
               </span>
               <h1 className="text-2xl sm:text-3xl font-sans font-bold tracking-tight">
-                Study{" "}
-                <em className="italic" style={{ color: colors.accentDark }}>
-                  Sessions
-                </em>
+                Study <em className="italic">Sessions</em>
               </h1>
             </div>
 

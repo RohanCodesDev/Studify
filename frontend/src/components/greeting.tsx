@@ -102,26 +102,18 @@ export default function Greeting({
           {mounted ? timeGreeting : "\u00A0"}
         </span>
 
-        {/* Main headline: clean and natural with editorial italic accent */}
+        {/* Main headline: clean and natural with editorial italic styling */}
         <h1
           className={`${GREETING_CONFIG.headlineSize} font-sans font-semibold tracking-tight leading-tight`}
           style={{ color: activeInk }}
         >
           {hasName ? (
             <>
-              Ready to{" "}
-              <em className="italic font-bold" style={{ color: activeAccentDark }}>
-                prep
-              </em>
-              , {name!.trim()}?
+              Ready to <em className="italic font-bold">prep</em>, {name!.trim()}?
             </>
           ) : (
             <>
-              Ready to{" "}
-              <em className="italic font-bold" style={{ color: activeAccentDark }}>
-                prep
-              </em>
-              ?
+              Ready to <em className="italic font-bold">prep</em>?
             </>
           )}
         </h1>

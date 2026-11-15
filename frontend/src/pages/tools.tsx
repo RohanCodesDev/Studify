@@ -36,10 +36,7 @@ export default function ToolsPage() {
               Free University Utilities
             </span>
             <h1 className="text-2xl sm:text-3xl font-sans font-bold tracking-tight">
-              Academic{" "}
-              <em className="italic" style={{ color: colors.accentDark }}>
-                Tools
-              </em>
+              Academic <em className="italic">Tools</em>
             </h1>
           </header>
 
