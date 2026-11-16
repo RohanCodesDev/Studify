@@ -39,6 +39,7 @@ export default function StudyPage() {
 
   // Resolve study topic or fallback to DBMS
   const topicId = typeof id === "string" ? id : "sess_dbms";
+  const isMockDbms = topicId === "sess_dbms";
   const topic: StudyTopicData = MOCK_STUDY_TOPICS[topicId] || MOCK_STUDY_TOPICS["sess_dbms"];
 
   const [sessionMeta, setSessionMeta] = useState<{
@@ -145,10 +146,10 @@ export default function StudyPage() {
   return (
     <>
       <Head>
-        <title>{`${topic.topicTitle} · Studify Reading`}</title>
+        <title>{`${sectionData?.sectionTitle || sessionMeta?.chapter || (isMockDbms ? topic.topicTitle : "Study Notes")} · Studify`}</title>
         <meta
           name="description"
-          content={`MAKAUT syllabus notes for ${topic.subjectCode}: ${topic.topicTitle}. Formatted for 1, 5, and 15 marks.`}
+          content={`Study notes for ${isMockDbms ? topic.subjectCode : (sessionMeta?.subjectName || "Study Material")}. Formatted for 1, 5, and 15 marks.`}
         />
         <meta
           name="viewport"
@@ -195,19 +196,19 @@ export default function StudyPage() {
                   <ArrowLeft className="w-5 h-5" style={{ color: colors.accentDark }} />
                 </button>
 
-                {/* Center title info */}
+                {/* Center title info (Generic & cleanly decoupled from section H1) */}
                 <div className="flex flex-col items-center text-center px-2">
                   <span
                     className="text-xs font-sans font-bold tracking-tight truncate max-w-[200px]"
                     style={{ color: colors.ink }}
                   >
-                    {sessionMeta?.subjectCode || topic.subjectCode}
+                    {isMockDbms ? "PCC-CS501 · DBMS" : sessionMeta?.subjectName || "Study Notes"}
                   </span>
                   <span
                     className="text-[11px] font-body opacity-65 truncate max-w-[200px]"
                     style={{ color: colors.inkMuted }}
                   >
-                    {sectionData?.sectionTitle || sessionMeta?.chapter || topic.moduleName}
+                    {sectionData ? `Section ${sectionIndex + 1} of ${sectionData.totalSections}` : "Study Material"}
                   </span>
                 </div>
 
@@ -279,7 +280,7 @@ export default function StudyPage() {
                   color: colors.accentDark,
                 }}
               >
-                {sessionMeta?.subjectCode || topic.subjectCode} · {sessionMeta?.subjectName || topic.subjectName}
+                {isMockDbms ? `${topic.subjectCode} · ${topic.subjectName}` : sessionMeta?.subjectName || "Uploaded Study Notes"}
               </span>
 
               <span
@@ -289,7 +290,7 @@ export default function StudyPage() {
                   color: "#2E5929",
                 }}
               >
-                ✓ Syllabus Mapped
+                {isMockDbms ? "✓ Syllabus Mapped" : "✓ Document Grounded"}
               </span>
 
               <span
@@ -300,7 +301,7 @@ export default function StudyPage() {
               </span>
             </div>
 
-            {/* Section step and provider info */}
+            {/* Section step info (Clean & human-readable, NO developer Groq badges) */}
             {sectionData && (
               <div className="flex items-center gap-2">
                 <span
@@ -312,17 +313,6 @@ export default function StudyPage() {
                 >
                   Section {sectionIndex + 1} of {sectionData.totalSections}
                 </span>
-
-                <span
-                  className="text-[10px] font-sans font-medium px-2 py-0.5 rounded-full border opacity-75"
-                  style={{
-                    backgroundColor: colors.cardBg,
-                    borderColor: colors.border,
-                    color: colors.inkMuted,
-                  }}
-                >
-                  ⚡ Synthesized via {sectionData.provider === "groq" ? "Groq (High-Speed)" : sectionData.provider === "openrouter" ? "OpenRouter" : sectionData.provider}
-                </span>
               </div>
             )}
 
@@ -331,9 +321,15 @@ export default function StudyPage() {
             </h1>
 
             <div className="flex flex-wrap items-center gap-2">
-              <p className="text-xs font-body opacity-75" style={{ color: colors.inkMuted }}>
-                🔥 {topic.pyqFrequency}
-              </p>
+              {isMockDbms ? (
+                <p className="text-xs font-body opacity-75" style={{ color: colors.inkMuted }}>
+                  🔥 {topic.pyqFrequency}
+                </p>
+              ) : (
+                <p className="text-xs font-body opacity-75" style={{ color: colors.inkMuted }}>
+                  📄 Synthesized from your uploaded study document
+                </p>
+              )}
 
               {/* Source grounding pill (shown when student uploaded course material) */}
               {ingestedChunks.length > 0 && (
@@ -350,7 +346,7 @@ export default function StudyPage() {
                 >
                   <FileText className="w-3.5 h-3.5" style={{ color: colors.accentDark }} />
                   <span>
-                    Source: {ingestedChunks.length} chunks extracted from {ingestedChunks[0]?.fileName || "notes"}
+                    Source: {ingestedChunks[0]?.fileName ? ingestedChunks[0].fileName.replace(/^[0-9]+-/, "") : "Study Material"} ({ingestedChunks.length} sections)
                   </span>
                   <ChevronDown
                     className={`w-3.5 h-3.5 transition-transform duration-200 ${
@@ -362,7 +358,7 @@ export default function StudyPage() {
               )}
             </div>
 
-            {/* Expandable Source Chunks Drawer */}
+            {/* Expandable Source Material Drawer */}
             <AnimatePresence>
               {showSourceDrawer && ingestedChunks.length > 0 && (
                 <motion.div
@@ -383,11 +379,11 @@ export default function StudyPage() {
                       <div className="flex items-center gap-2">
                         <Layers className="w-4 h-4" style={{ color: colors.accentDark }} />
                         <h4 className="text-xs font-sans font-bold tracking-tight uppercase">
-                          Source Grounding
+                          Source Material
                         </h4>
                       </div>
                       <span className="text-[11px] font-body opacity-60" style={{ color: colors.inkMuted }}>
-                        Verified from student file
+                        Reference from uploaded document
                       </span>
                     </div>
 
@@ -407,7 +403,7 @@ export default function StudyPage() {
                               className="font-sans font-semibold text-[11px]"
                               style={{ color: colors.accentDark }}
                             >
-                              Chunk #{idx + 1} · Page {chunk.pageNumber} · {chunk.sectionTitle}
+                              Section #{idx + 1} · Page {chunk.pageNumber} · {chunk.sectionTitle}
                             </span>
                           </div>
                           <p className="leading-relaxed opacity-85 whitespace-pre-wrap font-mono text-[11px]">
@@ -456,7 +452,7 @@ export default function StudyPage() {
                   </span>
                 </div>
                 <p className="text-xs font-body opacity-75" style={{ color: colors.inkMuted }}>
-                  Analyzing your uploaded study material and formulating 1m, 5m, and 15m MAKAUT exam answers via Groq AI.
+                  Analyzing your uploaded study material and formulating 1m, 5m, and 15m exam answers.
                 </p>
                 <div className="h-4 bg-black/5 dark:bg-white/5 rounded-full w-3/4 mt-2" />
                 <div className="h-4 bg-black/5 dark:bg-white/5 rounded-full w-1/2" />

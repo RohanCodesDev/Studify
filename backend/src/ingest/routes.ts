@@ -54,7 +54,7 @@ router.post(
         fileName: file?.originalname || fileName || "pasted_notes.txt",
         pastedText: text,
         sessionId: sessionId || "sess_dbms",
-        subjectCode: subjectCode || "PCC-CS501",
+        subjectCode: subjectCode || "DOC-STUDY",
       });
 
       res.status(result.success ? 200 : 422).json(result);

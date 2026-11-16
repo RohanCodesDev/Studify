@@ -36,7 +36,7 @@ export async function processIngestion(options: IngestRequestOptions): Promise<I
     fileName = "pasted_notes.txt",
     pastedText,
     sessionId = "sess_dbms",
-    subjectCode = "PCC-CS501",
+    subjectCode = "DOC-STUDY",
   } = options;
 
   let extraction: ExtractedDocument;

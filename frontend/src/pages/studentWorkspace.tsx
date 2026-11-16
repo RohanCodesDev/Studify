@@ -39,7 +39,7 @@ export default function StudentWorkspace() {
         const formData = new FormData();
         formData.append("file", payload.file);
         formData.append("sessionId", newSessionId);
-        formData.append("subjectCode", "PCC-CS501");
+        formData.append("subjectCode", "DOC-STUDY");
 
         const res = await fetch("/api/ingest", {
           method: "POST",
@@ -56,7 +56,7 @@ export default function StudentWorkspace() {
           body: JSON.stringify({
             text: payload.text.trim(),
             sessionId: newSessionId,
-            subjectCode: "PCC-CS501",
+            subjectCode: "DOC-STUDY",
             fileName: "quick_notes.txt",
           }),
         });

@@ -99,85 +99,84 @@ function createExtractiveFallback(
       quickFact: factSentence,
     },
     fiveMarks: {
-      leadDefinition: defSentence,
+      leadDefinition: `${defSentence} ${ruleSentence}`,
       corePrinciples: [
+        defSentence,
         ruleSentence,
-        sentences[3] || "Ensures structural consistency across table relations.",
-        sentences[4] || "Preserves dependencies while preventing redundant storage.",
-        sentences[5] || "Mandatory for solving university marks questions.",
+        factSentence,
+        `Understanding ${sectionTitle} is essential for comprehensive exam mastery.`,
       ],
-      diagramLabel: `${sectionTitle} Dependency Diagram`,
-      diagramContent: `┌──────────────────────────────────────────────┐\n│  Input Schema R(A, B, C)                      │\n│   └── Applies: ${sectionTitle.slice(0, 30)}         │\n│        └── Normalized Sub-Relations          │\n└──────────────────────────────────────────────┘`,
+      diagramLabel: `${sectionTitle} Conceptual Architecture`,
+      diagramContent: `┌──────────────────────────────────────────────┐\n│  Topic Section: ${sectionTitle.slice(0, 26).padEnd(26)}   │\n│   └── Principle: ${ruleSentence.slice(0, 27).padEnd(27)} │\n└──────────────────────────────────────────────┘`,
       academicExample: {
-        title: `Example for ${sectionTitle}`,
-        description:
-          sentences[2] ||
-          "Consider relation R(A, B, C) with constraints defined in the course material.",
+        title: `Core Context of ${sectionTitle}`,
+        description: factSentence,
       },
-      sourceCitation: `Extracted from ${fileName}, Page ${pageNumber}`,
+      sourceCitation: `Source: ${fileName}, Page ${pageNumber}`,
     },
     fifteenMarks: {
-      theoreticalFoundation: `${defSentence} ${ruleSentence}`,
+      theoreticalFoundation: `${defSentence} ${ruleSentence} ${factSentence}`,
       formalDefinitions: [
         {
           term: sectionTitle,
           explanation: defSentence,
         },
         {
-          term: "Functional Constraint",
+          term: "Governing Constraint",
           explanation: ruleSentence,
         },
       ],
       stepByStepDecomposition: [
         {
           step: 1,
-          title: "Identify Functional Dependencies",
-          detail: "Determine the candidate keys and compute attribute closures.",
+          title: "Foundational Concepts & Scope",
+          detail: `Examine the primary definitions and scope of ${sectionTitle}.`,
         },
         {
           step: 2,
-          title: `Apply ${sectionTitle} Criteria`,
-          detail: "Verify whether each dependency satisfies the required condition.",
+          title: "Detailed Criteria & Rules",
+          detail: ruleSentence,
         },
         {
           step: 3,
-          title: "Verify Lossless Join",
-          detail: "Confirm that common attributes form a superkey in the decomposition.",
+          title: "Key Takeaways & Applications",
+          detail: factSentence,
         },
       ],
       comparisonTable: {
-        headers: ["Criteria", "Standard Definition", "Exam Implication"],
+        headers: ["Aspect", "Definition & Rules", "Academic Significance"],
         rows: [
-          ["Condition", ruleSentence.slice(0, 40), "Strictly verified"],
-          ["Preservation", "Lossless Join", "Guaranteed without spurious tuples"],
-          ["University Weight", "5 to 15 Marks", "High exam frequency"],
+          ["Core Focus", defSentence.slice(0, 40), "Fundamental concept"],
+          ["Constraint", ruleSentence.slice(0, 40), "Strictly verified"],
+          ["Exam Weightage", "5 to 15 Marks", "High syllabus priority"],
         ],
       },
-      diagramLabel: `${sectionTitle} Architecture`,
-      diagramContent: `┌──────────────────────────────────────────────┐\n│  Universal Schema Decomposition             │\n│  R1 ∩ R2 -> Superkey Criterion               │\n└──────────────────────────────────────────────┘`,
+      diagramLabel: `${sectionTitle} Analytical Flow`,
+      diagramContent: `┌──────────────────────────────────────────────┐\n│  ${sectionTitle.slice(0, 42).padEnd(42)}  │\n│  Rule: ${ruleSentence.slice(0, 38).padEnd(38)}│\n└──────────────────────────────────────────────┘`,
       workedProblem: {
-        relation: "R(A, B, C, D)",
-        functionalDependencies: ["A -> B", "B -> C", "C -> D"],
-        candidateKeys: "A",
-        analysis:
-          "Applying standard algorithm to eliminate redundancy step by step.",
-        conclusion: `Decomposition achieves ${sectionTitle} without information loss.`,
+        relation: `Topic Analysis: ${sectionTitle}`,
+        functionalDependencies: [
+          ruleSentence.slice(0, 60),
+          factSentence.slice(0, 60),
+        ],
+        candidateKeys: "Key Concepts & Criteria",
+        analysis: `Detailed analytical evaluation based on ${fileName} (Page ${pageNumber}).`,
+        conclusion: `Validates requirements outlined in ${sectionTitle}.`,
       },
-      sourceCitation: `Extracted from ${fileName}, Page ${pageNumber}`,
+      sourceCitation: `Source: ${fileName}, Page ${pageNumber}`,
     },
     crashRevision: {
       highYieldPoints: [
         defSentence,
         ruleSentence,
-        "Never introduce lossy join decompositions without a common superkey.",
+        factSentence,
       ],
-      makautRepeatAlert: `High-frequency topic in recent university examinations for ${sectionTitle}.`,
-      commonExamMistake:
-        "Confusing 3NF with BCNF requirements regarding prime attribute RHS.",
-      quickMnemonic: `Anchor: ${ruleSentence.slice(0, 50)}`,
+      makautRepeatAlert: `High-yield topic for revision in ${sectionTitle}.`,
+      commonExamMistake: `Overlooking the primary rule: ${ruleSentence.slice(0, 60)}.`,
+      quickMnemonic: `Key Rule: ${ruleSentence.slice(0, 50)}`,
     },
     bilingualExplanation: {
-      hinglish: `${sectionTitle} ka simple matlab hai: ${defSentence} Yeh exam me aksar 5 ya 15 marks me pucha jata hai.`,
+      hinglish: `${sectionTitle} ka simple matlab: ${defSentence}`,
       bengali: `${sectionTitle} holo ekti guruttwopurno dharona. ${defSentence}`,
     },
   };
@@ -268,12 +267,16 @@ export async function getOrGenerateSectionNotes(
   const chunkIds = activeChunks.map((c: any) => c.id).filter(Boolean);
 
   // 3. Prompt for section synthesis
-  const systemPrompt = `You are a specialized MAKAUT Engineering Professor and Exam Evaluator.
-Your job is to take an academic study section and synthesize exam-ready notes in JSON format.
-You must strictly follow the output schema and ground all facts in the provided text. Never hallucinate.`;
+  const systemPrompt = `You are an expert academic tutor and exam evaluator.
+Your job is to take the student's study material section ("${activeTitle}") and synthesize clear, structured, marks-aligned study notes in JSON format.
+STRICT GROUNDING RULES:
+1. Ground ALL definitions, principles, diagrams, and explanations STRICTLY in the provided source text.
+2. NEVER inject unrelated topics. Do NOT mention database normalization, SQL, or BCNF unless the source text explicitly teaches databases.
+3. If the material is about transport logistics, heavy machinery, operating systems, mathematics, etc., synthesize notes exclusively about that exact topic.
+4. You must strictly output valid JSON matching the requested schema.`;
 
   const userPrompt = `
-Generate MAKAUT marks-aligned notes for the syllabus section: "${activeTitle}".
+Generate structured exam notes for the section: "${activeTitle}".
 Use the student's source text below:
 
 --- SOURCE TEXT (Page ${sourcePage} of ${sourceFile}) ---
@@ -283,53 +286,54 @@ ${combinedChunkText}
 Return ONLY a valid JSON object matching this exact TypeScript structure:
 {
   "oneMark": {
-    "definition": "Clear 1-2 sentence formal definition",
-    "keyRule": "Exact condition or mathematical constraint to remember",
-    "quickFact": "High-yield nuance or exam differentiator"
+    "definition": "Clear 1-2 sentence formal definition derived from source text",
+    "keyRule": "Exact condition, constraint, or equation to remember",
+    "quickFact": "High-yield nuance or key differentiator"
   },
   "fiveMarks": {
     "leadDefinition": "Formal lead paragraph explaining the principle",
     "corePrinciples": ["Principle 1", "Principle 2", "Principle 3", "Principle 4"],
-    "diagramLabel": "Architecture or Flow Diagram Label",
-    "diagramContent": "Clean ASCII diagram or architectural tree",
+    "diagramLabel": "Conceptual Flow or Architecture Diagram Label",
+    "diagramContent": "Clean ASCII diagram or hierarchy tree representing this topic",
     "academicExample": {
-      "title": "Worked Academic Example Title",
-      "description": "Concrete relation schema and constraint example"
+      "title": "Worked Academic or Practical Example Title",
+      "description": "Concrete example grounded in the provided source text"
     },
-    "sourceCitation": "Source page reference"
+    "sourceCitation": "Source citation referencing ${sourceFile}"
   },
   "fifteenMarks": {
-    "theoreticalFoundation": "Comprehensive theoretical analysis",
+    "theoreticalFoundation": "Comprehensive theoretical analysis of this section",
     "formalDefinitions": [
-      { "term": "Core Term", "explanation": "Detailed explanation" }
+      { "term": "Core Term 1", "explanation": "Detailed explanation from text" },
+      { "term": "Core Term 2", "explanation": "Detailed explanation from text" }
     ],
     "stepByStepDecomposition": [
-      { "step": 1, "title": "Step 1 Title", "detail": "Algorithmic detail" },
-      { "step": 2, "title": "Step 2 Title", "detail": "Algorithmic detail" }
+      { "step": 1, "title": "Step 1 Title", "detail": "Detailed theoretical or practical step" },
+      { "step": 2, "title": "Step 2 Title", "detail": "Detailed theoretical or practical step" }
     ],
     "comparisonTable": {
-      "headers": ["Attribute", "Approach A", "Approach B"],
-      "rows": [["Criteria 1", "Detail", "Detail"]]
+      "headers": ["Aspect", "Criterion or Detail", "Significance"],
+      "rows": [["Criterion 1", "Detail from text", "Significance"]]
     },
-    "diagramLabel": "Comprehensive System Diagram",
-    "diagramContent": "Detailed ASCII Architecture",
+    "diagramLabel": "Comprehensive System or Process Diagram",
+    "diagramContent": "Detailed ASCII Architecture or Process Map",
     "workedProblem": {
-      "relation": "R(A, B, C, D)",
-      "functionalDependencies": ["FD1", "FD2"],
-      "candidateKeys": "Keys",
-      "analysis": "Step by step analysis",
-      "conclusion": "Final decomposition outcome"
+      "relation": "Case Study or Analysis Title",
+      "functionalDependencies": ["Core Condition 1", "Core Condition 2"],
+      "candidateKeys": "Primary Governing Principle",
+      "analysis": "Step by step analytical or quantitative evaluation",
+      "conclusion": "Final outcome and key takeaway"
     },
-    "sourceCitation": "Source page reference"
+    "sourceCitation": "Source citation referencing ${sourceFile}"
   },
   "crashRevision": {
-    "highYieldPoints": ["Point 1", "Point 2", "Point 3"],
-    "makautRepeatAlert": "Exam pattern note",
+    "highYieldPoints": ["Key Point 1", "Key Point 2", "Key Point 3"],
+    "makautRepeatAlert": "Exam pattern or critical emphasis note",
     "commonExamMistake": "Typical student error to avoid",
     "quickMnemonic": "Quick memory anchor"
   },
   "bilingualExplanation": {
-    "hinglish": "Clear colloquial Hinglish explanation",
+    "hinglish": "Clear colloquial Hinglish conceptual explanation",
     "bengali": "Clear colloquial Bengali conceptual explanation"
   }
 }

@@ -111,13 +111,15 @@ INSERT INTO departments (code, name)
 VALUES 
     ('CSE', 'Computer Science & Engineering'),
     ('IT', 'Information Technology'),
-    ('ECE', 'Electronics & Communication Engineering')
+    ('ECE', 'Electronics & Communication Engineering'),
+    ('GEN', 'General & Uploaded Studies')
 ON CONFLICT (code) DO NOTHING;
 
 INSERT INTO subjects (code, name, semester, department_code, regulation)
 VALUES 
     ('PCC-CS501', 'Database Management Systems', 5, 'CSE', '2018'),
-    ('PCC-CS502', 'Operating Systems', 5, 'CSE', '2018')
+    ('PCC-CS502', 'Operating Systems', 5, 'CSE', '2018'),
+    ('DOC-STUDY', 'Uploaded Study Material', 1, 'GEN', '2018')
 ON CONFLICT (code) DO NOTHING;
 
 INSERT INTO modules (subject_code, module_number, name)
