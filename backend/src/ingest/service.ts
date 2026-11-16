@@ -82,18 +82,23 @@ export async function processIngestion(options: IngestRequestOptions): Promise<I
   );
 
   // Ensure study session exists in database
+  const detectedChapterName =
+    chunkResult.detectedOutline[0] ||
+    (fileName ? fileName.replace(/\.[^/.]+$/, "").replace(/[_-]/g, " ") : "Syllabus Overview");
+
   await query(
     `
     INSERT INTO study_sessions (id, subject_code, current_chapter_name, progress_percent, topics_covered, total_topics, last_studied)
     VALUES ($1, $2, $3, 15, 1, $4, 'Just now')
     ON CONFLICT (id) DO UPDATE SET
+      current_chapter_name = COALESCE(NULLIF($3, ''), study_sessions.current_chapter_name),
       total_topics = GREATEST(study_sessions.total_topics, $4),
       updated_at = CURRENT_TIMESTAMP;
     `,
     [
       sessionId,
       subjectCode,
-      chunkResult.detectedOutline[0] || "Module 3: Relational Normalization",
+      detectedChapterName,
       Math.max(1, chunkResult.detectedOutline.length),
     ]
   );

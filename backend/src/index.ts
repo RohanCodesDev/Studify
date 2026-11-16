@@ -81,6 +81,41 @@ app.get("/api/sessions", async (req: Request, res: Response) => {
   }
 });
 
+// Get single study session by id
+app.get("/api/sessions/:id", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const rows = await query(`
+      SELECT 
+        s.id,
+        s.subject_code AS "code",
+        s.subject_code AS "subjectCode",
+        COALESCE(sub.name, 'Uploaded Study Notes') AS "name",
+        COALESCE(sub.name, 'Uploaded Study Notes') AS "subjectName",
+        COALESCE('Semester ' || sub.semester || ' · ' || sub.department_code, 'Study Material') AS "semester",
+        COALESCE(s.current_chapter_name, 'Module Overview') AS "chapter",
+        COALESCE(s.current_chapter_name, 'Module Overview') AS "currentChapter",
+        s.progress_percent AS "progressPercent",
+        s.topics_covered AS "topicsCovered",
+        s.total_topics AS "totalTopics",
+        COALESCE(s.last_studied, 'Recently') AS "lastActive"
+      FROM study_sessions s
+      LEFT JOIN subjects sub ON s.subject_code = sub.code
+      WHERE s.id = $1
+      LIMIT 1;
+    `, [id]);
+
+    if (rows.length === 0) {
+      res.status(404).json({ success: false, error: "Session not found" });
+      return;
+    }
+
+    res.json({ success: true, session: rows[0] });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // Get adaptive quiz questions for a module
 app.get("/api/quiz/:quizId", async (req: Request, res: Response) => {
   try {

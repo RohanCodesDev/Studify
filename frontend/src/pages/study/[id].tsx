@@ -41,6 +41,12 @@ export default function StudyPage() {
   const topicId = typeof id === "string" ? id : "sess_dbms";
   const topic: StudyTopicData = MOCK_STUDY_TOPICS[topicId] || MOCK_STUDY_TOPICS["sess_dbms"];
 
+  const [sessionMeta, setSessionMeta] = useState<{
+    subjectCode?: string;
+    subjectName?: string;
+    chapter?: string;
+  } | null>(null);
+
   const [activeFormat, setActiveFormat] = useState<MarksFormat>("fiveMarks");
   const [isFocusMode, setIsFocusMode] = useState<boolean>(false);
   const [isCompleted, setIsCompleted] = useState<boolean>(false);
@@ -89,6 +95,22 @@ export default function StudyPage() {
   useEffect(() => {
     if (!id || typeof id !== "string") return;
     let isMounted = true;
+
+    // 1. Fetch session metadata if available from database
+    fetch(`/api/sessions/${id}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (isMounted && data?.success && data.session) {
+          setSessionMeta({
+            subjectCode: data.session.subjectCode,
+            subjectName: data.session.subjectName,
+            chapter: data.session.currentChapter || data.session.chapter,
+          });
+        }
+      })
+      .catch(() => {});
+
+    // 2. Fetch extracted chunks
     fetch(`/api/ingest/chunks/${id}`)
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
@@ -100,7 +122,7 @@ export default function StudyPage() {
         console.warn("Failed to fetch chunks for session:", err);
       });
 
-    // Fetch Section 0 notes on mount
+    // 3. Fetch Section 0 notes on mount
     fetchSectionNotes(0);
 
     return () => {
@@ -179,13 +201,13 @@ export default function StudyPage() {
                     className="text-xs font-sans font-bold tracking-tight truncate max-w-[200px]"
                     style={{ color: colors.ink }}
                   >
-                    {topic.subjectCode}
+                    {sessionMeta?.subjectCode || topic.subjectCode}
                   </span>
                   <span
                     className="text-[11px] font-body opacity-65 truncate max-w-[200px]"
                     style={{ color: colors.inkMuted }}
                   >
-                    {topic.moduleName}
+                    {sectionData?.sectionTitle || sessionMeta?.chapter || topic.moduleName}
                   </span>
                 </div>
 
@@ -257,7 +279,7 @@ export default function StudyPage() {
                   color: colors.accentDark,
                 }}
               >
-                {topic.subjectCode} · {topic.subjectName}
+                {sessionMeta?.subjectCode || topic.subjectCode} · {sessionMeta?.subjectName || topic.subjectName}
               </span>
 
               <span
@@ -305,7 +327,7 @@ export default function StudyPage() {
             )}
 
             <h1 className="text-xl sm:text-2xl font-sans font-bold tracking-tight leading-snug">
-              {sectionData?.sectionTitle || topic.topicTitle}
+              {sectionData?.sectionTitle || sessionMeta?.chapter || topic.topicTitle}
             </h1>
 
             <div className="flex flex-wrap items-center gap-2">
@@ -409,7 +431,41 @@ export default function StudyPage() {
           </div>
 
           {/* ── Rendered Note Content ── */}
-          <ReadingNoteRenderer notes={sectionData?.notes || topic.notes} activeFormat={activeFormat} />
+          {isSectionLoading && !sectionData ? (
+            <div className="flex flex-col gap-4 font-body animate-pulse">
+              <div
+                className="p-5 sm:p-6 rounded-3xl border flex flex-col gap-3 shadow-xs"
+                style={{
+                  backgroundColor: colors.cardBg,
+                  borderColor: colors.border,
+                }}
+              >
+                <div className="flex items-center gap-2.5">
+                  <span
+                    className="w-4 h-4 border-2 rounded-full animate-spin"
+                    style={{
+                      borderColor: colors.accentDark,
+                      borderTopColor: "transparent",
+                    }}
+                  />
+                  <span
+                    className="text-xs font-sans font-bold uppercase tracking-wider"
+                    style={{ color: colors.accentDark }}
+                  >
+                    Synthesizing Section 1 Notes...
+                  </span>
+                </div>
+                <p className="text-xs font-body opacity-75" style={{ color: colors.inkMuted }}>
+                  Analyzing your uploaded study material and formulating 1m, 5m, and 15m MAKAUT exam answers via Groq AI.
+                </p>
+                <div className="h-4 bg-black/5 dark:bg-white/5 rounded-full w-3/4 mt-2" />
+                <div className="h-4 bg-black/5 dark:bg-white/5 rounded-full w-1/2" />
+                <div className="h-24 bg-black/5 dark:bg-white/5 rounded-2xl w-full mt-2" />
+              </div>
+            </div>
+          ) : (
+            <ReadingNoteRenderer notes={sectionData?.notes || topic.notes} activeFormat={activeFormat} />
+          )}
 
           {/* ── On-Demand Next Section Synthesis Card ("This is how we buy time") ── */}
           {sectionData?.nextSectionTitle && !isFocusMode && (

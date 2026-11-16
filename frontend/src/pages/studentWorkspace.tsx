@@ -31,12 +31,14 @@ export default function StudentWorkspace() {
     try {
       setIsIngesting(true);
 
-      let targetSessionId = "sess_dbms";
+      // Create a fresh unique session ID for every new material upload
+      const newSessionId = "sess_" + Date.now().toString(36);
+      let targetSessionId = newSessionId;
 
       if (payload.file) {
         const formData = new FormData();
         formData.append("file", payload.file);
-        formData.append("sessionId", targetSessionId);
+        formData.append("sessionId", newSessionId);
         formData.append("subjectCode", "PCC-CS501");
 
         const res = await fetch("/api/ingest", {
@@ -53,7 +55,7 @@ export default function StudentWorkspace() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             text: payload.text.trim(),
-            sessionId: targetSessionId,
+            sessionId: newSessionId,
             subjectCode: "PCC-CS501",
             fileName: "quick_notes.txt",
           }),

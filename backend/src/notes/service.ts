@@ -347,11 +347,12 @@ Return ONLY a valid JSON object matching this exact TypeScript structure:
     });
 
     providerUsed = aiResponse.provider;
-    // Sanitize JSON
-    const cleanJson = aiResponse.text
-      .replace(/^```json\s*/i, "")
-      .replace(/```\s*$/i, "")
-      .trim();
+    // Robustly extract JSON object even if model wraps in backticks or preamble
+    let rawText = aiResponse.text.trim();
+    const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+    const cleanJson = jsonMatch
+      ? jsonMatch[0]
+      : rawText.replace(/^```json\s*/i, "").replace(/```\s*$/i, "").trim();
 
     synthesizedNotes = JSON.parse(cleanJson);
   } catch (err: any) {
