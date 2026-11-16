@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   BookOpen,
@@ -12,6 +12,8 @@ import {
   Layers,
   FileCode2,
   ExternalLink,
+  Volume2,
+  VolumeX,
 } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 import { NoteContent } from "@/data/mockStudyNotes";
@@ -31,6 +33,67 @@ export default function ReadingNoteRenderer({
   const { colors, isDarkMode } = useTheme();
   const [showBilingual, setShowBilingual] = useState<boolean>(false);
   const [bilingualLang, setBilingualLang] = useState<"hinglish" | "bengali">("hinglish");
+  const [isPlayingAudio, setIsPlayingAudio] = useState<boolean>(false);
+
+  // Clean up speech synthesis on unmount or drawer collapse
+  useEffect(() => {
+    return () => {
+      if (typeof window !== "undefined" && "speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, []);
+
+  const handleToggleAudio = () => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) {
+      alert("Audio speech synthesis is not supported on this browser.");
+      return;
+    }
+
+    if (isPlayingAudio) {
+      window.speechSynthesis.cancel();
+      setIsPlayingAudio(false);
+      return;
+    }
+
+    window.speechSynthesis.cancel();
+
+    const textToSpeak =
+      bilingualLang === "hinglish"
+        ? notes.bilingualExplanation.hinglish
+        : notes.bilingualExplanation.bengali;
+
+    if (!textToSpeak || !textToSpeak.trim()) return;
+
+    const utterance = new SpeechSynthesisUtterance(textToSpeak);
+    if (bilingualLang === "bengali") {
+      utterance.lang = "bn-IN";
+    } else {
+      utterance.lang = "hi-IN";
+    }
+
+    utterance.rate = 0.92; // Calm, comprehensible pace for revision
+    utterance.pitch = 1.0;
+
+    utterance.onend = () => {
+      setIsPlayingAudio(false);
+    };
+
+    utterance.onerror = () => {
+      setIsPlayingAudio(false);
+    };
+
+    window.speechSynthesis.speak(utterance);
+    setIsPlayingAudio(true);
+  };
+
+  const handleSelectLang = (lang: "hinglish" | "bengali") => {
+    if (isPlayingAudio && typeof window !== "undefined" && "speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+      setIsPlayingAudio(false);
+    }
+    setBilingualLang(lang);
+  };
 
   return (
     <div className={`w-full flex flex-col gap-5 ${className}`}>
@@ -538,31 +601,58 @@ export default function ReadingNoteRenderer({
               className="overflow-hidden pt-3 mt-2 border-t space-y-3"
               style={{ borderColor: colors.border }}
             >
-              {/* Language Toggle Pills */}
-              <div className="flex items-center gap-2">
+              {/* Language Toggle Pills & 1-Click Audio Reader */}
+              <div className="flex items-center justify-between gap-2 flex-wrap">
+                <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => handleSelectLang("hinglish")}
+                    className="min-h-[38px] px-3.5 py-1.5 rounded-xl text-xs font-sans font-semibold transition-all active:scale-95"
+                    style={{
+                      backgroundColor:
+                        bilingualLang === "hinglish" ? colors.accentDark : colors.cardBg,
+                      color: bilingualLang === "hinglish" ? "#FFFFFF" : colors.inkMuted,
+                    }}
+                  >
+                    Hinglish
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleSelectLang("bengali")}
+                    className="min-h-[38px] px-3.5 py-1.5 rounded-xl text-xs font-sans font-semibold transition-all active:scale-95"
+                    style={{
+                      backgroundColor:
+                        bilingualLang === "bengali" ? colors.accentDark : colors.cardBg,
+                      color: bilingualLang === "bengali" ? "#FFFFFF" : colors.inkMuted,
+                    }}
+                  >
+                    বাংলা (Bengali)
+                  </button>
+                </div>
+
+                {/* 1-Click Native Audio Player */}
                 <button
                   type="button"
-                  onClick={() => setBilingualLang("hinglish")}
-                  className="px-3 py-1 rounded-xl text-xs font-sans font-medium transition-all"
+                  onClick={handleToggleAudio}
+                  aria-label={isPlayingAudio ? "Stop Audio" : "Listen to Explanation"}
+                  className="min-h-[38px] px-3 py-1.5 rounded-xl text-xs font-sans font-semibold border flex items-center gap-1.5 transition-all active:scale-95 shadow-xs"
                   style={{
-                    backgroundColor:
-                      bilingualLang === "hinglish" ? colors.accentDark : colors.cardBg,
-                    color: bilingualLang === "hinglish" ? "#FFFFFF" : colors.inkMuted,
+                    backgroundColor: isPlayingAudio ? "#EAF3E8" : colors.cardBg,
+                    borderColor: isPlayingAudio ? "#A9C5A7" : colors.border,
+                    color: isPlayingAudio ? "#2E5929" : colors.ink,
                   }}
                 >
-                  Hinglish
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setBilingualLang("bengali")}
-                  className="px-3 py-1 rounded-xl text-xs font-sans font-medium transition-all"
-                  style={{
-                    backgroundColor:
-                      bilingualLang === "bengali" ? colors.accentDark : colors.cardBg,
-                    color: bilingualLang === "bengali" ? "#FFFFFF" : colors.inkMuted,
-                  }}
-                >
-                  বাংলা (Bengali)
+                  {isPlayingAudio ? (
+                    <>
+                      <VolumeX className="w-3.5 h-3.5 text-emerald-700 animate-pulse" />
+                      <span>Stop Listening</span>
+                    </>
+                  ) : (
+                    <>
+                      <Volume2 className="w-3.5 h-3.5" style={{ color: colors.accentDark }} />
+                      <span>Listen ({bilingualLang === "hinglish" ? "Hinglish" : "বাংলা"})</span>
+                    </>
+                  )}
                 </button>
               </div>
 

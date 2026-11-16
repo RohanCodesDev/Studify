@@ -84,12 +84,52 @@ export default function StudyPage() {
           });
           setSectionIndex(data.sectionIndex);
           window.scrollTo({ top: 0, behavior: "smooth" });
+
+          // Touch session progress in database
+          const totalSec = data.totalSections || 1;
+          const currSec = (data.sectionIndex || 0) + 1;
+          const pct = Math.min(100, Math.round((currSec / totalSec) * 100));
+          fetch(`/api/sessions/${id}/progress`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              progressPercent: pct,
+              topicsCovered: currSec,
+              chapterName: data.sectionTitle,
+            }),
+          }).catch(() => {});
         }
       }
     } catch (err) {
       console.warn("Section notes fetch fallback to default:", err);
     } finally {
       setIsSectionLoading(false);
+    }
+  };
+
+  const handleToggleCompleted = async () => {
+    const nextCompleted = !isCompleted;
+    setIsCompleted(nextCompleted);
+    if (!id || typeof id !== "string") return;
+
+    try {
+      const totalSec = sectionData?.totalSections || 1;
+      const currentSec = sectionIndex + 1;
+      const percent = nextCompleted
+        ? Math.min(100, Math.round((currentSec / totalSec) * 100))
+        : Math.max(0, Math.round(((currentSec - 1) / totalSec) * 100));
+
+      await fetch(`/api/sessions/${id}/progress`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          progressPercent: percent,
+          topicsCovered: nextCompleted ? currentSec : Math.max(0, currentSec - 1),
+          chapterName: sectionData?.sectionTitle,
+        }),
+      });
+    } catch (err) {
+      console.warn("Failed to update progress:", err);
     }
   };
 
@@ -553,7 +593,7 @@ export default function StudyPage() {
 
                 <button
                   type="button"
-                  onClick={() => setIsCompleted((prev) => !prev)}
+                  onClick={handleToggleCompleted}
                   className="min-h-[44px] px-3.5 py-2 rounded-2xl border text-xs font-sans font-semibold flex items-center gap-1.5 transition-all active:scale-95"
                   style={
                     isCompleted

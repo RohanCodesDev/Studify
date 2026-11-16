@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { motion } from "framer-motion";
 import Greeting from "@/components/greeting";
@@ -15,7 +15,7 @@ export default function StudentWorkspace() {
 
   const [isIngesting, setIsIngesting] = useState(false);
 
-  // Example previous session state (can be null for new students, or populated once started)
+  // Live active session loaded from database
   const [currentSession, setCurrentSession] = useState<PrevSessionData | null>({
     id: "sess_dbms",
     subjectCode: "PCC-CS501",
@@ -26,6 +26,35 @@ export default function StudentWorkspace() {
     totalTopics: 6,
     lastActive: "Today at 11:30 AM",
   });
+
+  // Fetch live most recent session from Neon DB on workspace mount
+  useEffect(() => {
+    let isMounted = true;
+    fetch("/api/sessions")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (isMounted && data?.success && Array.isArray(data.sessions) && data.sessions.length > 0) {
+          const recent = data.sessions[0];
+          setCurrentSession({
+            id: recent.id,
+            subjectCode: recent.subjectCode || recent.code,
+            subjectName: recent.subjectName || recent.name,
+            currentChapter: recent.currentChapter || recent.chapter,
+            progressPercent: recent.progressPercent ?? 0,
+            topicsCovered: recent.topicsCovered ?? 0,
+            totalTopics: recent.totalTopics ?? 1,
+            lastActive: recent.lastActive || recent.lastStudied || "Recently",
+          });
+        }
+      })
+      .catch((err) => {
+        console.warn("Sessions fetch fallback:", err);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const handleStartQuickStudy = async (payload: QuickStudyPayload) => {
     try {

@@ -116,6 +116,29 @@ app.get("/api/sessions/:id", async (req: Request, res: Response) => {
   }
 });
 
+// Update session study progress & touch active timestamp
+app.patch("/api/sessions/:id/progress", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { progressPercent, topicsCovered, chapterName } = req.body;
+
+    await query(`
+      UPDATE study_sessions
+      SET 
+        progress_percent = COALESCE($2, progress_percent),
+        topics_covered = COALESCE($3, topics_covered),
+        current_chapter_name = COALESCE(NULLIF($4, ''), current_chapter_name),
+        last_studied = 'Just now',
+        updated_at = CURRENT_TIMESTAMP
+      WHERE id = $1;
+    `, [id, progressPercent, topicsCovered, chapterName]);
+
+    res.json({ success: true, message: "Session progress updated" });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // Get adaptive quiz questions for a module
 app.get("/api/quiz/:quizId", async (req: Request, res: Response) => {
   try {
